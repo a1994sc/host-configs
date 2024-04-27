@@ -63,7 +63,10 @@
     layout = "us";
     xkbVariant = "";
   };
-  users.users.ascii.packages = with pkgs; [ google-chrome firefox ];
+  users.users.ascii.packages = with pkgs; [
+    google-chrome
+    firefox
+  ];
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -80,9 +83,7 @@
     #media-session.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    opensc
-  ];
+  environment.systemPackages = with pkgs; [ opensc ];
   services.udev.packages = [ pkgs.yubikey-personalization ];
 
   programs.mtr.enable = true;
