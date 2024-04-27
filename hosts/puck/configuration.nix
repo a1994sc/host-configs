@@ -83,7 +83,7 @@
     #media-session.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [ opensc ];
+  # environment.systemPackages = with pkgs; [ opensc ];
   services.udev.packages = [ pkgs.yubikey-personalization ];
 
   programs.mtr.enable = true;
