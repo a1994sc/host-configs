@@ -10,10 +10,10 @@
 }:
 
 {
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  # nix.settings.experimental-features = [
+  #   "nix-command"
+  #   "flakes"
+  # ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -30,7 +30,7 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/New_York";
+  # time.timeZone = "America/New_York";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -63,11 +63,7 @@
     layout = "us";
     xkbVariant = "";
   };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
+  users.users.ascii.packages = with pkgs; [ google-chrome firefox ];
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -84,25 +80,9 @@
     #media-session.enable = true;
   };
 
-  users.users.ascii = {
-    isNormalUser = true;
-    description = "Allen Conlon";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
-    packages = with pkgs; [ firefox ];
-  };
-
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  # environment.systemPackages = with pkgs; [
-  # #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  # #  wget
-  # ];
-
+  environment.systemPackages = with pkgs; [
+    opensc
+  ];
   services.udev.packages = [ pkgs.yubikey-personalization ];
 
   programs.mtr.enable = true;
@@ -110,7 +90,7 @@
     enable = true;
     enableSSHSupport = true;
   };
-  services.openssh.enable = true;
+  services.pcscd.enable = true;
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 ];
 
