@@ -66,6 +66,9 @@
   users.users.ascii.packages = with pkgs; [
     google-chrome
     firefox
+    gnupg
+    docker
+    podman
   ];
   sound.enable = true;
   hardware.pulseaudio.enable = false;
