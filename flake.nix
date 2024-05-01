@@ -4,6 +4,7 @@
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    unstablepkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
     NUR.url = "github:nix-community/NUR";
     nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git";
     home-manager = {
@@ -14,6 +15,10 @@
     #   url = "github:ryantm/agenix";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -22,7 +27,7 @@
       user = {
         root = "root";
       };
-      systems = {
+      arch = {
         x64 = "x86_64-linux";
         arm = "aarch64-linux";
       };
@@ -32,7 +37,7 @@
       mkHomeConfig =
         {
           username,
-          system ? systems.x64,
+          system ? arch.x64,
           homeDirectory ? "/home/${username}",
           extraModules ? [ ],
           ...
@@ -62,6 +67,16 @@
             }
           ] ++ extraModules;
         };
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+      eachSystem =
+        f: nixpkgs.lib.genAttrs systems (system: f inputs.unstablepkgs.legacyPackages.${system});
+
+      treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
     in
     {
       nixosConfigurations = {
@@ -73,11 +88,6 @@
           ];
         };
       };
-      homeConfigurations = {
-        ${user.root} = mkHomeConfig {
-          username = user.root;
-          homeDirectory = "/${user.root}";
-        };
-      };
+      formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
     };
 }

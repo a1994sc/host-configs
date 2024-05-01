@@ -151,7 +151,9 @@
         "NUR": "NUR",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "nxc": "nxc"
+        "nxc": "nxc",
+        "treefmt-nix": "treefmt-nix",
+        "unstablepkgs": "unstablepkgs"
       }
     },
     "systems": {
@@ -181,6 +183,42 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1714058656,
+        "narHash": "sha256-Qv4RBm4LKuO4fNOfx9wl40W2rBbv5u5m+whxRYUMiaA=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "c6aaf729f34a36c445618580a9f95a48f5e4e03f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "unstablepkgs": {
+      "locked": {
+        "lastModified": 1714600247,
+        "narHash": "sha256-GZsDnWSVvyDzuJBIf2IpSI0T5m8UxV0eW5tg9uoBg0w=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "23cc2b1f071baee1853de7d93df6167bdfe57aa6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable-small",
+        "repo": "nixpkgs",
         "type": "github"
       }
     }

@@ -57,6 +57,7 @@
   # Enable the Budgie Desktop environment.
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.desktopManager.budgie.enable = true;
+  environment.budgie.excludePackages = with pkgs; [ xterm ];
 
   # Configure keymap in X11
   services.xserver = {
@@ -70,6 +71,17 @@
     docker
     podman
   ];
+  users.users.vroze = {
+    isNormalUser = true;
+    description = "Victoria Roze";
+    uid = 1001;
+    extraGroups = [ ];
+    openssh.authorizedKeys.keys = [ ];
+    packages = with pkgs; [
+      google-chrome
+      firefox
+    ];
+  };
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
