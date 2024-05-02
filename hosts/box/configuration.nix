@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 let
   path = "/etc/nixos";
 in
@@ -37,7 +32,7 @@ in
         };
       in
       {
-        eth0 = (FIREWALL_PORTS);
+        eth0 = FIREWALL_PORTS;
       };
     interfaces = {
       eth0.ipv4.addresses = [

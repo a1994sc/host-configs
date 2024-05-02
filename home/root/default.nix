@@ -1,21 +1,21 @@
 {
   config,
   pkgs,
-  lib,
-  inputs,
   username,
   homeDirectory,
   ...
 }:
 let
   stable = with pkgs; [
+    # keep-sorted start
     age-plugin-yubikey
+    bat
+    git
+    htop
     rage
     sops
     yq-go
-    htop
-    bat
-    git
+    # keep-sorted end
   ];
 in
 {
@@ -33,24 +33,28 @@ in
     };
   };
   home = {
-    username = username;
-    homeDirectory = homeDirectory;
+    inherit username;
+    inherit homeDirectory;
     stateVersion = "23.11";
     sessionVariables =
       let
         home = config.home.homeDirectory;
       in
       {
+        # keep-sorted start
+        HISTCONTROL = "ignoredups";
+        HISTFILE = "${home}/.bash_eternal_history";
         HISTFILESIZE = "";
         HISTSIZE = "";
         HISTTIMEFORMAT = "[%F %T] ";
-        HISTCONTROL = "ignoredups";
-        HISTFILE = "${home}/.bash_eternal_history";
+        # keep-sorted end
       };
     shellAliases = {
-      ls = "${pkgs.eza}/bin/eza";
-      ll = "${pkgs.eza}/bin/eza -lah";
+      # keep-sorted start
       cat = "${pkgs.bat}/bin/bat";
+      ll = "${pkgs.eza}/bin/eza -lah";
+      ls = "${pkgs.eza}/bin/eza";
+      # keep-sorted end
     };
     packages = stable;
   };

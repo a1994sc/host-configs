@@ -2,71 +2,29 @@
   description = "Home Manager";
 
   inputs = {
-    # Specify the source of Home Manager and Nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
-    unstablepkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
-    NUR.url = "github:nix-community/NUR";
-    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git";
+    # keep-sorted start block=yes case=no
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # agenix = {
-    #   url = "github:ryantm/agenix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    NUR.url = "github:nix-community/NUR";
+    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    unstablepkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
+    # keep-sorted end
   };
 
   outputs =
-    inputs@{ nixpkgs, home-manager, ... }:
+    inputs@{ nixpkgs, ... }:
     let
-      user = {
-        root = "root";
-      };
-      arch = {
-        x64 = "x86_64-linux";
-        arm = "aarch64-linux";
-      };
-      fqdn = {
-        adrp = ".adrp.xyz";
-      };
-      mkHomeConfig =
-        {
-          username,
-          system ? arch.x64,
-          homeDirectory ? "/home/${username}",
-          extraModules ? [ ],
-          ...
-        }:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = {
-            inherit
-              inputs
-              system
-              username
-              homeDirectory
-              ;
-          };
-          modules = [
-            ./home/root/.
-            {
-              nixpkgs.overlays = [
-                (inputs.nxc.lib.nur {
-                  inherit (inputs) NUR;
-                  inherit nixpkgs system;
-                }).overlay
-              ];
-            }
-          ] ++ extraModules;
-        };
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -81,6 +39,9 @@
     {
       nixosConfigurations = {
         puck = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs;
+          };
           system = "x86_64-linux";
           modules = [
             ./.

@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }:
@@ -24,6 +23,7 @@
   };
 
   fileSystems = {
+    # keep-sorted start block=yes case=no
     "/" = {
       device = "/dev/disk/by-uuid/e629c4ae-f14e-4986-9725-0d6b9f9233ec";
       fsType = "xfs";
@@ -48,6 +48,7 @@
       device = "/dev/disk/by-uuid/87bf9d62-fdbc-4ec0-945c-afdc9e3adbd4";
       fsType = "xfs";
     };
+    # keep-sorted end
   };
   swapDevices = [ ];
 
