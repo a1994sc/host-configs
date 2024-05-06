@@ -4,6 +4,7 @@
   # keep-sorted start block=yes case=no
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   environment.budgie.excludePackages = with pkgs; [ xterm ];
   hardware.pulseaudio.enable = false;
   i18n.defaultLocale = "en_US.UTF-8";
@@ -92,4 +93,10 @@
     # keep-sorted end
   };
   # keep-sorted end
+  services.tailscale.enable = true;
+  # services.pcscd.enable = true;
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+  };
 }
