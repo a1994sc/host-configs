@@ -38,16 +38,20 @@
     in
     {
       nixosConfigurations = {
-        puck = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs;
+        puck =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit system;
+            specialArgs = {
+              inherit inputs system;
+            };
+            modules = [
+              ./.
+              ./hosts/puck
+            ];
           };
-          system = "x86_64-linux";
-          modules = [
-            ./.
-            ./hosts/puck
-          ];
-        };
       };
       formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
     };
