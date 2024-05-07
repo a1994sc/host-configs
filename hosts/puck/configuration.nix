@@ -2,9 +2,9 @@
 
 {
   # keep-sorted start block=yes case=no
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
   environment.budgie.excludePackages = with pkgs; [ xterm ];
   hardware.pulseaudio.enable = false;
   i18n.defaultLocale = "en_US.UTF-8";
@@ -21,6 +21,7 @@
     LC_TIME = "en_US.UTF-8";
     # keep-sorted end
   };
+  environment.systemPackages = [ pkgs.staging.pcsclite ];
   networking.firewall.allowedTCPPorts = [ 22 ];
   networking.firewall.enable = true;
   networking.hostName = "puck"; # Define your hostname.

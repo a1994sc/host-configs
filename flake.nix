@@ -6,37 +6,55 @@
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+      inputs.systems.follows = "systems";
+    };
+    flake-utils = {
+      inputs.systems.follows = "systems";
+      url = "github:numtide/flake-utils";
     };
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-staging.url = "github:nixos/nixpkgs/staging-next";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     NUR.url = "github:nix-community/NUR";
-    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git";
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
+    nxc = {
+      url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
     };
-    unstablepkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
+    systems.url = "github:nix-systems/default";
+    treefmt-nix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:numtide/treefmt-nix";
+    };
     # keep-sorted end
   };
 
   outputs =
-    inputs@{ nixpkgs, ... }:
+    inputs@{
+      # keep-sorted start
+      flake-utils,
+      nixpkgs,
+      self,
+      treefmt-nix,
+      # keep-sorted end
+      ...
+    }:
     let
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-      eachSystem =
-        f: nixpkgs.lib.genAttrs systems (system: f inputs.unstablepkgs.legacyPackages.${system});
-
-      treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
+      inherit (self) outputs;
+      mkApp =
+        { program }:
+        {
+          inherit program;
+          type = "app";
+        };
     in
     {
+      overlays = import ./overlays { inherit inputs; };
       nixosConfigurations = {
         puck =
           let
@@ -45,7 +63,7 @@
           nixpkgs.lib.nixosSystem {
             inherit system;
             specialArgs = {
-              inherit inputs system;
+              inherit inputs outputs system;
             };
             modules = [
               ./.
@@ -53,6 +71,27 @@
             ];
           };
       };
-      formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
-    };
+    }
+    // flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
+        agepkgs = inputs.agenix.packages.${system}.agenix;
+        treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
+      in
+      {
+        formatter = treefmtEval.config.build.wrapper;
+        apps = {
+          default = mkApp { program = "${pkgs.nh}/bin/nh"; };
+          # keep-sorted start block=yes case=no
+          agenix = mkApp { program = "${agepkgs}/bin/agenix"; };
+          git = mkApp { program = "${pkgs.gitMinimal}/bin/git"; };
+          nh = mkApp { program = "${pkgs.nh}/bin/nh"; };
+          nix = mkApp { program = "${pkgs.nix}/bin/nix"; };
+          nix-env = mkApp { program = "${pkgs.nix}/bin/nix-env"; };
+          nix-store = mkApp { program = "${pkgs.nix}/bin/nix-store"; };
+          # keep-sorted end
+        };
+      }
+    );
 }

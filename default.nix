@@ -1,7 +1,16 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  outputs,
+  ...
+}:
 {
   imports = [ settings/certs ];
 
+  nixpkgs.overlays = [
+    outputs.overlays.staging-packages
+    outputs.overlays.unstable-packages
+  ];
   programs.bash.enableCompletion = true;
   environment.variables = {
     # keep-sorted start
