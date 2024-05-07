@@ -7,7 +7,7 @@
         "isDefault": false,
         "kind": "build"
       },
-      "label": "update",
+      "label": "os-update",
       "type": "shell"
     },
     {
@@ -16,7 +16,7 @@
         "isDefault": false,
         "kind": "build"
       },
-      "label": "rekey-age",
+      "label": "os-rekey-age",
       "type": "shell"
     },
     {
@@ -25,7 +25,7 @@
         "isDefault": false,
         "kind": "build"
       },
-      "label": "git-pull",
+      "label": "os-git-pull",
       "type": "shell"
     },
     {
@@ -34,7 +34,7 @@
         "isDefault": false,
         "kind": "build"
       },
-      "label": "git-add",
+      "label": "os-git-add",
       "type": "shell"
     },
     {
@@ -52,36 +52,36 @@
         "isDefault": false,
         "kind": "build"
       },
-      "label": "delete-generations",
+      "label": "os-delete-generations",
       "type": "shell"
     },
     {
-      "command": "nix run .#nh  -- os switch .",
+      "command": "nix run .#nh -- os switch .",
       "dependsOn": [
-        "format",
-        "git-pull",
-        "git-add"
+        "os-format",
+        "os-git-pull",
+        "os-git-add"
       ],
       "dependsOrder": "sequence",
       "group": {
         "isDefault": false,
         "kind": "build"
       },
-      "label": "build",
+      "label": "os-build",
       "type": "shell"
     },
     {
       "command": "nix-store --gc",
       "dependsOn": [
-        "update",
-        "delete-generations",
+        "os-update",
+        "os-delete-generations",
       ],
       "dependsOrder": "sequence",
       "group": {
         "isDefault": false,
         "kind": "build"
       },
-      "label": "garbage",
+      "label": "os-garbage",
       "type": "shell"
     }
   ]
