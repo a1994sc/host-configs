@@ -6,6 +6,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
   environment.budgie.excludePackages = with pkgs; [ xterm ];
+  environment.systemPackages = with pkgs; [
+    staging.pcsclite
+    gnome.gnome-disk-utility
+  ];
   hardware.pulseaudio.enable = false;
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -21,7 +25,6 @@
     LC_TIME = "en_US.UTF-8";
     # keep-sorted end
   };
-  environment.systemPackages = [ pkgs.staging.pcsclite ];
   networking.firewall.allowedTCPPorts = [ 22 ];
   networking.firewall.enable = true;
   networking.hostName = "puck"; # Define your hostname.
@@ -32,6 +35,7 @@
   };
   programs.mtr.enable = true;
   security.rtkit.enable = true;
+  services.dbus.packages = [ pkgs.gnome.gnome-disk-utility ];
   services.pcscd.enable = true;
   services.pipewire = {
     enable = true;

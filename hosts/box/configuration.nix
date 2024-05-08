@@ -43,4 +43,21 @@ in
       ];
     };
   };
+  users.users.ascii.uid = lib.mkForce 1001;
+  # https://github.com/nix-community/srvos/blob/885d705a55f5a9bd5a85cb6869358a1e5c522009/nixos/server/default.nix#L62-L93
+  systemd = {
+    enableEmergencyMode = false;
+    watchdog = {
+      runtimeTime = "20s";
+      rebootTime = "30s";
+    };
+    sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+    '';
+  };
+  boot.kernel.sysctl = {
+    "net.core.default_qdisc" = "fq";
+    "net.ipv4.tcp_congestion_control" = "bbr";
+  };
 }

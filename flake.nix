@@ -10,12 +10,17 @@
       inputs.systems.follows = "systems";
     };
     flake-utils = {
-      inputs.systems.follows = "systems";
       url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
     };
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    kapack = {
+      url = "github:oar-team/nur-kapack";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
     };
     nixpkgs-staging.url = "github:nixos/nixpkgs/staging-next";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable-small";
@@ -23,13 +28,14 @@
     NUR.url = "github:nix-community/NUR";
     nxc = {
       url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git";
-      inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.kapack.follows = "kapack";
     };
     systems.url = "github:nix-systems/default";
     treefmt-nix = {
-      inputs.nixpkgs.follows = "nixpkgs";
       url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     # keep-sorted end
   };
@@ -68,6 +74,20 @@
             modules = [
               ./.
               ./hosts/puck
+            ];
+          };
+        box =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit system;
+            specialArgs = {
+              inherit inputs outputs system;
+            };
+            modules = [
+              ./.
+              ./hosts/box
             ];
           };
       };
