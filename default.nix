@@ -93,7 +93,8 @@
     };
   };
   environment.systemPackages = with pkgs; [
-    # keep-sorted start
+    # keep-sorted start prefix_order=staging,unstable,
+    unstable.nh
     git
     htop
     micro
