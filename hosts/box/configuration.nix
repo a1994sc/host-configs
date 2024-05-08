@@ -41,6 +41,7 @@
     };
   };
   users.users.ascii.uid = lib.mkForce 1001;
+  system.stateVersion = "23.11";
   # https://github.com/nix-community/srvos/blob/885d705a55f5a9bd5a85cb6869358a1e5c522009/nixos/server/default.nix#L62-L93
   systemd = {
     enableEmergencyMode = false;
