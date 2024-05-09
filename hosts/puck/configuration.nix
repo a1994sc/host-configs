@@ -98,10 +98,27 @@
     # keep-sorted end
   };
   # keep-sorted end
+  virtualisation.podman = {
+    enable = true;
+    dockerSocket.enable = true;
+  };
   services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "both";
   # services.pcscd.enable = true;
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.ipv6.conf.all.forwarding" = 1;
+  };
+  services.networkd-dispatcher = {
+    enable = true;
+    rules = {
+      "tailscale" = {
+        onState = [ "routable" ];
+        script = ''
+          #!${pkgs.runtimeShell}
+          ${pkgs.ethtool}/bin/ethtool -K eno1 rx-udp-gro-forwarding on rx-gro-list off
+        '';
+      };
+    };
   };
 }
