@@ -2,6 +2,7 @@
   config,
   pkgs,
   outputs,
+  version,
   ...
 }:
 {
@@ -11,6 +12,7 @@
     outputs.overlays.staging-packages
     outputs.overlays.unstable-packages
   ];
+  system.stateVersion = version;
   programs.bash.enableCompletion = true;
   environment.variables = {
     # keep-sorted start

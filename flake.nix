@@ -63,38 +63,30 @@
           inherit program;
           type = "app";
         };
+      mkHost =
+        {
+          system ? "x86_64-linux",
+          version ? "23.11",
+          extraModules ? [ ],
+        }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              system
+              version
+              ;
+          };
+          modules = [ ./. ] ++ extraModules;
+        };
     in
     {
       overlays = import ./overlays { inherit inputs; };
       nixosConfigurations = {
-        puck =
-          let
-            system = "x86_64-linux";
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system;
-            specialArgs = {
-              inherit inputs outputs system;
-            };
-            modules = [
-              ./.
-              ./hosts/puck
-            ];
-          };
-        box =
-          let
-            system = "x86_64-linux";
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system;
-            specialArgs = {
-              inherit inputs outputs system;
-            };
-            modules = [
-              ./.
-              ./hosts/box
-            ];
-          };
+        puck = mkHost { extraModules = [ ./hosts/puck ]; };
+        box = mkHost { extraModules = [ ./hosts/box ]; };
       };
     }
     // flake-utils.lib.eachDefaultSystem (

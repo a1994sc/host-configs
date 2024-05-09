@@ -74,7 +74,6 @@
     randomizedDelaySec = "45min";
     # keep-sorted end
   };
-  system.stateVersion = "23.11";
   users.users.ascii.packages = with pkgs; [
     # keep-sorted start
     docker
