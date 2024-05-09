@@ -43,7 +43,7 @@
         "isDefault": false,
         "kind": "build"
       },
-      "label": "format",
+      "label": "os-format",
       "type": "shell"
     },
     {
@@ -64,7 +64,7 @@
       ],
       "dependsOrder": "sequence",
       "group": {
-        "isDefault": false,
+        "isDefault": true,
         "kind": "build"
       },
       "label": "os-build",

@@ -39,6 +39,10 @@
     settings = {
       max-jobs = "auto";
       auto-optimise-store = true;
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
     };
     settings.experimental-features = [
       "nix-command"
