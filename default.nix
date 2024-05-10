@@ -3,12 +3,17 @@
   pkgs,
   outputs,
   version,
+  inputs,
   ...
 }:
 {
-  imports = [ settings/certs ];
+  imports = [
+    inputs.agenix.nixosModules.age
+    settings/certs
+  ];
 
   nixpkgs.overlays = [
+    outputs.overlays.build-packages
     outputs.overlays.staging-packages
     outputs.overlays.unstable-packages
   ];

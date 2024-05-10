@@ -85,8 +85,10 @@
     {
       overlays = import ./overlays { inherit inputs; };
       nixosConfigurations = {
-        puck = mkHost { extraModules = [ ./hosts/puck ]; };
         box = mkHost { extraModules = [ ./hosts/box ]; };
+        dns1 = mkHost { extraModules = [ ./hosts/dns1 ]; };
+        dns2 = mkHost { extraModules = [ ./hosts/dns2 ]; };
+        puck = mkHost { extraModules = [ ./hosts/puck ]; };
       };
     }
     // flake-utils.lib.eachDefaultSystem (

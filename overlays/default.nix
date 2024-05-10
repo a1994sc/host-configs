@@ -17,4 +17,19 @@
       config.allowUnfree = true;
     };
   };
+
+  build-packages =
+    _final: prev:
+    let
+      inherit (prev) lib pkgs;
+      scope = lib.makeScope pkgs.newScope (_self: {
+        inherit inputs;
+      });
+    in
+    {
+      build = lib.filesystem.packagesFromDirectoryRecursive {
+        inherit (scope) callPackage;
+        directory = ../pkgs;
+      };
+    };
 }

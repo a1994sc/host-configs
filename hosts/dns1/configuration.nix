@@ -1,16 +1,12 @@
 { lib, pkgs, ... }:
-let
-  path = "/etc/nixos";
-in
 {
   imports = [
-    "${path}/modules/main-config.nix"
-    "${path}/modules/sops.nix"
-    "${path}/modules/bare.nix"
-    "${path}/modules/blocky.nix"
-    "${path}/modules/step-ca.nix"
-    "${path}/modules/powerdns-primary.nix"
-    <agenix/modules/age.nix>
+    ../../modules/main-config.nix
+    ../../modules/sops.nix
+    ../../modules/bare.nix
+    ../../modules/dns
+    ../../modules/step-ca
+    ../../modules/powerdns/primary
   ];
 
   # Fixed issues where the dell wyse cpu locks up on idel.
