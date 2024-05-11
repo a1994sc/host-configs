@@ -11,7 +11,7 @@
 
   nix.gc.dates = "Wed 02:00";
   system.autoUpgrade.dates = "Wed 04:00";
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_15;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_8;
   networking = {
     hostName = "box";
     nameservers = [
