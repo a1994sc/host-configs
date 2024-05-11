@@ -101,8 +101,11 @@
     enable = true;
     dockerSocket.enable = true;
   };
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "both";
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "both";
+    package = pkgs.unstable.tailscale;
+  };
   # services.pcscd.enable = true;
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;

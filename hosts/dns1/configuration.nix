@@ -1,9 +1,9 @@
 { lib, pkgs, ... }:
 {
   imports = [
-    ../../modules/main-config.nix
-    ../../modules/sops.nix
-    ../../modules/bare.nix
+    ../../modules
+    ../../modules/sops
+    ../../modules/bare
     ../../modules/dns
     ../../modules/step-ca
     ../../modules/powerdns/primary

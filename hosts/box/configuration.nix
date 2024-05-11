@@ -1,9 +1,9 @@
 { lib, pkgs, ... }:
 {
   imports = [
-    ../../modules/main-config.nix
-    ../../modules/sops.nix
-    ../../modules/bare.nix
+    ../../modules
+    ../../modules/sops
+    ../../modules/bare
   ];
 
   # Fixed issues where the dell wyse cpu locks up on idel.

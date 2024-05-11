@@ -4,19 +4,19 @@
   # additions = final: _prev: import ../pkgs {pkgs = final;};
 
   # When applied, the staging nixpkgs set (declared in the flake inputs) will
-  # be accessible through 'pkgs.staging'
-  staging-packages = final: _prev: {
-    staging = import inputs.nixpkgs-staging {
-      inherit (final) system;
-      config.allowUnfree = true;
+  # be accessible through 'pkgs.staging' and `pkgs.unstable`
+  packages =
+    final: _prev:
+    let
+      confg = {
+        inherit (final) system;
+        config.allowUnfree = true;
+      };
+    in
+    {
+      staging = import inputs.nixpkgs-staging confg;
+      unstable = import inputs.nixpkgs-unstable confg;
     };
-  };
-  unstable-packages = final: _prev: {
-    unstable = import inputs.nixpkgs-unstable {
-      inherit (final) system;
-      config.allowUnfree = true;
-    };
-  };
 
   build-packages =
     _final: prev:

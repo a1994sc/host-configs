@@ -4,18 +4,21 @@
   outputs,
   version,
   inputs,
+  system,
   ...
 }:
+let
+  inherit (inputs) agenix;
+in
 {
   imports = [
-    inputs.agenix.nixosModules.age
+    agenix.nixosModules.age
     settings/certs
   ];
 
   nixpkgs.overlays = [
+    outputs.overlays.packages
     outputs.overlays.build-packages
-    outputs.overlays.staging-packages
-    outputs.overlays.unstable-packages
   ];
   system.stateVersion = version;
   programs.bash.enableCompletion = true;
@@ -106,6 +109,7 @@
   environment.systemPackages = with pkgs; [
     # keep-sorted start prefix_order=staging,unstable,
     unstable.nh
+    agenix.packages.${system}.agenix
     git
     htop
     micro
