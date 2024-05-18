@@ -2,11 +2,11 @@
   "nodes": {
     "NUR": {
       "locked": {
-        "lastModified": 1715899068,
-        "narHash": "sha256-dQn+Hv13ln+2d8rbIvGgYMLVGtcZLkghByu0yyRSoVc=",
+        "lastModified": 1715985933,
+        "narHash": "sha256-5l90g+ORNuhuOJrsyeSY4R7RXYGQrWEKR/UsHjlXqyI=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "f1c319a9df9a7d5b0282c3dbc2a0d3fce30270c8",
+        "rev": "d573ea71f82e0355ed0074039ce4c1cf75631e5b",
         "type": "github"
       },
       "original": {
@@ -146,11 +146,11 @@
     },
     "nixpkgs-staging": {
       "locked": {
-        "lastModified": 1715904129,
-        "narHash": "sha256-gwN0ITNxH0VZwXAm+zx0B/5Ecnt/vvwxJmFw/llSNtw=",
+        "lastModified": 1715990537,
+        "narHash": "sha256-rtm1J8zukxRj8Pc912u0bumOe5KzEwBUpQcFwIqnhlQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "212fb8cd176fcb3d0154074f15b33a01aaa25103",
+        "rev": "11e181f00d09a94a931793acc0208c2103c8427a",
         "type": "github"
       },
       "original": {
@@ -162,11 +162,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1715867414,
-        "narHash": "sha256-cu4UEffKkBByyGR6CFs9XP6iSNsKTkq1r66DA5BkYnE=",
+        "lastModified": 1715954240,
+        "narHash": "sha256-eC0zRYkazBc2cKz1VSzMLvCc9uHXlSQEr1Be+c5UV1w=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "bf446f08bff6814b569265bef8374cfdd3d8f0e0",
+        "rev": "c2ea18b50a4c7fcb7c90402166769bf3b82b5aa9",
         "type": "github"
       },
       "original": {
@@ -189,11 +189,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1714337170,
-        "narHash": "sha256-McduaQLa+wi6itXwc5Grnsz4ZkkUytHy7hcfIqusb68=",
+        "lastModified": 1715202505,
+        "narHash": "sha256-AlrTl5xq2bzWscYc5XQCKH9omCu+q3C5okt3LjkWVz8=",
         "ref": "refs/heads/master",
-        "rev": "e782d62777faf44a4240c236c0b62cff51d8412b",
-        "revCount": 618,
+        "rev": "e101d78d0a41270cbe5db21db1e9ef752af423ea",
+        "revCount": 622,
         "type": "git",
         "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
       },
@@ -263,11 +263,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1714058656,
-        "narHash": "sha256-Qv4RBm4LKuO4fNOfx9wl40W2rBbv5u5m+whxRYUMiaA=",
+        "lastModified": 1715940852,
+        "narHash": "sha256-wJqHMg/K6X3JGAE9YLM0LsuKrKb4XiBeVaoeMNlReZg=",
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "rev": "c6aaf729f34a36c445618580a9f95a48f5e4e03f",
+        "rev": "2fba33a182602b9d49f0b2440513e5ee091d838b",
         "type": "github"
       },
       "original": {
