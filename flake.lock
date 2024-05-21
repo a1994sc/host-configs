@@ -2,11 +2,11 @@
   "nodes": {
     "NUR": {
       "locked": {
-        "lastModified": 1716248758,
-        "narHash": "sha256-AMs40Hpz8jByUdDOtAOOWFGpMssxy9vaRKedzN64izg=",
+        "lastModified": 1716252523,
+        "narHash": "sha256-bAUlKpelSVG5IT77Kku+9FosRKO8rtFfqNSqPEtFZqo=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "a4573c892e0675a7177187d2a393938f5b5dc094",
+        "rev": "ae906b69098f2c8962ba1025fa7a00d654ded9c2",
         "type": "github"
       },
       "original": {
@@ -128,6 +128,22 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1716173274,
+        "narHash": "sha256-FC21Bn4m6ctajMjiUof30awPBH/7WjD0M5yqrWepZbY=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "d9e0b26202fd500cf3e79f73653cce7f7d541191",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1716218643,
@@ -209,6 +225,7 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "kapack": "kapack",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-staging": "nixpkgs-staging",
         "nixpkgs-unstable": "nixpkgs-unstable",

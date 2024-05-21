@@ -22,6 +22,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs-staging.url = "github:nixos/nixpkgs/staging-next";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
@@ -88,7 +89,12 @@
         box = mkHost { extraModules = [ ./hosts/box ]; };
         dns1 = mkHost { extraModules = [ ./hosts/dns1 ]; };
         dns2 = mkHost { extraModules = [ ./hosts/dns2 ]; };
-        puck = mkHost { extraModules = [ ./hosts/puck ]; };
+        puck = mkHost {
+          extraModules = [
+            inputs.nixos-hardware.nixosModules.intel-nuc-8i7beh
+            ./hosts/puck
+          ];
+        };
       };
     }
     // flake-utils.lib.eachDefaultSystem (
