@@ -29,6 +29,7 @@
   networking.firewall.enable = true;
   networking.hostName = "puck"; # Define your hostname.
   networking.networkmanager.enable = true;
+  programs.gnome-disks.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
