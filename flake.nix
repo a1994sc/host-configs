@@ -38,6 +38,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs";
     };
+    pre-commit-hooks = {
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs-stable.follows = "nixpkgs";
+      url = "github:cachix/pre-commit-hooks.nix";
+    };
     systems.url = "github:nix-systems/default";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -58,12 +63,6 @@
     }:
     let
       inherit (self) outputs;
-      mkApp =
-        { program }:
-        {
-          inherit program;
-          type = "app";
-        };
       mkHost =
         {
           system ? "x86_64-linux",
@@ -103,20 +102,33 @@
         pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
         agepkgs = inputs.agenix.packages.${system}.agenix;
         treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
+        shellHook =
+          self.checks.${system}.pre-commit-check.shellHook
+          + ''
+            TMPDIR="/run/user/$UID/age"
+            mkdir -p $TMPDIR
+            export TMPDIR
+          '';
+        buildInputs = self.checks.${system}.pre-commit-check.enabledPackages ++ [
+          agepkgs
+          pkgs.nix-prefetch
+          pkgs.git
+        ];
       in
       {
-        formatter = treefmtEval.config.build.wrapper;
-        apps = {
-          default = mkApp { program = "${pkgs.nh}/bin/nh"; };
-          # keep-sorted start block=yes case=no
-          agenix = mkApp { program = "${agepkgs}/bin/agenix"; };
-          git = mkApp { program = "${pkgs.gitMinimal}/bin/git"; };
-          nh = mkApp { program = "${pkgs.nh}/bin/nh"; };
-          nix = mkApp { program = "${pkgs.nix}/bin/nix"; };
-          nix-env = mkApp { program = "${pkgs.nix}/bin/nix-env"; };
-          nix-store = mkApp { program = "${pkgs.nix}/bin/nix-store"; };
-          # keep-sorted end
+        checks = {
+          pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              nixfmt.enable = true;
+              nixfmt.package = pkgs.nixfmt-rfc-style;
+              check-executables-have-shebangs.enable = true;
+              check-shebang-scripts-are-executable.enable = true;
+            };
+          };
         };
+        formatter = treefmtEval.config.build.wrapper;
+        devShells.default = nixpkgs.legacyPackages.${system}.mkShell { inherit shellHook buildInputs; };
       }
     );
 }

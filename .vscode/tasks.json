@@ -11,7 +11,7 @@
       "type": "shell"
     },
     {
-      "command": "nix run .#agenix -- --rekey -i ~/.ssh/age/primary.pub",
+      "command": "agenix --rekey -i ~/.ssh/age/primary.pub",
       "group": {
         "isDefault": false,
         "kind": "build"
@@ -20,7 +20,10 @@
       "type": "shell"
     },
     {
-      "command": "nix run .#git -- pull || exit 0",
+      "command": "git",
+      "args": [
+        "pull"
+      ],
       "group": {
         "isDefault": false,
         "kind": "build"
@@ -29,11 +32,11 @@
       "type": "shell"
     },
     {
-      "command": "nix run .#git -- add . || exit 0",
-      "group": {
-        "isDefault": false,
-        "kind": "build"
-      },
+      "command": "git",
+      "args": [
+        "add",
+        "."
+      ],
       "label": "os-git-add",
       "type": "shell"
     },
@@ -56,7 +59,7 @@
       "type": "shell"
     },
     {
-      "command": "nix run .#nh -- os switch .",
+      "command": "nh os switch .",
       "dependsOn": [
         "os-format",
         "os-git-pull",

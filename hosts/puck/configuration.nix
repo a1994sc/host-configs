@@ -97,6 +97,7 @@
     uid = 1001;
     # keep-sorted end
   };
+  xdg.portal.enable = true;
   # keep-sorted end
   virtualisation.podman = {
     enable = true;
