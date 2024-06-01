@@ -113,6 +113,7 @@
           agepkgs
           pkgs.nix-prefetch
           pkgs.git
+          pkgs.gnumake
         ];
       in
       {
@@ -122,6 +123,7 @@
             hooks = {
               nixfmt.enable = true;
               nixfmt.package = pkgs.nixfmt-rfc-style;
+              checkmake.enable = true;
               check-executables-have-shebangs.enable = true;
               check-shebang-scripts-are-executable.enable = true;
             };

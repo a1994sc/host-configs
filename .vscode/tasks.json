@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "command": "nix flake update",
+      "command": "make update",
       "group": {
         "isDefault": false,
         "kind": "build"
@@ -11,7 +11,7 @@
       "type": "shell"
     },
     {
-      "command": "agenix --rekey -i ~/.ssh/age/primary.pub",
+      "command": "make rekey-age",
       "group": {
         "isDefault": false,
         "kind": "build"
@@ -20,28 +20,7 @@
       "type": "shell"
     },
     {
-      "command": "git",
-      "args": [
-        "pull"
-      ],
-      "group": {
-        "isDefault": false,
-        "kind": "build"
-      },
-      "label": "os-git-pull",
-      "type": "shell"
-    },
-    {
-      "command": "git",
-      "args": [
-        "add",
-        "."
-      ],
-      "label": "os-git-add",
-      "type": "shell"
-    },
-    {
-      "command": "nix fmt",
+      "command": "make fmt",
       "group": {
         "isDefault": false,
         "kind": "build"
@@ -50,22 +29,7 @@
       "type": "shell"
     },
     {
-      "command": "nix-env --delete-generations old",
-      "group": {
-        "isDefault": false,
-        "kind": "build"
-      },
-      "label": "os-delete-generations",
-      "type": "shell"
-    },
-    {
-      "command": "nh os switch .",
-      "dependsOn": [
-        "os-format",
-        "os-git-pull",
-        "os-git-add"
-      ],
-      "dependsOrder": "sequence",
+      "command": "make build",
       "group": {
         "isDefault": true,
         "kind": "build"
@@ -74,12 +38,7 @@
       "type": "shell"
     },
     {
-      "command": "nix-store --gc",
-      "dependsOn": [
-        "os-update",
-        "os-delete-generations",
-      ],
-      "dependsOrder": "sequence",
+      "command": "make clean",
       "group": {
         "isDefault": false,
         "kind": "build"
