@@ -27,7 +27,7 @@ switch:
 	nix develop .#default -c nh os switch .
 
 .PHONY: build
-build: git-pull git-add fmt switch
+build: git-pull fmt git-add switch
 
 .PHONY: update
 update: git-pull git-add

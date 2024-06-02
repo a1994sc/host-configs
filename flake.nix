@@ -114,6 +114,7 @@
           pkgs.nix-prefetch
           pkgs.git
           pkgs.gnumake
+          pkgs.nh
         ];
       in
       {
