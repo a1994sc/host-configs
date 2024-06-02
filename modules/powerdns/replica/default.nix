@@ -37,9 +37,9 @@ in
       gpgsql-user=${db_user}
       gpgsql-dbname=${db_user}
       gpgsql-password=$POWERDNS_MYSQL_PASS
-      master=no
-      slave=yes
-      slave-cycle-interval=60
+      primary=no
+      secondary=yes
+      xfr-cycle-interval=60
       default-ttl=1500
       allow-notify-from=0.0.0.0
       allow-axfr-ips=${pd_mast}/32
