@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 let
   db_user = "powerdns";
   pd_mast = "10.3.10.5";
@@ -18,7 +18,7 @@ in
   # https://www.cherryservers.com/blog/how-to-set-up-postgresql-database-replication
   services.postgresql = {
     enable = true;
-    port = 3306;
+    settings.port = 3306;
     package = pkgs.postgresql_15;
     dataDir = "/var/lib/postgresql";
   };
@@ -29,7 +29,7 @@ in
 
   services.powerdns = {
     enable = true;
-    secretFile = "/run/secrets/replica-env";
+    secretFile = config.sops.secrets.replica-env.path;
     extraConfig = ''
       launch=gpgsql
       gpgsql-host=localhost

@@ -34,11 +34,11 @@ in
 
   services.postgresql = {
     enable = true;
-    port = 3306;
     package = pkgs.postgresql_15;
     dataDir = "/var/lib/postgresql";
     enableTCPIP = true;
     settings = {
+      port = 3306;
       wal_level = "logical";
       wal_log_hints = "on";
       max_wal_senders = "8";
@@ -63,7 +63,7 @@ in
 
   services.powerdns = {
     enable = true;
-    secretFile = "/run/secrets/primary-env";
+    secretFile = config.sops.secrets.primary-env.path;
     extraConfig = ''
       launch=gpgsql
       gpgsql-host=localhost
