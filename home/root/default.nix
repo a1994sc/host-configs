@@ -1,10 +1,18 @@
 { config, pkgs, ... }:
 let
-  stable = with pkgs; [
-    # keep-sorted start
-    yq-go
-    # keep-sorted end
-  ];
+  stable =
+    let
+      ehistfilter = ''cat ${config.home.sessionVariables.HISTFILE} | grep -v -e "^#[0-9]*" | grep -v -e "^ehistory"'';
+    in
+    with pkgs;
+    [
+      # keep-sorted start
+      yq-go
+      # keep-sorted end
+      (writeShellScriptBin "ehistory" ''
+        ${ehistfilter} | grep --color "$@"
+      '')
+    ];
 in
 {
   manual.manpages.enable = false;
