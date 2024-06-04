@@ -24,15 +24,15 @@ in
     enable = true;
     enableCompletion = true;
     bashrcExtra = ''
-      export PS1="\e[1;31m\u\e[97m@\h\e[0m:\e[36m[\w]: \e[0m"
+      export PS1="\e[33m\u\e[97m@\h\e[0m:\e[36m[\w]: \e[0m"
       if [ -d ${config.home.homeDirectory}/.nix-profile/etc/profile.d/hm-session-vars.sh ]; then
         . "${config.home.homeDirectory}/.nix-profile/etc/profile.d/hm-session-vars.sh"
       fi
     '';
   };
   home = {
-    username = "root";
-    homeDirectory = "/root";
+    username = "aconlon";
+    homeDirectory = "/home/aconlon";
     stateVersion = "24.05";
     sessionVariables =
       let

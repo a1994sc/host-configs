@@ -79,15 +79,38 @@
               version
               ;
           };
-          modules = [ ./. ] ++ extraModules;
+          modules = [
+            ./.
+            inputs.home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.root = import ./home/root;
+            }
+          ] ++ extraModules;
         };
     in
     {
       overlays = import ./overlays { inherit inputs; };
       nixosConfigurations = {
-        box = mkHost { extraModules = [ ./hosts/box ]; };
-        dns1 = mkHost { extraModules = [ ./hosts/dns1 ]; };
-        dns2 = mkHost { extraModules = [ ./hosts/dns2 ]; };
+        box = mkHost {
+          extraModules = [
+            ./hosts/box
+            { home-manager.users.aconlon = import ./home/aconlon; }
+          ];
+        };
+        dns1 = mkHost {
+          extraModules = [
+            ./hosts/dns1
+            { home-manager.users.aconlon = import ./home/aconlon; }
+          ];
+        };
+        dns2 = mkHost {
+          extraModules = [
+            ./hosts/dns2
+            { home-manager.users.aconlon = import ./home/aconlon; }
+          ];
+        };
         puck = mkHost {
           extraModules = [
             inputs.nixos-hardware.nixosModules.framework-13-7040-amd
