@@ -16,7 +16,7 @@ let
   color = {
     red = "31";
     green = "32";
-    yellow = "33";
+    yellow = "38";
     blue = "34";
     magenta = "35";
     cyan = "36";
@@ -67,7 +67,7 @@ in
             ''
           else
             ''
-              export PS1="${escape color.green}\u${escape color.white}@\h:${escape color.cyan}[\w]: ${escape font.reset}"
+              export PS1="${escape color.yellow}\u${escape color.white}@\h:${escape color.cyan}[\w]: ${escape font.reset}"
             ''
         )
         + ''

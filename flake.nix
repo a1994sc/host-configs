@@ -92,32 +92,38 @@
     in
     {
       overlays = import ./overlays { inherit inputs; };
-      nixosConfigurations = {
-        box = mkHost {
-          extraModules = [
-            ./hosts/box
-            { home-manager.users.aconlon = import ./home/aconlon; }
-          ];
+      nixosConfigurations =
+        let
+          hm-aconlon = {
+            home-manager.users.aconlon = import ./home/aconlon;
+          };
+        in
+        {
+          box = mkHost {
+            extraModules = [
+              hm-aconlon
+              ./hosts/box
+            ];
+          };
+          dns1 = mkHost {
+            extraModules = [
+              hm-aconlon
+              ./hosts/dns1
+            ];
+          };
+          dns2 = mkHost {
+            extraModules = [
+              hm-aconlon
+              ./hosts/dns2
+            ];
+          };
+          puck = mkHost {
+            extraModules = [
+              inputs.nixos-hardware.nixosModules.framework-13-7040-amd
+              ./hosts/puck
+            ];
+          };
         };
-        dns1 = mkHost {
-          extraModules = [
-            ./hosts/dns1
-            { home-manager.users.aconlon = import ./home/aconlon; }
-          ];
-        };
-        dns2 = mkHost {
-          extraModules = [
-            ./hosts/dns2
-            { home-manager.users.aconlon = import ./home/aconlon; }
-          ];
-        };
-        puck = mkHost {
-          extraModules = [
-            inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-            ./hosts/puck
-          ];
-        };
-      };
     }
     // flake-utils.lib.eachDefaultSystem (
       system:
@@ -138,6 +144,7 @@
           pkgs.git
           pkgs.gnumake
           pkgs.nh
+          pkgs.nix-tree
         ];
       in
       {
