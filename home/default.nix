@@ -16,7 +16,7 @@ let
   color = {
     red = "31";
     green = "32";
-    yellow = "38";
+    yellow = "33";
     blue = "34";
     magenta = "35";
     cyan = "36";
@@ -39,7 +39,7 @@ let
     underline = "4";
   };
   format = font: color: "${font};${color}";
-  escape = input: "\\e[${input}m";
+  escape = input: "\\[\\e[${input};11m\\]";
 in
 {
   manual.manpages.enable = false;
@@ -63,14 +63,20 @@ in
         (
           if (config.home.username == "root") then
             ''
-              export PS1="${escape (format font.bold color.red)}\u${escape font.reset}${escape color.white}@\h:${escape color.cyan}[\w]: ${escape font.reset}"
+              PS1="${escape (format font.bold color.red)}\u${escape font.reset}${escape color.white}@\h:${escape color.cyan}[\w]: ${escape font.reset}"
             ''
           else
             ''
-              export PS1="${escape color.yellow}\u${escape color.white}@\h:${escape color.cyan}[\w]: ${escape font.reset}"
+              PS1="${escape color.green}\u${escape color.white}@\h:${escape color.cyan}[\w]: ${escape font.reset}"
             ''
         )
         + ''
+          if [[ -n "$IN_NIX_SHELL" ]]; then
+            PS1="${escape color.magenta}[nix-shell]${escape font.reset} $PS1"
+          fi
+
+          export PS1
+
           if [ -d ${config.home.homeDirectory}/.nix-profile/etc/profile.d/hm-session-vars.sh ]; then
             . "${config.home.homeDirectory}/.nix-profile/etc/profile.d/hm-session-vars.sh"
           fi
@@ -90,6 +96,7 @@ in
         HISTFILESIZE = "";
         HISTSIZE = "";
         HISTTIMEFORMAT = "[%F %T] ";
+        NIX_SHELL_PRESERVE_PROMPT = "1";
         # keep-sorted end
       };
     shellAliases = {
