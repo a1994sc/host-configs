@@ -49,6 +49,7 @@ in
     settings = {
       max-jobs = "auto";
       auto-optimise-store = true;
+      bash-prompt-prefix = "\\[\\e[31;11m\\][develop]\\[\\e[0;11m\\]-";
       trusted-users = [
         "root"
         "@wheel"
