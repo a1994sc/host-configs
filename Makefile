@@ -4,7 +4,7 @@ all: build
 .PHONY: clean
 clean:
 	rm -rf .direnv
-	nix-env --delete-generations old
+	sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations 7d
 	nix-store --gc
 
 .PHONY: test
