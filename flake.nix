@@ -94,26 +94,26 @@
       overlays = import ./overlays { inherit inputs; };
       nixosConfigurations =
         let
-          hm-aconlon = {
-            home-manager.users.aconlon = import ./home/aconlon;
+          hm-custodian = {
+            home-manager.users.custodian = import ./home/custodian;
           };
         in
         {
           box = mkHost {
             extraModules = [
-              hm-aconlon
+              hm-custodian
               ./hosts/box
             ];
           };
           dns1 = mkHost {
             extraModules = [
-              hm-aconlon
+              hm-custodian
               ./hosts/dns1
             ];
           };
           dns2 = mkHost {
             extraModules = [
-              hm-aconlon
+              hm-custodian
               ./hosts/dns2
             ];
           };
