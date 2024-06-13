@@ -42,6 +42,13 @@
     networkmanager.enable = true;
     wireless.userControlled.enable = true;
   };
+  nixpkgs.config.allowUnfreePredicate =
+    pkgs:
+    builtins.elem (pkgs.lib.getName pkgs) [
+      "steam"
+      "steam-original"
+      "steam-run"
+    ];
   programs = {
     gnome-disks.enable = true;
     gnupg.agent = {
@@ -49,6 +56,22 @@
       enableSSHSupport = true;
     };
     mtr.enable = true;
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+      package = pkgs.unstable.steam.override {
+        extraLibraries = pkgs: [
+          pkgs.openssl
+          pkgs.nghttp2
+          pkgs.libidn2
+          pkgs.rtmpdump
+          pkgs.libpsl
+          pkgs.curl
+          pkgs.krb5
+          pkgs.keyutils
+        ];
+      };
+    };
   };
   security.rtkit.enable = true;
   services = {

@@ -97,32 +97,44 @@
           hm-custodian = {
             home-manager.users.custodian = import ./home/custodian;
           };
-        in
-        {
-          box = mkHost {
-            extraModules = [
+          isoConf =
+            { config, ... }:
+            {
+              imports = [ "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix" ];
+              isoImage = {
+                isoName = "live-${config.networking.hostName}.iso";
+                makeEfiBootable = true;
+                makeUsbBootable = true;
+              };
+            };
+          conf = {
+            box.extraModules = [
               hm-custodian
               ./hosts/box
             ];
-          };
-          dns1 = mkHost {
-            extraModules = [
+            dns1.extraModules = [
               hm-custodian
               ./hosts/dns1
             ];
-          };
-          dns2 = mkHost {
-            extraModules = [
+            dns2.extraModules = [
               hm-custodian
               ./hosts/dns2
             ];
           };
+        in
+        {
+          box = mkHost { inherit (conf.box) extraModules; };
+          dns1 = mkHost { inherit (conf.dns1) extraModules; };
+          dns2 = mkHost { inherit (conf.dns2) extraModules; };
           puck = mkHost {
             extraModules = [
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
               ./hosts/puck
             ];
           };
+          isobox = mkHost { extraModules = conf.box.extraModules ++ [ isoConf ]; };
+          isodns1 = mkHost { extraModules = conf.dns1.extraModules ++ [ isoConf ]; };
+          isodns2 = mkHost { extraModules = conf.dns2.extraModules ++ [ isoConf ]; };
         };
     }
     // flake-utils.lib.eachDefaultSystem (
