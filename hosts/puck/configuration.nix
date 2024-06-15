@@ -18,7 +18,14 @@
       gnome.gnome-disk-utility
     ];
   };
-  hardware.pulseaudio.enable = false;
+  hardware = {
+    pulseaudio.enable = false;
+    # opengl = {
+    #   ## radv: an open-source Vulkan driver from freedesktop
+    #   driSupport = true;
+    #   driSupport32Bit = true;
+    # };
+  };
   i18n = {
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
@@ -104,8 +111,15 @@
     };
     udev.packages = [ pkgs.yubikey-personalization ];
     xserver = {
-      # keep-sorted start
-      desktopManager.budgie.enable = true;
+      # keep-sorted start block=yes
+      desktopManager.budgie = {
+        enable = true;
+        extraGSettingsOverridePackages = [ pkgs.gnome.gnome-settings-daemon ];
+        extraGSettingsOverrides = ''
+          [org.gnome.desktop.screensaver]
+          picture-uri='file:///etc/nixos/home/wallpaper/lockscreen.png'
+        '';
+      };
       displayManager.lightdm.enable = true;
       enable = true;
       layout = "us";
