@@ -1,5 +1,25 @@
-{ pkgs, inputs, ... }:
-
+{
+  pkgs,
+  config,
+  inputs,
+  lib,
+  ...
+}:
+let
+  toSystemdIni = lib.generators.toINI {
+    listsAsDuplicateKeys = true;
+    mkKeyValue =
+      key: value:
+      let
+        value' =
+          if lib.isBool value then
+            (if value then "true" else "false")
+          else
+            (if lib.isString value then "'${value}'" else toString value);
+      in
+      "${key}=${value'}";
+  };
+in
 {
   # keep-sorted start block=yes case=no
   boot = {
@@ -106,8 +126,15 @@
     };
     tailscale = {
       enable = true;
-      useRoutingFeatures = "both";
+      port = 0;
+      useRoutingFeatures = "client";
       package = pkgs.unstable.tailscale;
+      permitCertUid = "1000";
+      extraUpFlags = [
+        "--operator=${config.users.users.ascii.name}"
+        # "--ssh"
+        "--accept-routes=true"
+      ];
     };
     udev.packages = [ pkgs.yubikey-personalization ];
     xserver = {
@@ -115,10 +142,15 @@
       desktopManager.budgie = {
         enable = true;
         extraGSettingsOverridePackages = [ pkgs.gnome.gnome-settings-daemon ];
-        extraGSettingsOverrides = ''
-          [org.gnome.desktop.screensaver]
-          picture-uri='file:///etc/nixos/home/wallpaper/lockscreen.png'
-        '';
+        extraGSettingsOverrides = toSystemdIni {
+          "org.gnome.desktop.screensaver" = {
+            picture-uri = "file:///etc/nixos/home/wallpaper/lockscreen.png";
+          };
+          "org.gnome.desktop.interface" = {
+            scaling-factor = 2;
+            text-scaling-factor = 0.87;
+          };
+        };
       };
       displayManager.lightdm.enable = true;
       enable = true;
