@@ -9,6 +9,10 @@
       inputs.home-manager.follows = "home-manager";
       inputs.systems.follows = "systems";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-utils = {
       url = "github:numtide/flake-utils";
       inputs.systems.follows = "systems";
@@ -46,10 +50,6 @@
     systems.url = "github:nix-systems/default";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    disko = {
-      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # keep-sorted end
@@ -101,16 +101,6 @@
           hm-custodian = {
             home-manager.users.custodian = import ./home/custodian;
           };
-          isoConf =
-            { config, ... }:
-            {
-              imports = [ "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix" ];
-              isoImage = {
-                isoName = "live-${config.networking.hostName}.iso";
-                makeEfiBootable = true;
-                makeUsbBootable = true;
-              };
-            };
           conf = {
             box.extraModules = [
               hm-custodian

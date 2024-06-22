@@ -1,5 +1,5 @@
 {
-  disks ? [ "/dev/vda" ],
+  disks ? [ "/dev/mmcblk0" ],
   ...
 }:
 {
