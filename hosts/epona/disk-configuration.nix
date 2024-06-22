@@ -1,5 +1,5 @@
 {
-  disks ? [ "/dev/mmcblk0" ],
+  disks ? [ "/dev/mmcblk1" ],
   ...
 }:
 {
@@ -28,7 +28,7 @@
               content = {
                 type = "btrfs";
                 extraArgs = [ "-f" ]; # Override existing partition
-                mountpoint = "/media/btrfsroots/root";
+                # mountpoint = "/media/btrfsroots/root";
                 # Subvolumes must set a mountpoint in order to be mounted,
                 # unless their parent is mounted
                 subvolumes = {
