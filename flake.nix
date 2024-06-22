@@ -48,6 +48,10 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # keep-sorted end
   };
 
@@ -120,21 +124,24 @@
               hm-custodian
               ./hosts/dns2
             ];
+            epona.extraModules = [
+              hm-custodian
+              inputs.disko.nixosModules.disko
+              ./hosts/epona
+            ];
           };
         in
         {
           box = mkHost { inherit (conf.box) extraModules; };
           dns1 = mkHost { inherit (conf.dns1) extraModules; };
           dns2 = mkHost { inherit (conf.dns2) extraModules; };
+          epona = mkHost { inherit (conf.epona) extraModules; };
           puck = mkHost {
             extraModules = [
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
               ./hosts/puck
             ];
           };
-          isobox = mkHost { extraModules = conf.box.extraModules ++ [ isoConf ]; };
-          isodns1 = mkHost { extraModules = conf.dns1.extraModules ++ [ isoConf ]; };
-          isodns2 = mkHost { extraModules = conf.dns2.extraModules ++ [ isoConf ]; };
         };
     }
     // flake-utils.lib.eachDefaultSystem (
