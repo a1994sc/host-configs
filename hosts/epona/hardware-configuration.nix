@@ -3,21 +3,19 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  # change with the `boot` section after running:
-  # $ nixos-generate-config --dir 
-  # boot = {
-  #   initrd.availableKernelModules = [
-  #     "xhci_pci"
-  #     "nvme"
-  #     "usbhid"
-  #     "usb_storage"
-  #     "sd_mod"
-  #     "sdhci_pci"
-  #   ];
-  #   initrd.kernelModules = [ ];
-  #   kernelModules = [ "kvm-intel" ];
-  #   extraModulePackages = [ ];
-  # };
+  boot = {
+    initrd.availableKernelModules = [
+      "ahci"
+      "xhci_pci"
+      "usbhid"
+      "usb_storage"
+      "sd_mod"
+      "sdhci_pci"
+    ];
+    initrd.kernelModules = [ ];
+    kernelModules = [ "kvm-intel" ];
+    extraModulePackages = [ ];
+  };
 
   swapDevices = [ ];
 
