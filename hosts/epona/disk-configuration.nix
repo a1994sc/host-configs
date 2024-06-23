@@ -32,41 +32,29 @@
               size = "100%";
               content = {
                 type = "btrfs";
-                extraArgs = [ "-f" ]; # Override existing partition
-                # mountpoint = "/media/btrfsroots/root";
-                # Subvolumes must set a mountpoint in order to be mounted,
-                # unless their parent is mounted
+                extraArgs = [ "-f" ];
                 subvolumes = {
-                  # Subvolume name is different from mountpoint
                   "@rootfs" = {
                     mountpoint = "/";
                   };
-                  # Subvolume name is the same as the mountpoint
                   "@home" = {
-                    mountOptions = [ "compress=zstd" ];
+                    mountOptions = [
+                      "noatime"
+                      "compress-force=zstd:1"
+                      "space_cache=v2"
+                      "commit=15"
+                    ];
                     mountpoint = "/home";
                   };
-                  # Parent is not mounted so the mountpoint must be set
                   "@nix" = {
                     mountOptions = [
                       "noatime"
                       "compress-force=zstd:1"
-                      "ssd"
                       "space_cache=v2"
                       "commit=15"
                     ];
                     mountpoint = "/nix";
                   };
-                  # "@log" = {
-                  #   mountOptions = [
-                  #     "noatime"
-                  #     "compress-force=zstd:1"
-                  #     "ssd"
-                  #     "space_cache=v2"
-                  #     "commit=15"
-                  #   ];
-                  #   mountpoint = "/var/log";
-                  # };
                 };
               };
             };

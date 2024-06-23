@@ -84,7 +84,6 @@
               ;
           };
           modules = [
-            ./.
             inputs.home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -102,6 +101,7 @@
             home-manager.users.custodian = import ./home/custodian;
           };
           conf = {
+            # keep-sorted start block=yes
             box.extraModules = [
               hm-custodian
               ./hosts/box
@@ -119,6 +119,12 @@
               inputs.disko.nixosModules.disko
               ./hosts/epona
             ];
+            puck.extraModules = [
+              ./.
+              inputs.nixos-hardware.nixosModules.framework-13-7040-amd
+              ./hosts/puck
+            ];
+            # keep-sorted end
           };
         in
         {
@@ -126,12 +132,7 @@
           dns1 = mkHost { inherit (conf.dns1) extraModules; };
           dns2 = mkHost { inherit (conf.dns2) extraModules; };
           epona = mkHost { inherit (conf.epona) extraModules; };
-          puck = mkHost {
-            extraModules = [
-              inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-              ./hosts/puck
-            ];
-          };
+          puck = mkHost { inherit (conf.puck) extraModules; };
         };
     }
     // flake-utils.lib.eachDefaultSystem (
