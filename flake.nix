@@ -129,11 +129,9 @@
           };
         in
         {
-          box = mkHost { inherit (conf.box) extraModules; };
-          dns1 = mkHost { inherit (conf.dns1) extraModules; };
-          dns2 = mkHost { inherit (conf.dns2) extraModules; };
-          epona = mkHost { inherit (conf.epona) extraModules; };
           puck = mkHost { inherit (conf.puck) extraModules; };
+          menrva = mkHost { inherit (conf.menrva) extraModules; };
+          athena = mkHost { inherit (conf.athena) extraModules; };
         };
     }
     // flake-utils.lib.eachDefaultSystem (
