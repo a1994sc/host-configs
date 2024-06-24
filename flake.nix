@@ -101,11 +101,6 @@
             home-manager.users.custodian = import ./home/custodian;
           };
           conf = {
-            # keep-sorted start block=yes
-            box.extraModules = [
-              hm-custodian
-              ./hosts/box
-            ];
             dns1.extraModules = [
               hm-custodian
               ./hosts/dns1
@@ -114,17 +109,23 @@
               hm-custodian
               ./hosts/dns2
             ];
-            epona.extraModules = [
+            # primary dns
+            menrva.extraModules = [
               hm-custodian
               inputs.disko.nixosModules.disko
-              ./hosts/epona
+              ./hosts/menrva
             ];
+            # primary dns
+            athena.extraModules = [
+              hm-custodian
+              ./hosts/athena
+            ];
+            # personal laptop
             puck.extraModules = [
               ./.
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
               ./hosts/puck
             ];
-            # keep-sorted end
           };
         in
         {
@@ -144,9 +145,8 @@
         shellHook =
           self.checks.${system}.pre-commit-check.shellHook
           + ''
-            TMPDIR="/run/user/$UID/age"
+            export TMPDIR="/run/user/$UID/age"
             mkdir -p $TMPDIR
-            export TMPDIR
           '';
         buildInputs = self.checks.${system}.pre-commit-check.enabledPackages ++ [
           agepkgs

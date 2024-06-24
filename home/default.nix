@@ -50,6 +50,16 @@ in
   services.home-manager.autoUpgrade.frequency = "weekly";
   programs = {
     home-manager.enable = true;
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      config = {
+        whitelist.prefix = [
+          "/etc/nixos"
+          "${config.xdg.configHome}/home-manager"
+        ];
+      };
+    };
     bat = {
       enable = true;
       config = {
