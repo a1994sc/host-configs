@@ -19,6 +19,7 @@ let
       in
       "${key}=${value'}";
   };
+
 in
 {
   # keep-sorted start block=yes case=no
@@ -37,6 +38,17 @@ in
       staging.pcsclite
       gnome.gnome-disk-utility
     ];
+    # etc =
+    #   let
+    #     json = pkgs.formats.json { };
+    #   in
+    #   {
+    #     "pipewire/pipewire.conf.d/99-silent-bell.conf".source = json.generate "99-silent-bell.conf" {
+    #       "context.properties" = {
+    #         "module.x11.bell" = false;
+    #       };
+    #     };
+    #   };
   };
   hardware = {
     pulseaudio.enable = false;
@@ -123,6 +135,13 @@ in
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+      extraConfig.pipewire = {
+        "99-silent-bell" = {
+          "context.properties" = {
+            "module.x11.bell" = false;
+          };
+        };
+      };
     };
     tailscale = {
       enable = true;
@@ -139,18 +158,28 @@ in
     udev.packages = [ pkgs.yubikey-personalization ];
     xserver = {
       # keep-sorted start block=yes
-      desktopManager.budgie = {
-        enable = true;
-        extraGSettingsOverridePackages = [ pkgs.gnome.gnome-settings-daemon ];
-        extraGSettingsOverrides = toSystemdIni {
-          "org.gnome.desktop.screensaver" = {
-            picture-uri = "file:///etc/nixos/home/wallpaper/lockscreen.png";
-          };
-          "org.gnome.desktop.interface" = {
-            scaling-factor = 2;
-            text-scaling-factor = 0.87;
+      desktopManager = {
+        budgie = {
+          enable = true;
+          extraGSettingsOverridePackages = [ pkgs.gnome.gnome-settings-daemon ];
+          extraGSettingsOverrides = toSystemdIni {
+            "org.gnome.desktop.screensaver" = {
+              picture-uri = "file:///etc/nixos/home/wallpaper/lockscreen.png";
+            };
+            "org.gnome.desktop.interface" = {
+              scaling-factor = 2;
+              text-scaling-factor = 0.87;
+            };
           };
         };
+        # gnome = {
+        #   extraGSettingsOverridePackages = [ pkgs.gnome.mutter ];
+        #   extraGSettingsOverrides = toSystemdIni {
+        #     "org.gnome.mutter" = {
+        #       experimental-features = "['x11-randr-fractional-scaling']";
+        #     };
+        #   };
+        # };
       };
       displayManager.lightdm.enable = true;
       enable = true;
