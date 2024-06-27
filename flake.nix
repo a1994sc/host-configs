@@ -132,6 +132,7 @@
           puck = mkHost { inherit (conf.puck) extraModules; };
           menrva = mkHost { inherit (conf.menrva) extraModules; };
           athena = mkHost { inherit (conf.athena) extraModules; };
+          dns2 = mkHost { inherit (conf.dns2) extraModules; };
         };
     }
     // flake-utils.lib.eachDefaultSystem (
