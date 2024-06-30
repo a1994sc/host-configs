@@ -22,7 +22,8 @@ in
   users = {
     groups.matchbox = { };
     users.matchbox = {
-      isSystemUser = true;
+      isNormalUser = false;
+      uid = 993;
       group = "${user}";
       home = "${data-path}";
       createHome = true;

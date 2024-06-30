@@ -19,10 +19,39 @@ let
       in
       "${key}=${value'}";
   };
-
 in
 {
-  # keep-sorted start block=yes case=no
+  specialisation = {
+    plasma = {
+      inheritParentConfig = true;
+      configuration = {
+        services = {
+          xserver = {
+            # keep-sorted start block=yes
+            desktopManager = {
+              budgie.enable = lib.mkForce false;
+              plasma6.enable = true;
+            };
+            displayManager = {
+              sddm.enable = true;
+              lightdm.enable = lib.mkForce false;
+              defaultSession = "plasma";
+            };
+            # keep-sorted end
+          };
+        };
+        environment.sessionVariables = {
+          MOZ_ENABLE_WAYLAND = "1";
+          # SSH_ASKPASS_REQUIRE = "prefer";
+        };
+        environment.systemPackages = [
+          pkgs.vanilla-dmz
+          pkgs.kdePackages.discover
+          # pkgs.kdePackages.ksshaskpass
+        ];
+      };
+    };
+  };
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     loader.efi.canTouchEfiVariables = true;
@@ -37,18 +66,8 @@ in
     systemPackages = with pkgs; [
       staging.pcsclite
       gnome.gnome-disk-utility
+      speedcrunch
     ];
-    # etc =
-    #   let
-    #     json = pkgs.formats.json { };
-    #   in
-    #   {
-    #     "pipewire/pipewire.conf.d/99-silent-bell.conf".source = json.generate "99-silent-bell.conf" {
-    #       "context.properties" = {
-    #         "module.x11.bell" = false;
-    #       };
-    #     };
-    #   };
   };
   hardware = {
     pulseaudio.enable = false;
@@ -90,6 +109,7 @@ in
     ];
   programs = {
     gnome-disks.enable = true;
+    file-roller.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
@@ -157,35 +177,9 @@ in
     };
     udev.packages = [ pkgs.yubikey-personalization ];
     xserver = {
-      # keep-sorted start block=yes
-      desktopManager = {
-        budgie = {
-          enable = true;
-          extraGSettingsOverridePackages = [ pkgs.gnome.gnome-settings-daemon ];
-          extraGSettingsOverrides = toSystemdIni {
-            "org.gnome.desktop.screensaver" = {
-              picture-uri = "file:///etc/nixos/home/wallpaper/lockscreen.png";
-            };
-            "org.gnome.desktop.interface" = {
-              scaling-factor = 2;
-              text-scaling-factor = 0.87;
-            };
-          };
-        };
-        # gnome = {
-        #   extraGSettingsOverridePackages = [ pkgs.gnome.mutter ];
-        #   extraGSettingsOverrides = toSystemdIni {
-        #     "org.gnome.mutter" = {
-        #       experimental-features = "['x11-randr-fractional-scaling']";
-        #     };
-        #   };
-        # };
-      };
-      displayManager.lightdm.enable = true;
       enable = true;
       layout = "us";
       xkbVariant = "";
-      # keep-sorted end
     };
     # keep-sorted end
   };
@@ -202,6 +196,26 @@ in
     ];
     flake = inputs.self.outPath;
     randomizedDelaySec = "45min";
+    # keep-sorted end
+  };
+  services.xserver = {
+    # keep-sorted start block=yes
+    desktopManager = {
+      budgie = {
+        enable = true;
+        extraGSettingsOverridePackages = [ pkgs.gnome.gnome-settings-daemon ];
+        extraGSettingsOverrides = toSystemdIni {
+          "org.gnome.desktop.screensaver" = {
+            picture-uri = "file:///etc/nixos/home/wallpaper/lockscreen.png";
+          };
+          "org.gnome.desktop.interface" = {
+            scaling-factor = 2;
+            text-scaling-factor = 0.87;
+          };
+        };
+      };
+    };
+    displayManager.lightdm.enable = true;
     # keep-sorted end
   };
   users.users = {
@@ -229,7 +243,6 @@ in
     };
   };
   xdg.portal.enable = true;
-  # keep-sorted end
   virtualisation.podman = {
     enable = true;
     dockerSocket.enable = true;
