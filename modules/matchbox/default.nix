@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  outputs,
   ...
 }:
 let
@@ -15,6 +16,8 @@ in
   imports = [ ./scripts.nix ];
 
   environment.systemPackages = with pkgs; [ build.matchbox ];
+
+  nixpkgs.overlays = [ outputs.overlays.build-packages ];
 
   users = {
     groups.matchbox = { };

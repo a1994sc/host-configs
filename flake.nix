@@ -132,6 +132,7 @@
           puck = mkHost { inherit (conf.puck) extraModules; };
           menrva = mkHost { inherit (conf.menrva) extraModules; };
           athena = mkHost { inherit (conf.athena) extraModules; };
+          dns1 = mkHost { inherit (conf.dns1) extraModules; };
           dns2 = mkHost { inherit (conf.dns2) extraModules; };
         };
     }
@@ -171,6 +172,33 @@
         };
         formatter = treefmtEval.config.build.wrapper;
         devShells.default = nixpkgs.legacyPackages.${system}.mkShell { inherit shellHook buildInputs; };
+        packages = {
+          core = pkgs.dockerTools.buildImage {
+            name = "build-environment";
+            tag = "latest";
+
+            copyToRoot = pkgs.buildEnv {
+              name = "image-root";
+              paths = [
+                pkgs.coreutils
+                pkgs.bash
+                pkgs.dockerTools.binSh
+              ];
+              pathsToLink = [ "/bin" ];
+            };
+
+            runAsRoot = ''
+              #!${pkgs.runtimeShell}
+              mkdir -p /data
+            '';
+
+            config = {
+              Cmd = [ "/bin/bash" ];
+              Env = [ "PS1=\\u@\\h:\\w$ " ];
+              WorkingDir = "/data";
+            };
+          };
+        };
       }
     );
 }
