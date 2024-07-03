@@ -5,53 +5,7 @@
   lib,
   ...
 }:
-let
-  toSystemdIni = lib.generators.toINI {
-    listsAsDuplicateKeys = true;
-    mkKeyValue =
-      key: value:
-      let
-        value' =
-          if lib.isBool value then
-            (if value then "true" else "false")
-          else
-            (if lib.isString value then "'${value}'" else toString value);
-      in
-      "${key}=${value'}";
-  };
-in
 {
-  specialisation = {
-    plasma = {
-      inheritParentConfig = true;
-      configuration = {
-        services = {
-          xserver = {
-            # keep-sorted start block=yes
-            desktopManager = {
-              budgie.enable = lib.mkForce false;
-              plasma6.enable = true;
-            };
-            displayManager = {
-              sddm.enable = true;
-              lightdm.enable = lib.mkForce false;
-              defaultSession = "plasma";
-            };
-            # keep-sorted end
-          };
-        };
-        environment.sessionVariables = {
-          MOZ_ENABLE_WAYLAND = "1";
-          # SSH_ASKPASS_REQUIRE = "prefer";
-        };
-        environment.systemPackages = [
-          pkgs.vanilla-dmz
-          pkgs.kdePackages.discover
-          # pkgs.kdePackages.ksshaskpass
-        ];
-      };
-    };
-  };
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     loader.efi.canTouchEfiVariables = true;
@@ -62,20 +16,19 @@ in
     };
   };
   environment = {
-    budgie.excludePackages = with pkgs; [ xterm ];
     systemPackages = with pkgs; [
       staging.pcsclite
-      gnome.gnome-disk-utility
       speedcrunch
+      vanilla-dmz
+      kdePackages.discover
     ];
+    sessionVariables = {
+      MOZ_ENABLE_WAYLAND = "1";
+      # SSH_ASKPASS_REQUIRE = "prefer";
+    };
   };
   hardware = {
     pulseaudio.enable = false;
-    # opengl = {
-    #   ## radv: an open-source Vulkan driver from freedesktop
-    #   driSupport = true;
-    #   driSupport32Bit = true;
-    # };
   };
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -114,6 +67,7 @@ in
       enable = true;
       enableSSHSupport = true;
     };
+    hyprland.enable = true;
     mtr.enable = true;
     steam = {
       enable = true;
@@ -200,22 +154,13 @@ in
   };
   services.xserver = {
     # keep-sorted start block=yes
-    desktopManager = {
-      budgie = {
-        enable = true;
-        extraGSettingsOverridePackages = [ pkgs.gnome.gnome-settings-daemon ];
-        extraGSettingsOverrides = toSystemdIni {
-          "org.gnome.desktop.screensaver" = {
-            picture-uri = "file:///etc/nixos/home/wallpaper/lockscreen.png";
-          };
-          "org.gnome.desktop.interface" = {
-            scaling-factor = 2;
-            text-scaling-factor = 0.87;
-          };
-        };
-      };
+    desktopManager.plasma6.enable = true;
+    displayManager = {
+      sddm.enable = true;
+      lightdm.enable = lib.mkForce false;
+      defaultSession = "plasma";
     };
-    displayManager.lightdm.enable = true;
+    excludePackages = [ pkgs.xterm ];
     # keep-sorted end
   };
   users.users = {
