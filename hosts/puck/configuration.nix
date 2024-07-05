@@ -52,6 +52,12 @@
     hostName = "puck"; # Define your hostname.
     networkmanager.enable = true;
     wireless.userControlled.enable = true;
+    nameservers = [
+      "100.100.100.100" # magic dns, tailscale
+      "10.3.10.5" # adrp.xyz, primary
+      "10.3.10.6" # adrp.xyz, replica
+      "9.9.9.9" # fallback, clear web
+    ];
   };
   nixpkgs.config.allowUnfreePredicate =
     pkgs:
@@ -91,18 +97,6 @@
     # keep-sorted start block=yes case=no
     dbus.packages = [ pkgs.gnome.gnome-disk-utility ];
     fwupd.enable = true;
-    networkd-dispatcher = {
-      enable = true;
-      rules = {
-        "tailscale" = {
-          onState = [ "routable" ];
-          script = ''
-            #!${pkgs.runtimeShell}
-            ${pkgs.ethtool}/bin/ethtool -K eno1 rx-udp-gro-forwarding on rx-gro-list off
-          '';
-        };
-      };
-    };
     pcscd.enable = true;
     pipewire = {
       enable = true;
@@ -117,6 +111,13 @@
         };
       };
     };
+    resolved = {
+      enable = true;
+      domains = [
+        "adrp.xyz"
+        "barb-neon.ts.net"
+      ];
+    };
     tailscale = {
       enable = true;
       port = 0;
@@ -125,7 +126,6 @@
       permitCertUid = "1000";
       extraUpFlags = [
         "--operator=${config.users.users.ascii.name}"
-        # "--ssh"
         "--accept-routes=true"
       ];
     };
@@ -163,28 +163,39 @@
     excludePackages = [ pkgs.xterm ];
     # keep-sorted end
   };
-  users.users = {
-    ascii.packages = with pkgs; [
-      # keep-sorted start
-      docker
-      firefox
-      gnupg
-      google-chrome
-      podman
-      # keep-sorted end
-    ];
-    vroze = {
-      # keep-sorted start block=yes case=no
-      description = "Victoria Roze";
-      extraGroups = [ ];
-      isNormalUser = true;
-      openssh.authorizedKeys.keys = [ ];
-      packages = with pkgs; [
-        google-chrome
+  users = {
+    groups = {
+      ascii = {
+        gid = config.users.users.ascii.uid;
+        name = "ascii";
+      };
+      vroze = {
+        gid = config.users.users.vroze.uid;
+        name = "vroze";
+      };
+    };
+    users = {
+      ascii.packages = with pkgs; [
+        # keep-sorted start
         firefox
+        gnupg
+        google-chrome
+        podman
+        # keep-sorted end
       ];
-      uid = 1001;
-      # keep-sorted end
+      vroze = {
+        # keep-sorted start block=yes case=no
+        description = "Victoria Roze";
+        extraGroups = [ ];
+        isNormalUser = true;
+        openssh.authorizedKeys.keys = [ ];
+        packages = with pkgs; [
+          google-chrome
+          firefox
+        ];
+        uid = 1001;
+        # keep-sorted end
+      };
     };
   };
   xdg.portal.enable = true;
