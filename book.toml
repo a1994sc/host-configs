@@ -9,8 +9,8 @@ additional-css       = [ "css/chapters.css", "css/root.css" ]
 default-theme        = "coal"
 preferred-dark-theme = "coal"
 no-section-label     = true
-git-repository-url   = "https://github.com/a1994sc/documents/tree/main"
-edit-url-template    = "https://github.com/a1994sc/documents/edit/main/{path}"
+git-repository-url   = "https://github.com/a1994sc/host-configs/tree/main"
+edit-url-template    = "https://github.com/a1994sc/host-configs/edit/main/{path}"
 
 [output.html.search]
 limit-results       = 20
