@@ -155,6 +155,7 @@
           pkgs.gnumake
           pkgs.nh
           pkgs.nix-tree
+          pkgs.mdbook
         ];
       in
       {
