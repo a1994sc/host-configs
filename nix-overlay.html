@@ -181,7 +181,39 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="overlay"><a class="header" href="#overlay">Overlay</a></h1>
+                        <h1 id="overlays"><a class="header" href="#overlays">Overlays</a></h1>
+<blockquote>
+<p>Overlays are Nix functions which accept two arguments, conventionally called <code>final</code> and <code>prev</code> (formerly also <code>self</code> and <code>super</code>), and return a set of packages. ... Overlays are similar to other methods for customizing Nixpkgs, in particular the packageOverrides ... Indeed, packageOverrides acts as an overlay with only the <code>prev</code> (<code>super</code>) argument. It is therefore appropriate for basic use, but overlays are more powerful and easier to distribute.</p>
+<p>--- From the <a href="https://nixos.org/manual/nixpkgs/stable/#sec-overlays-definition">Nixpkgs manual</a></p>
+</blockquote>
+<p>A sort of too long didn't read is that with overlays you are able to change various parts of packages/modules.</p>
+<h2 id="unstable-builds"><a class="header" href="#unstable-builds">Unstable builds</a></h2>
+<p>A practical example would be enabling the ability to remain on the stable channel, but to pull in <code>unstable</code> packages.</p>
+<p>In the <code>flake.nix</code> you need to add a new input for the <code>unstable</code> channel.</p>
+<pre><code class="language-nix">inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+</code></pre>
+<p>After you can add the following to your configuration file.</p>
+<pre><code class="language-nix">{
+  nixpkgs.overlays = [
+    (final: _prev: {
+      unstable = import inputs.nixpkgs-unstable {
+        inherit (final) system;
+        config.allowUnfree = true;
+      };
+    })
+  ];
+}
+</code></pre>
+<p>This will add the ability to pull unstable packages by the following.</p>
+<pre><code class="language-nix">{
+  home.packages = [
+    (pkgs.unstable.vivaldi.override {
+      proprietaryCodecs = true;
+      inherit vivaldi-ffmpeg-codecs;
+    })
+  ];
+}
+</code></pre>
 
                     </main>
 
