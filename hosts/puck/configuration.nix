@@ -21,6 +21,7 @@
       speedcrunch
       vanilla-dmz
       kdePackages.discover
+      headsetcontrol
     ];
     sessionVariables = {
       MOZ_ENABLE_WAYLAND = "1";
@@ -103,11 +104,25 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+      jack.enable = true;
       extraConfig.pipewire = {
         "99-silent-bell" = {
           "context.properties" = {
             "module.x11.bell" = false;
           };
+        };
+      };
+      wireplumber.extraConfig = {
+        "monitor.bluez.properties" = {
+          "bluez5.enable-sbc-xq" = true;
+          "bluez5.enable-msbc" = true;
+          "bluez5.enable-hw-volume" = true;
+          "bluez5.roles" = [
+            "hsp_hs"
+            "hsp_ag"
+            "hfp_hf"
+            "hfp_ag"
+          ];
         };
       };
     };
@@ -129,7 +144,17 @@
         "--accept-routes=true"
       ];
     };
-    udev.packages = [ pkgs.yubikey-personalization ];
+    udev = {
+      extraRules = ''
+        KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="1260", TAG+="uaccess"
+        KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12ad", TAG+="uaccess"
+        KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="1252", TAG+="uaccess"
+      '';
+      packages = [
+        pkgs.yubikey-personalization
+        pkgs.headsetcontrol
+      ];
+    };
     xserver = {
       enable = true;
       layout = "us";
