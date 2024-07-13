@@ -24,6 +24,7 @@ in
   programs.bash.enableCompletion = true;
   environment.variables = {
     # keep-sorted start
+    DIRENV_WARN_TIMEOUT = "100h";
     HISTCONTROL = "ignoredups";
     HISTFILE = "$HOME/.bash_eternal_history";
     HISTFILESIZE = "";
