@@ -89,11 +89,28 @@
           };
           modules = [
             inputs.home-manager.nixosModules.home-manager
+            inputs.comin.nixosModules.comin
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.root = import ./home/root;
             }
+            (
+              { config, ... }:
+              {
+                services.comin = {
+                  hostname = config.networking.hostName;
+                  enable = true;
+                  remotes = [
+                    {
+                      name = "origin";
+                      url = "https://github.com/a1994sc/host-configs.git";
+                      branches.main.name = "main";
+                    }
+                  ];
+                };
+              }
+            )
           ] ++ extraModules;
         };
     in
@@ -128,7 +145,6 @@
             puck.extraModules = [
               ./.
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-              inputs.comin.nixosModules.comin
               ./hosts/puck
             ];
           };
