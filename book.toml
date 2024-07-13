@@ -4,11 +4,11 @@ multilingual = false
 src          = "docs"
 
 [output.html]
-fold.enable          = true
+fold.enable          = false
 additional-css       = [ "css/chapters.css", "css/root.css" ]
 default-theme        = "coal"
 preferred-dark-theme = "coal"
-no-section-label     = true
+no-section-label     = false
 git-repository-url   = "https://github.com/a1994sc/host-configs/tree/main"
 edit-url-template    = "https://github.com/a1994sc/host-configs/edit/main/{path}"
 

@@ -9,6 +9,10 @@
       inputs.home-manager.follows = "home-manager";
       inputs.systems.follows = "systems";
     };
+    comin = {
+      url = "github:nlewo/comin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -124,6 +128,7 @@
             puck.extraModules = [
               ./.
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
+              inputs.comin.nixosModules.comin
               ./hosts/puck
             ];
           };
