@@ -157,8 +157,6 @@
     };
     xserver = {
       enable = true;
-      layout = "us";
-      xkbVariant = "";
     };
     # keep-sorted end
   };
@@ -177,16 +175,18 @@
     randomizedDelaySec = "45min";
     # keep-sorted end
   };
+  services.desktopManager.plasma6.enable = true;
+  services.displayManager = {
+    sddm.enable = true;
+    defaultSession = "plasma";
+  };
   services.xserver = {
-    # keep-sorted start block=yes
-    desktopManager.plasma6.enable = true;
-    displayManager = {
-      sddm.enable = true;
-      lightdm.enable = lib.mkForce false;
-      defaultSession = "plasma";
+    xkb = {
+      layout = "us";
+      variant = "";
     };
+    displayManager.lightdm.enable = lib.mkForce false;
     excludePackages = [ pkgs.xterm ];
-    # keep-sorted end
   };
   users = {
     groups = {
