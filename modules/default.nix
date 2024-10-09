@@ -11,7 +11,6 @@
     git
     htop
     micro
-    python3
     wget
   ];
   environment.variables = {

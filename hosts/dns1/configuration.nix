@@ -14,7 +14,7 @@
 
   nix.gc.dates = "Mon 02:00";
   system.autoUpgrade.dates = "Mon 04:00";
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_6;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_hardened;
   networking = {
     hostName = "dns1";
     nameservers = [

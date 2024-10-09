@@ -155,6 +155,22 @@
           athena = mkHost { inherit (conf.athena) extraModules; };
           dns1 = mkHost { inherit (conf.dns1) extraModules; };
           dns2 = mkHost { inherit (conf.dns2) extraModules; };
+          iso-dns1 = mkHost {
+            extraModules = [
+              "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix"
+              {
+                documentation.man.enable = false;
+                documentation.doc.enable = false;
+                isoImage = {
+                  isoName = "test.iso";
+                  squashfsCompression = "xz";
+                  makeEfiBootable = true; # EFI booting
+                  makeUsbBootable = true; # USB booting
+                  edition = "minimal";
+                };
+              }
+            ] ++ conf.dns1.extraModules;
+          };
         };
     }
     // flake-utils.lib.eachDefaultSystem (
