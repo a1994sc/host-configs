@@ -36,25 +36,25 @@ in
     ca-crt = {
       owner = "${config.users.users.matchbox.name}";
       group = "${config.users.groups.matchbox.name}";
-      sopsFile = "${path}/secrets/dhcp/matchbox.yml";
+      sopsFile = ../../secrets/dhcp/matchbox.yml;
       mode = "0600";
     };
     tls-crt = {
       owner = "${config.users.users.matchbox.name}";
       group = "${config.users.groups.matchbox.name}";
-      sopsFile = "${path}/secrets/dhcp/matchbox.yml";
+      sopsFile = ../../secrets/dhcp/matchbox.yml;
       mode = "0600";
     };
     tls-key = {
       owner = "${config.users.users.matchbox.name}";
       group = "${config.users.groups.matchbox.name}";
-      sopsFile = "${path}/secrets/dhcp/matchbox.yml";
+      sopsFile = ../../secrets/dhcp/matchbox.yml;
       mode = "0600";
     };
     env = {
       owner = "${config.users.users.matchbox.name}";
       group = "${config.users.groups.matchbox.name}";
-      sopsFile = "${path}/secrets/dhcp/matchbox.yml";
+      sopsFile = ../../secrets/dhcp/matchbox.yml;
       mode = "0600";
     };
   };
