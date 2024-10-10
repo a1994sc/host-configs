@@ -132,4 +132,18 @@ in
       LoginGraceTime = 0;
     };
   };
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.users.root = import ./home/root;
+  services.comin = {
+    hostname = config.networking.hostName;
+    enable = true;
+    remotes = [
+      {
+        name = "origin";
+        url = "https://github.com/a1994sc/host-configs.git";
+        branches.main.name = "main";
+      }
+    ];
+  };
 }

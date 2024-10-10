@@ -70,110 +70,24 @@
       ...
     }:
     let
-      inherit (self) outputs;
-      mkHost =
-        {
-          system ? "x86_64-linux",
-          version ? "23.11",
-          extraModules ? [ ],
-        }:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit
-              inputs
-              outputs
-              system
-              version
-              ;
-          };
-          modules = [
-            inputs.home-manager.nixosModules.home-manager
-            inputs.comin.nixosModules.comin
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.root = import ./home/root;
-            }
-            (
-              { config, ... }:
-              {
-                services.comin = {
-                  hostname = config.networking.hostName;
-                  enable = true;
-                  remotes = [
-                    {
-                      name = "origin";
-                      url = "https://github.com/a1994sc/host-configs.git";
-                      branches.main.name = "main";
-                    }
-                  ];
-                };
-              }
-            )
-          ] ++ extraModules;
-        };
+      sys = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
     in
     {
       overlays = import ./overlays { inherit inputs; };
-      nixosConfigurations =
-        let
-          hm-custodian = {
-            home-manager.users.custodian = import ./home/custodian;
+      nixosConfigurations = builtins.listToAttrs (
+        map (name: {
+          inherit name;
+          value = builtins.import ./hosts/${name} {
+            inherit nixpkgs inputs;
+            inherit (self) outputs;
           };
-          conf = {
-            dns1.extraModules = [
-              hm-custodian
-              ./hosts/dns1
-            ];
-            dns2.extraModules = [
-              hm-custodian
-              ./hosts/dns2
-            ];
-            # primary dns
-            menrva.extraModules = [
-              hm-custodian
-              inputs.disko.nixosModules.disko
-              ./hosts/menrva
-            ];
-            # primary dns
-            athena.extraModules = [
-              hm-custodian
-              ./hosts/athena
-            ];
-            # personal laptop
-            puck.extraModules = [
-              ./.
-              inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-              ./hosts/puck
-            ];
-          };
-        in
-        {
-          puck = mkHost { inherit (conf.puck) extraModules; };
-          menrva = mkHost { inherit (conf.menrva) extraModules; };
-          athena = mkHost { inherit (conf.athena) extraModules; };
-          dns1 = mkHost { inherit (conf.dns1) extraModules; };
-          dns2 = mkHost { inherit (conf.dns2) extraModules; };
-          iso-dns1 = mkHost {
-            extraModules = [
-              "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix"
-              {
-                documentation.man.enable = false;
-                documentation.doc.enable = false;
-                isoImage = {
-                  isoName = "test.iso";
-                  squashfsCompression = "xz";
-                  makeEfiBootable = true; # EFI booting
-                  makeUsbBootable = true; # USB booting
-                  edition = "minimal";
-                };
-              }
-            ] ++ conf.dns1.extraModules;
-          };
-        };
+        }) (builtins.attrNames (builtins.readDir ./hosts))
+      );
     }
-    // flake-utils.lib.eachDefaultSystem (
+    // flake-utils.lib.eachSystem sys (
       system:
       let
         pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
@@ -187,11 +101,9 @@
           '';
         buildInputs = self.checks.${system}.pre-commit-check.enabledPackages ++ [
           agepkgs
-          pkgs.nix-prefetch
           pkgs.git
           pkgs.gnumake
           pkgs.nh
-          pkgs.nix-tree
           pkgs.mdbook
         ];
       in
@@ -209,33 +121,6 @@
         };
         formatter = treefmtEval.config.build.wrapper;
         devShells.default = nixpkgs.legacyPackages.${system}.mkShell { inherit shellHook buildInputs; };
-        packages = {
-          core = pkgs.dockerTools.buildImage {
-            name = "build-environment";
-            tag = "latest";
-
-            copyToRoot = pkgs.buildEnv {
-              name = "image-root";
-              paths = [
-                pkgs.coreutils
-                pkgs.bash
-                pkgs.dockerTools.binSh
-              ];
-              pathsToLink = [ "/bin" ];
-            };
-
-            runAsRoot = ''
-              #!${pkgs.runtimeShell}
-              mkdir -p /data
-            '';
-
-            config = {
-              Cmd = [ "/bin/bash" ];
-              Env = [ "PS1=\\u@\\h:\\w$ " ];
-              WorkingDir = "/data";
-            };
-          };
-        };
       }
     );
 }
