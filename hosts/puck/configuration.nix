@@ -34,6 +34,13 @@
   };
   hardware = {
     pulseaudio.enable = false;
+    opengl = {
+      driSupport = true;
+      driSupport32Bit = true;
+      ## amdvlk: an open-source Vulkan driver from AMD
+      extraPackages = [ pkgs.amdvlk ];
+      extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
+    };
   };
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -83,7 +90,7 @@
     steam = {
       enable = true;
       gamescopeSession.enable = true;
-      package = pkgs.unstable.steam.override {
+      package = pkgs.steam.override {
         extraLibraries = pkgs: [
           pkgs.openssl
           pkgs.nghttp2
@@ -240,4 +247,5 @@
     dockerSocket.enable = true;
     dockerCompat = true;
   };
+  systemd.services."user@".serviceConfig.Delegate = "memory pids cpu cpuset";
 }
