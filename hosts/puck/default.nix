@@ -25,7 +25,7 @@ nixpkgs.lib.nixosSystem {
     inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     {
       imports = [
-        ./configuration.nix
+        ./conf
         ./hardware-configuration.nix
       ];
     }

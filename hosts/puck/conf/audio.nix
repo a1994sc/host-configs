@@ -5,10 +5,6 @@
 {
   environment = {
     systemPackages = with pkgs; [
-      staging.pcsclite
-      speedcrunch
-      vanilla-dmz
-      kdePackages.discover
       headsetcontrol
     ];
   };
