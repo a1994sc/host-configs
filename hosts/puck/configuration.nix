@@ -248,4 +248,5 @@
     dockerCompat = true;
   };
   systemd.services."user@".serviceConfig.Delegate = "memory pids cpu cpuset";
+  services.openssh.settings.PasswordAuthentication = lib.mkForce true;
 }
