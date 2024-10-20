@@ -5,7 +5,7 @@
 {
   disko.devices = {
     disk = {
-      vdb = {
+      main = {
         type = "disk";
         device = builtins.elemAt disks 0;
         content = {
@@ -22,9 +22,7 @@
                 format = "vfat";
                 mountpoint = "/boot";
                 mountOptions = [
-                  "fmask=0077"
-                  "dmask=0077"
-                  "defaults"
+                  "umask=0077"
                 ];
               };
             };
@@ -46,6 +44,7 @@
                     ];
                     mountpoint = "/home";
                   };
+                  "@home/custodian" = { };
                   "@nix" = {
                     mountOptions = [
                       "noatime"
