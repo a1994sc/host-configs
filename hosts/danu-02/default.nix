@@ -25,6 +25,7 @@ nixpkgs.lib.nixosSystem {
 
     inputs.home-manager.nixosModules.home-manager
     inputs.comin.nixosModules.comin
+    inputs.agenix.nixosModules.default
     {
       imports = [
         ./configuration.nix

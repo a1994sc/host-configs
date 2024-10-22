@@ -11,7 +11,7 @@
   system.autoUpgrade.dates = "Tue 04:00";
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_hardened;
   networking = {
-    hostName = "danu-01";
+    hostName = "danu-02";
     nameservers = [
       "1.1.1.2"
       "1.0.0.2"
