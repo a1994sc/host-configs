@@ -1,11 +1,19 @@
-{ lib, pkgs, ... }:
+{
+  inputs,
+  system,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ../../modules
-    # ../../modules/sops
     ../../modules/bare
-    # ../../modules/dns
+    ../../modules/dns
+    ../../modules/matchbox
   ];
+
+  environment.systemPackages = [ inputs.agenix.packages.${system}.default ];
 
   nix.gc.dates = "Tue 02:00";
   system.autoUpgrade.dates = "Tue 04:00";
@@ -22,15 +30,16 @@
         FIREWALL_PORTS = {
           allowedUDPPorts = [
             53 # DNS
-            67 # PXE
-            69 # PXE
+            67 # DHCP
+            69 # TFTP
+            4011 # TFTP
           ];
           allowedTCPPorts = [
             22 # SSH
             53 # DNS
-            443 # STEP-CA
-            3306 # DNS
-            8443 # PowerDNS API
+            443 # Netbox
+            8080 # Matchbox
+            8443 # Matchbox
           ];
         };
       in

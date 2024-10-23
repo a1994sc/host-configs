@@ -6,22 +6,32 @@ _: {
       blocking = {
         # keep-sorted start block=yes case=no
         blackLists.ads = [
+          # https://firebog.net/
+          # suspicious
           "https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt"
           "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts"
+          # Advertising
           "https://v.firebog.net/hosts/AdguardDNS.txt"
+          "https://v.firebog.net/hosts/Admiral.txt"
+          # Malicious
+          "https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt"
+          "https://phishing.army/download/phishing_army_blocklist_extended.txt"
+          # Tracking
           "https://v.firebog.net/hosts/Easyprivacy.txt"
           "https://v.firebog.net/hosts/Prigent-Ads.txt"
-          "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt"
-          "https://phishing.army/download/phishing_army_blocklist_extended.txt"
         ];
         blockTTL = "1m";
         blockType = "zeroIp";
         clientGroupsBlock.default = [ "ads" ];
-        downloadAttempts = 5; # Deprecated
-        downloadCooldown = "10s"; # Deprecated
-        downloadTimeout = "4m"; # Deprecated
-        refreshPeriod = "4h";
-        startStrategy = "blocking"; # Deprecated
+        loading = {
+          strategy = "blocking";
+          refreshPeriod = "4h";
+          downloads = {
+            attempts = 5;
+            timeout = "4m";
+            cooldown = "10s";
+          };
+        };
         # keep-sorted end
       };
       bootstrapDns = "1.1.1.1";
@@ -36,9 +46,11 @@ _: {
       minTlsServeVersion = "1.3";
       ports.dns = 8153;
       prometheus.enable = false;
-      startVerifyUpstream = true;
-      upstream.default = [ "127.0.0.1:8155" ]; # Deprecated
-      upstreamTimeout = "2s"; # Deprecated
+      upstreams = {
+        init.strategy = "blocking";
+        groups.default = [ "127.0.0.1:8155" ];
+        timeout = "2s";
+      };
       # keep-sorted end
     };
 

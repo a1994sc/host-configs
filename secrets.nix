@@ -18,16 +18,16 @@ let
   secrets = {
     # keep-sorted start
     "matchbox/ca.crt" = machines.danu-02;
+    "matchbox/env" = machines.danu-02;
     "matchbox/tls.crt" = machines.danu-02;
     "matchbox/tls.key" = machines.danu-02;
-    "matchbox/env" = machines.danu-02;
-    "step-ca/pass" = machines.danu-02;
-    "step-ca/ca.key" = machines.danu-02;
-    "step-ca/tls.crt" = machines.danu-02;
-    "step-ca/tls.key" = machines.danu-02;
     "powerdns/primary.env" = machines.danu-01;
     "powerdns/primary.replica" = machines.danu-01;
     "powerdns/replica.env" = machines.danu-02;
+    "step-ca/ca.key" = machines.danu-02;
+    "step-ca/pass" = machines.danu-02;
+    "step-ca/tls.crt" = machines.danu-02;
+    "step-ca/tls.key" = machines.danu-02;
     # keep-sorted end
   };
   # keep-sorted end

@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  outputs,
   ...
 }:
 let
@@ -15,9 +14,7 @@ in
 
   imports = [ ./scripts.nix ];
 
-  environment.systemPackages = with pkgs; [ build.matchbox ];
-
-  nixpkgs.overlays = [ outputs.overlays.build-packages ];
+  environment.systemPackages = with pkgs; [ matchbox-server ];
 
   users = {
     groups.matchbox = { };
@@ -31,31 +28,30 @@ in
     };
   };
 
-  sops.validateSopsFiles = false;
-  sops.secrets = {
+  age.secrets = {
     ca-crt = {
+      file = ../../encrypt/matchbox/ca.crt.age;
+      mode = "0600";
       owner = "${config.users.users.matchbox.name}";
       group = "${config.users.groups.matchbox.name}";
-      sopsFile = ../../secrets/dhcp/matchbox.yml;
-      mode = "0600";
     };
     tls-crt = {
+      file = ../../encrypt/matchbox/tls.crt.age;
+      mode = "0600";
       owner = "${config.users.users.matchbox.name}";
       group = "${config.users.groups.matchbox.name}";
-      sopsFile = ../../secrets/dhcp/matchbox.yml;
-      mode = "0600";
     };
     tls-key = {
+      file = ../../encrypt/matchbox/tls.key.age;
+      mode = "0600";
       owner = "${config.users.users.matchbox.name}";
       group = "${config.users.groups.matchbox.name}";
-      sopsFile = ../../secrets/dhcp/matchbox.yml;
-      mode = "0600";
     };
     env = {
+      file = ../../encrypt/matchbox/env.age;
+      mode = "0600";
       owner = "${config.users.users.matchbox.name}";
       group = "${config.users.groups.matchbox.name}";
-      sopsFile = ../../secrets/dhcp/matchbox.yml;
-      mode = "0600";
     };
   };
 
@@ -125,15 +121,15 @@ in
       MATCHBOX_RPC_ADDRESS = "0.0.0.0:8443";
       MATCHBOX_DATA_PATH = "${data-path}";
       MATCHBOX_ASSETS_PATH = "${data-path}/assets";
-      MATCHBOX_CA_FILE = config.sops.secrets.ca-crt.path;
-      MATCHBOX_CERT_FILE = config.sops.secrets.tls-crt.path;
-      MATCHBOX_KEY_FILE = config.sops.secrets.tls-key.path;
-      MATCHBOX_PASSPHRASE = builtins.readFile config.sops.secrets.env.path;
+      MATCHBOX_CA_FILE = config.age.secrets.ca-crt.path;
+      MATCHBOX_CERT_FILE = config.age.secrets.tls-crt.path;
+      MATCHBOX_KEY_FILE = config.age.secrets.tls-key.path;
+      MATCHBOX_PASSPHRASE = builtins.readFile config.age.secrets.env.path;
     };
     serviceConfig = {
       User = "${user}";
       Group = "${user}";
-      ExecStart = "${pkgs.build.matchbox}/bin/matchbox";
+      ExecStart = "${pkgs.matchbox-server}/bin/matchbox";
       ProtectHome = "yes";
       ProtectSystem = "full";
     };
