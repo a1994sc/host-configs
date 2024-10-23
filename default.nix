@@ -7,12 +7,9 @@
   system,
   ...
 }:
-let
-  inherit (inputs) agenix;
-in
 {
   imports = [
-    agenix.nixosModules.age
+    inputs.agenix.nixosModules.age
     settings/certs
   ];
 
@@ -112,9 +109,10 @@ in
   environment.systemPackages = with pkgs; [
     # keep-sorted start prefix_order=staging,unstable,
     unstable.nh
-    agenix.packages.${system}.agenix
     git
     htop
+    inputs.agenix.packages.${system}.agenix
+    inputs.disko.packages.${system}.default
     micro
     python3
     wget

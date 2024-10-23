@@ -13,7 +13,9 @@
     ../../modules/matchbox
   ];
 
-  environment.systemPackages = [ inputs.agenix.packages.${system}.default ];
+  environment.systemPackages = [
+    inputs.agenix.packages.${system}.default
+  ];
 
   nix.gc.dates = "Tue 02:00";
   system.autoUpgrade.dates = "Tue 04:00";
