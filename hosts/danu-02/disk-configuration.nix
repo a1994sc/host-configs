@@ -1,5 +1,8 @@
 {
-  disks ? [ "/dev/nvme0n1" ],
+  disks ? [
+    "/dev/nvme0n1"
+    "/dev/sda"
+  ],
   ...
 }:
 {
@@ -56,6 +59,21 @@
                   };
                 };
               };
+            };
+          };
+        };
+      };
+      cache = {
+        type = "disk";
+        device = builtins.elemAt disks 1;
+        content = {
+          type = "gpt";
+          partitions.cache = {
+            size = "100%";
+            content = {
+              type = "btrfs";
+              extraArgs = [ "-f" ];
+              subvolumes."@cache".mountpoint = "/var/cache";
             };
           };
         };
