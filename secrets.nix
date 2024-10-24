@@ -10,8 +10,8 @@ let
     # keep-sorted start block=yes
     danu-01 = [ ];
     danu-02 = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL0ZBelmFfxNY5Yi1HJZhRAZx60wCt2FUSLRm1Z+FPtq"
-      "age1fq9c5nsmxmdn6khjjf2gjzkfgswrf6herkrr5kdpj70p6xz4gdusz4pd70"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGZ4rS2mbNzQYWtYxZIpDv+xLkI4UHLov8ICjH3FkkG"
+      "age1phst52j05jgsjte2kgqu9v7kmhyndd2s3pm83mamdj0ts9avqpqsrwre93"
     ];
     # keep-sorted end
   };
