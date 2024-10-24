@@ -10,7 +10,7 @@
     ../../modules
     ../../modules/bare
     ../../modules/dns
-    ../../modules/matchbox
+    # ../../modules/matchbox
   ];
 
   environment.systemPackages = [
