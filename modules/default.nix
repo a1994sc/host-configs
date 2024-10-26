@@ -7,7 +7,6 @@
 {
   # keep-sorted start block=yes
   environment.systemPackages = with pkgs; [
-    nh
     git
     htop
     micro
@@ -31,34 +30,16 @@
     interfaces.eth0.useDHCP = true;
     firewall.enable = false;
   };
-  nix = {
-    # keep-sorted start block=yes case=no
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 30d";
+  nix.gc.automatic = false;
+  programs.nh = {
+    enable = true;
+    flake = /etc/nixos;
+    package = pkgs.unstable.nh;
+    clean = {
+      enable = true;
+      extraArgs = "--keep-since 3d";
+      dates = "daily";
     };
-    optimise = {
-      automatic = true;
-      dates = [ "daily" ];
-    };
-    settings = {
-      max-jobs = "auto";
-      auto-optimise-store = true;
-      bash-prompt-prefix = "\\[\\e[31;11m\\][develop]\\[\\e[0;11m\\]-";
-      trusted-users = [
-        "root"
-        "@wheel"
-      ];
-    };
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    # keep-sorted end
-    extraOptions = ''
-      min-free = ${toString (1024 * 1024 * 1024)}
-      max-free = ${toString (1024 * 1024 * 1024 * 4)}
-    '';
   };
   programs.bash.enableCompletion = true;
   services.openssh = {

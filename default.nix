@@ -37,7 +37,7 @@
   nix = {
     # keep-sorted start block=yes case=no
     gc = {
-      automatic = true;
+      automatic = false;
       options = "--delete-older-than 30d";
     };
     optimise = {
