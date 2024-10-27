@@ -19,7 +19,7 @@
 
   nix.gc.dates = "Tue 02:00";
   system.autoUpgrade.dates = "Tue 04:00";
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_hardened;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_6;
   networking = {
     hostName = "danu-02";
     nameservers = [
