@@ -13,6 +13,8 @@
     ../../modules/matchbox
   ];
 
+  ascii.system.dns.enable = true;
+
   environment.systemPackages = [
     inputs.agenix.packages.${system}.default
   ];
