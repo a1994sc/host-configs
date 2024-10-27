@@ -31,6 +31,7 @@
     firewall.enable = false;
   };
   nix.gc.automatic = false;
+  programs.bash.enableCompletion = true;
   programs.nh = {
     enable = true;
     flake = /etc/nixos;
@@ -41,7 +42,6 @@
       dates = "daily";
     };
   };
-  programs.bash.enableCompletion = true;
   services.openssh = {
     enable = true;
     settings = {

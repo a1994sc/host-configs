@@ -43,4 +43,6 @@
     };
     # keep-sorted end
   };
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 }

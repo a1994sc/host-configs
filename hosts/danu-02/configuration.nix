@@ -22,6 +22,47 @@
   nix.gc.dates = "Tue 02:00";
   system.autoUpgrade.dates = "Tue 04:00";
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_6;
+
+  systemd.network = {
+    enable = true;
+    links = {
+      "00-core" = {
+        matchConfig.PermanentMACAddress = "c4:65:16:1f:d1:65";
+        linkConfig.Name = "eth0";
+      };
+      "10-machine" = {
+        matchConfig.PermanentMACAddress = "0c:37:96:44:49:14";
+        linkConfig.Name = "machine0";
+      };
+    };
+    networks = {
+      "00-core" = {
+        matchConfig = {
+          MACAddress = "c4:65:16:1f:d1:65";
+          Type = "ether";
+        };
+        address = [
+          "10.3.10.7/24"
+        ];
+        routes = [
+          { routeConfig.Gateway = "10.3.10.1"; }
+        ];
+      };
+      "10-machine" = {
+        matchConfig = {
+          MACAddress = "0c:37:96:44:49:14";
+          Type = "ether";
+        };
+        address = [
+          "10.3.20.7/23"
+        ];
+        routes = [
+          { routeConfig.Gateway = "10.3.20.1"; }
+        ];
+      };
+    };
+  };
+
   networking = {
     hostName = "danu-02";
     nameservers = [
@@ -49,29 +90,8 @@
       in
       {
         eth0 = FIREWALL_PORTS;
-        vlan20 = FIREWALL_PORTS;
+        machine0 = FIREWALL_PORTS;
       };
-    vlans.vlan20 = {
-      id = 20;
-      interface = "eth0";
-    };
-    interfaces = {
-      eth0.ipv4.addresses = [
-        {
-          address = "10.3.10.7";
-          prefixLength = 24;
-        }
-      ];
-      vlan20 = {
-        useDHCP = false;
-        macAddress = "02:F1:A1:17:21:CF";
-        ipv4.addresses = [
-          {
-            address = "10.3.20.7";
-            prefixLength = 23;
-          }
-        ];
-      };
-    };
+    interfaces.eth0.useDHCP = lib.mkForce false;
   };
 }
