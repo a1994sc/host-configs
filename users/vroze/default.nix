@@ -1,17 +1,24 @@
 { config, ... }:
+let
+  name = "vroze";
+in
 {
+  home-manager.users."${name}" = {
+    imports = [ ../. ];
+    home.username = name;
+  };
   users = {
     groups.vroze = {
+      inherit name;
       gid = config.users.users.vroze.uid;
-      inherit (config.users.users.vroze) name;
     };
     users.vroze = rec {
+      inherit name;
       # keep-sorted start block=yes case=no
       description = "Victoria Roze";
       extraGroups = [ ];
       group = name;
       isNormalUser = true;
-      name = "vroze";
       openssh.authorizedKeys.keys = [ ];
       uid = 1001;
       # keep-sorted end

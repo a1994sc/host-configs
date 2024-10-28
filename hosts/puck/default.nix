@@ -30,7 +30,6 @@ nixpkgs.lib.nixosSystem {
         ./conf
         ./hardware-configuration.nix
       ];
-      home-manager.users.vroze = import ../../users/vroze/home.nix;
     }
   ];
 }

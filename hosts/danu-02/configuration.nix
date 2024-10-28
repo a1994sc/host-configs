@@ -11,8 +11,6 @@
     ../../modules/bare
     ../../modules/dns
     ../../modules/matchbox
-    ../../users/custodian
-    ../../users/root
   ];
 
   ascii.system.dns.enable = true;
@@ -24,6 +22,8 @@
   nix.gc.dates = "Tue 02:00";
   system.autoUpgrade.dates = "Tue 04:00";
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_6;
+
+  services.resolved.enable = false;
 
   systemd.network = {
     enable = true;

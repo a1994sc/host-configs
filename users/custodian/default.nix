@@ -1,17 +1,21 @@
 { config, ... }:
+let
+  name = "custodian";
+in
 {
-  imports = [ ../. ];
-  home.username = "custodian";
-  home.homeDirectory = "/home/" + config.home.username;
+  home-manager.users."${name}" = {
+    imports = [ ../. ];
+    home.username = name;
+  };
   users = {
     groups.custodian = {
+      inherit name;
       gid = 1500;
-      name = config.home.username;
     };
-    users.custodian = {
+    users.custodian = rec {
+      inherit name;
       uid = 1500;
-      name = config.home.username;
-      group = config.home.username;
+      group = name;
       linger = true;
       isNormalUser = true;
       extraGroups = [

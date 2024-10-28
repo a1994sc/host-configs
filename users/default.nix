@@ -94,9 +94,8 @@ in
     };
   };
   home = {
-    homeDirectory = (
-      if (config.home.username == "root") then "/root" else "/home/" + config.home.username
-    );
+    homeDirectory =
+      if (config.home.username == "root") then "/root" else "/home/" + config.home.username;
     stateVersion = "24.05";
     sessionVariables =
       let
