@@ -1,8 +1,5 @@
 { config, ... }:
 {
-  # imports = [ ../. ];
-  # home.username = "vroze";
-  # home.homeDirectory = "/home/vroze";
   users = {
     groups.vroze = {
       gid = config.users.users.vroze.uid;
