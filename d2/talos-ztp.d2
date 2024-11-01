@@ -1,0 +1,110 @@
+classes: {
+  nix: {
+    icon: https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/logo/nix-snowflake-colours.svg
+    shape: image
+    # label.near: outside-bottom-center
+  }
+  talos: {
+    icon: https://www.talos.dev/images/logo.svg
+    shape: image
+  }
+}
+
+Network: {
+  style.double-border: true
+  nodes_danu-01: {
+    class: nix
+    label: danu-01
+  }
+  nodes_danu-02: {
+    class: nix
+    label: danu-02
+  }
+  # vlan_10: {
+  #   label: "VLAN 10\nTrusted"
+  #   svc_dns: {
+  #     label: "DNS\n53/tcp, 53/udp"
+  #   }
+
+  #   ip_05 -> _.nodes_danu-01: {
+  #     label: eth0
+  #   }
+  #   ip_06 -> _.nodes_danu-02: {
+  #     label: eth0
+  #   }
+
+  #   ip_05 <- svc_dns
+  #   ip_06 <- svc_dns
+  #   ip_05: {
+  #     label: "10.3.10.5"
+  #   }
+  #   ip_06: {
+  #     label: "10.3.10.6"
+  #   }
+  # }
+  vlan_20: {
+    label: "VLAN 20\nMachine"
+    svc_dns: {
+      label: "DNS\n53/tcp, 53/udp"
+    }
+    svc_pxe: {
+      label: "PXE Boot\n67/udp"
+    }
+    svc_ftp: {
+      label: "TFTP\n69/udp, 4011/udp"
+    }
+    svc_matchbox: {
+      label: "Matchbox\n8080/tcp"
+    }
+    svc_kubernetes: {
+      label: "Kubernetes\n6443/tcp"
+    }
+
+    ip_05 -> _.nodes_danu-01: {
+      label: machine0
+    }
+    ip_06 -> _.nodes_danu-02: {
+      label: machine0
+    }
+
+    ip_05 <- svc_dns
+    ip_06 <- svc_dns
+    ip_06 <- svc_pxe
+    ip_06 <- svc_ftp
+    ip_06 <- svc_matchbox
+    ip_10 <- svc_kubernetes
+    ip_05: {
+      label: "10.3.20.5"
+    }
+    ip_06: {
+      label: "10.3.20.6"
+    }
+    ip_10: {
+      label: "10.3.20.10"
+    }
+    nodes_talos: {
+      class: talos
+      label: "Talos cluster: Titania"
+    }
+
+    nodes_talos -> svc_pxe: {
+      label: "1. Node enters PXE boot"
+    }
+
+    nodes_talos -> svc_ftp: {
+      label: "2. Node pull minimal boot environment"
+    }
+
+    nodes_talos -> svc_matchbox: {
+      label: "3. Node gets specific config for its MAC-Address from Matchbox"
+    }
+
+    nodes_talos -> nodes_talos: {
+      label: "4. Node fully installs Talos Linux"
+    }
+
+    nodes_talos -> svc_kubernetes: {
+      label: "5. Node registies with kubernetes floating IP"
+    }
+  }
+}
