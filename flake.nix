@@ -105,6 +105,7 @@
           pkgs.gnumake
           pkgs.nh
           pkgs.mdbook
+          pkgs.d2
         ];
       in
       {

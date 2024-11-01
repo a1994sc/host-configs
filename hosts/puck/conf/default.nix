@@ -18,6 +18,9 @@
       speedcrunch
       vanilla-dmz
       kdePackages.discover
+
+      libreoffice-qt6-still
+      hunspell
     ];
   };
 }
