@@ -2,11 +2,11 @@
   "nodes": {
     "NUR": {
       "locked": {
-        "lastModified": 1731623759,
-        "narHash": "sha256-v7ow++vH4cgaWeKnMdt/HGmvFPqCTyzkghyY/JdkMGE=",
+        "lastModified": 1731695757,
+        "narHash": "sha256-w+bGxRbZpWc6SyBbtjW2ci2fw1zk0udTjFpQW0g0Pc8=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "b53bdb77031c86c9525329368fdd87b28792b1db",
+        "rev": "6e17acc00a48253a4d25e5ee4e6c215b8950c039",
         "type": "github"
       },
       "original": {
@@ -192,11 +192,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1731426996,
-        "narHash": "sha256-+E2RTZ2HSP2FSFxcnhGwmtTyZOWFsireqPXx5R9Quo4=",
+        "lastModified": 1731712803,
+        "narHash": "sha256-e2RB3s20PZtRcuvIgw4eouuLC71Y3kJ6Pm6/c0odz8M=",
         "owner": "oar-team",
         "repo": "nur-kapack",
-        "rev": "75cde22bab755f5dc19e3db0af00609324ee9d92",
+        "rev": "8436a719f77939d768dac3f24daffd75c78c72b0",
         "type": "github"
       },
       "original": {
@@ -239,11 +239,11 @@
     },
     "nixpkgs-staging": {
       "locked": {
-        "lastModified": 1731629720,
-        "narHash": "sha256-IaLAaBoa/HZfWb+5W6QsnEioMNCl7lhZPqTtafq+THw=",
+        "lastModified": 1731716111,
+        "narHash": "sha256-y2YVQ8DVcVRacMohNl+VUi0fQvPXgrEMXF+Y/Z9lABo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "7a69234cebb9ddf5fa4c08e7b73556e6311c7bd6",
+        "rev": "4f1244514fcf9518d4f5424044f234e2bca38108",
         "type": "github"
       },
       "original": {
@@ -255,11 +255,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1731611831,
-        "narHash": "sha256-R51rOqkWMfubBkZ9BY4Y1VaRoeqEBshlfQ8mMH5RjqI=",
+        "lastModified": 1731701941,
+        "narHash": "sha256-IV3fk1IY1fg+S8hQJ9Nbvv91s77LnMSxBc/fBkHOuO0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "cea28c811faadb50bee00d433bbf2fea845a43e4",
+        "rev": "effe68307bf3d891d069293b88a0d8910276b2bb",
         "type": "github"
       },
       "original": {
