@@ -22,6 +22,10 @@
   nix.gc.dates = "Tue 02:00";
   system.autoUpgrade.dates = "Tue 04:00";
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_6;
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.default.arp_filter" = 1;
+    "net.ipv4.conf.all.arp_filter" = 1;
+  };
 
   services.resolved.enable = false;
 
@@ -32,13 +36,15 @@
         matchConfig.PermanentMACAddress = "c4:65:16:1f:d1:65";
         linkConfig.Name = "eth0";
       };
-      "10-machine" = {
+      "01-machine" = {
         matchConfig.PermanentMACAddress = "0c:37:96:44:49:14";
         linkConfig.Name = "machine0";
       };
     };
     networks = {
       "00-core" = {
+        enable = true;
+        # dhcpV4Config.RouteMetric = 0;
         matchConfig = {
           MACAddress = "c4:65:16:1f:d1:65";
           Type = "ether";
@@ -46,20 +52,46 @@
         address = [
           "10.3.10.7/24"
         ];
+        # gateway = [
+        #   "10.3.10.1"
+        # ];
         routes = [
-          { routeConfig.Gateway = "10.3.10.1"; }
+          {
+            routeConfig = {
+              Scope = "global";
+              Gateway = "10.3.10.1";
+              # Destination = "0.0.0.0/0";
+              # Metric = 0;
+            };
+          }
         ];
       };
-      "10-machine" = {
+      "01-machine" = {
+        enable = true;
+        linkConfig.RequiredForOnline = "no";
         matchConfig = {
           MACAddress = "0c:37:96:44:49:14";
           Type = "ether";
         };
-        address = [
-          "10.3.20.7/23"
-        ];
+        networkConfig = {
+          DHCP = "ipv4";
+        };
+        # address = [
+        #   "10.3.20.7/23"
+        # ];
+        # gateway = [
+        #   "10.3.20.1"
+        # ];
         routes = [
           { routeConfig.Gateway = "10.3.20.1"; }
+          #   {
+          #     routeConfig = {
+          #       Scope = "link";
+          #       Gateway = "10.3.20.1";
+          #       Destination = "10.3.20.0/23";
+          #       # Metric = 400;
+          #     };
+          #   }
         ];
       };
     };
@@ -71,6 +103,8 @@
       "1.1.1.2"
       "1.0.0.2"
     ];
+    useNetworkd = true;
+    useDHCP = false;
     firewall.enable = pkgs.lib.mkForce true;
     firewall.interfaces =
       let
@@ -94,5 +128,6 @@
         machine0 = FIREWALL_PORTS;
       };
     interfaces.eth0.useDHCP = lib.mkForce false;
+    # interfaces.machine0.useDHCP = lib.mkForce false;
   };
 }
