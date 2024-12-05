@@ -30,6 +30,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    nix-topology = {
+      url = "github:oddlama/nix-topology";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs-staging.url = "github:nixos/nixpkgs/staging-next";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable-small";
@@ -89,7 +93,10 @@
     // flake-utils.lib.eachSystem sys (
       system:
       let
-        pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ inputs.nix-topology.overlays.default ];
+        };
         agepkgs = inputs.agenix.packages.${system}.agenix;
         treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
         shellHook =
@@ -104,7 +111,6 @@
           pkgs.gnumake
           pkgs.nh
           pkgs.mdbook
-          pkgs.d2
         ];
       in
       {
@@ -121,6 +127,20 @@
         };
         formatter = treefmtEval.config.build.wrapper;
         devShells.default = nixpkgs.legacyPackages.${system}.mkShell { inherit shellHook buildInputs; };
+        topology = import inputs.nix-topology {
+          inherit pkgs;
+          modules = [
+            ./topology.nix
+            # { nixosConfigurations = self.nixosConfigurations; }
+            {
+              nixosConfigurations = {
+                inherit (self.nixosConfigurations) dns1;
+                inherit (self.nixosConfigurations) dns2;
+                # danu-02 = self.nixosConfigurations.danu-02;
+              };
+            }
+          ];
+        };
       }
     );
 }

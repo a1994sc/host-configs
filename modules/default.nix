@@ -30,7 +30,7 @@
     firewall.enable = false;
   };
   nix.gc.automatic = false;
-  programs.bash.enableCompletion = true;
+  programs.bash.completion.enable = true;
   programs.nh = {
     enable = true;
     flake = /etc/nixos;

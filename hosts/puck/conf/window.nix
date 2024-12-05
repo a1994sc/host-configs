@@ -4,9 +4,9 @@
   ...
 }:
 {
-  hardware.opengl = {
-    driSupport = true;
-    driSupport32Bit = true;
+  hardware.graphics = {
+    # driSupport = true;
+    enable32Bit = true;
     ## amdvlk: an open-source Vulkan driver from AMD
     extraPackages = [ pkgs.amdvlk ];
     extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
@@ -19,7 +19,6 @@
   };
   services = {
     # keep-sorted start block=yes case=no
-    dbus.packages = [ pkgs.gnome.gnome-disk-utility ];
     fwupd.enable = true;
     pcscd.enable = true;
     xserver = {

@@ -41,5 +41,4 @@
     };
     # keep-sorted end
   };
-  sound.enable = true;
 }
