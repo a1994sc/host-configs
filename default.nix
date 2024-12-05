@@ -18,7 +18,7 @@
     outputs.overlays.build-packages
   ];
   system.stateVersion = version;
-  programs.bash.enableCompletion = true;
+  programs.bash.completion.enable = true;
   environment.variables = {
     # keep-sorted start
     DIRENV_WARN_TIMEOUT = "100h";

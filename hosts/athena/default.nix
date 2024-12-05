@@ -20,6 +20,7 @@ nixpkgs.lib.nixosSystem {
   };
   modules = [
     ../../.
+    inputs.nix-topology.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.comin.nixosModules.comin

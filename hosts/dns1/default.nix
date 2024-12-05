@@ -20,6 +20,7 @@ nixpkgs.lib.nixosSystem {
   };
   modules = [
     ../../.
+    inputs.nix-topology.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.comin.nixosModules.comin
@@ -29,6 +30,10 @@ nixpkgs.lib.nixosSystem {
         ./hardware-configuration.nix
       ];
       home-manager.users.custodian = import ../../home/custodian;
+    }
+    {
+      topology.self.interfaces.eth0.network = "core";
+      topology.self.interfaces.vlan20.network = "machine";
     }
   ];
 }

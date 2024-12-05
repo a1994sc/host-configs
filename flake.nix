@@ -22,7 +22,7 @@
       inputs.systems.follows = "systems";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     kapack = {
@@ -33,7 +33,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs-staging.url = "github:nixos/nixpkgs/staging-next";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable-small";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     NUR.url = "github:nix-community/NUR";
     nxc = {
       url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git";
@@ -49,7 +49,6 @@
     sops-nix = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
     };
     systems.url = "github:nix-systems/default";
     treefmt-nix = {

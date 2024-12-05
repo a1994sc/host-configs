@@ -20,6 +20,7 @@ nixpkgs.lib.nixosSystem {
   };
   modules = [
     ../../.
+    inputs.nix-topology.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     inputs.comin.nixosModules.comin
     inputs.nixos-hardware.nixosModules.framework-13-7040-amd
