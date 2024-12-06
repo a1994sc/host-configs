@@ -39,7 +39,6 @@ in
       cidrv4 = "10.3.105.0/24";
     };
     trunk.name = "Trunk";
-    disconnected.name = "Disconnected";
     wan = {
       name = "Internet";
       cidrv4 = "0.0.0.0/0";
@@ -51,24 +50,21 @@ in
       info = "TP-link ER605";
       interfaceGroups = [
         [ "eth1" ]
-        [ "eth2" ]
-        [ "eth3" ]
-        [ "eth4" ]
         [ "wan0" ]
       ];
       interfaces = {
         wan0.network = "wan";
         eth1.network = "trunk";
-        eth2.network = "disconnected";
-        eth3.network = "disconnected";
-        eth4.network = "disconnected";
       };
       connections = {
-        eth1 = mkConnection "switch-poe" "eth0";
+        eth1 = mkConnection "switch-poe" "eth2";
       };
     };
     controller = mkDevice "controller" {
-      info = "TP-link OC200";
+      info = ''
+        TP-link OC200
+        Ports: 4 Gigabit, 1 Gigabit WAN
+      '';
       interfaceGroups = [
         [ "eth1" ]
         [ "eth2" ]
@@ -88,42 +84,41 @@ in
         TP-link SG2210P
         Ports: 8 Gigabit, 2 SFP
       '';
-      interfaceGroups = (builtins.genList (x: [ ("eth" + builtins.toString x) ]) 8) ++ [
-        [ "sfp1" ]
-        [ "sfp2" ]
+      interfaceGroups = [
+        [ "eth1" ]
+        [ "eth2" ]
+        [ "eth7" ]
+        [ "eth8" ]
       ];
       connections = {
         eth1 = mkConnection "controller" "eth1";
-        eth2 = mkConnection "router" "eth1";
         eth7 = mkConnection "switch-back" "eth1";
         eth8 = mkConnection "wee-fee" "eth1";
       };
       interfaces = {
         eth1.network = "omada";
         eth2.network = "trunk";
-        eth3.network = "disconnected";
-        eth4.network = "disconnected";
-        eth5.network = "disconnected";
-        eth6.network = "disconnected";
         eth7.network = "trunk";
         eth8.network = "wee-fee";
-        sfp1.network = "disconnected";
-        sfp2.network = "disconnected";
       };
     };
     switch-back = mkSwitch "Switch-back" {
-      info = "TP-link SG3428";
-      interfaceGroups = (builtins.genList (x: [ ("eth" + builtins.toString x) ]) 24) ++ [
-        [ "sfp1" ]
-        [ "sfp2" ]
-        [ "sfp3" ]
-        [ "sfp4" ]
+      info = ''
+        TP-link SG3428
+        Ports: 24 Gigabit, 42 SFP
+      '';
+      interfaceGroups = [
+        [ "eth1" ]
+        [ "eth21" ]
+        [ "eth23" ]
       ];
       connections = {
+        eth21 = mkConnection "dns1" "eth0";
+        eth23 = mkConnection "dns2" "eth0";
       };
       interfaces = {
+        eth1.network = "trunk";
       };
     };
-
   };
 }
