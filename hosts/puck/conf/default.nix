@@ -21,6 +21,7 @@
 
       libreoffice-qt6-still
       hunspell
+      vlc
     ];
   };
 }

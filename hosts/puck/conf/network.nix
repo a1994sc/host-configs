@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }:
 {
@@ -45,4 +46,9 @@
   };
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
+  environment.systemPackages = lib.mkMerge [
+    (lib.mkIf config.services.desktopManager.plasma6.enable [
+      pkgs.ktailctl
+    ])
+  ];
 }
