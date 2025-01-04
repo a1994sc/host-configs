@@ -5,7 +5,7 @@ let
   sha256 = "sha256-D46ZH4LeIJyTjrZ8zdV5R6u3LwYV22pUog+SD/H5Zeo=";
 in
 pkgs.stdenv.mkDerivation {
-  inherit name;
+  inherit name version;
   src = pkgs.fetchurl {
     inherit sha256;
     url = "https://github.com/siderolabs/talos/releases/download/${version}/${name}";
