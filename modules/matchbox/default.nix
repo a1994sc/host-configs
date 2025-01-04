@@ -1,7 +1,8 @@
 {
   config,
   pkgs,
-  lib,
+  outputs,
+  system,
   ...
 }:
 let
@@ -56,30 +57,18 @@ in
   };
 
   system.activationScripts = {
-    makeVaultWardenDir = lib.stringAfter [ "var" ] ''
-      ${pkgs.coreutils}/bin/mkdir -p ${tftp-path}
-      if [[ ! -f ${tftp-path}/ipxe.efi ]]; then
-        ${pkgs.coreutils}/bin/echo "Download https://boot.ipxe.org/ipxe.efi to ${tftp-path}/ipxe.efi"
-        ${pkgs.curl}/bin/curl -# https://boot.ipxe.org/ipxe.efi -o ${tftp-path}/ipxe.efi
-      fi
-      if [[ ! -f ${tftp-path}/snponly.efi ]]; then
-        ${pkgs.coreutils}/bin/echo "Download https://boot.ipxe.org/snponly.efi to ${tftp-path}/snponly.efi"
-        ${pkgs.curl}/bin/curl -# https://boot.ipxe.org/snponly.efi -o ${tftp-path}/snponly.efi
-      fi
-      if [[ ! -f ${tftp-path}/ipxe-arm64.efi ]]; then
-        ${pkgs.coreutils}/bin/echo "Download https://boot.ipxe.org/arm64-efi/ipxe.efi to ${tftp-path}/ipxe-arm64.efi"
-        ${pkgs.curl}/bin/curl -# https://boot.ipxe.org/arm64-efi/ipxe.efi -o ${tftp-path}/ipxe-arm64.efi
-      fi
-      if [[ ! -f ${tftp-path}/snponly-arm64.efi ]]; then
-        ${pkgs.coreutils}/bin/echo "Download https://boot.ipxe.org/arm64-efi/snponly.efi to ${tftp-path}/snponly-arm64.efi"
-        ${pkgs.curl}/bin/curl -# https://boot.ipxe.org/arm64-efi/snponly.efi -o ${tftp-path}/snponly-arm64.efi
-      fi
-      if [[ ! -f ${tftp-path}/undionly.kpxe ]]; then
-        ${pkgs.coreutils}/bin/echo "Download https://boot.ipxe.org/undionly.kpxe to ${tftp-path}/undionly.kpxe"
-        ${pkgs.curl}/bin/curl -# https://boot.ipxe.org/undionly.kpxe -o ${tftp-path}/undionly.kpxe
-        ${pkgs.coreutils}/bin/cp ${tftp-path}/undionly.kpxe ${tftp-path}/undionly.kpxe.0
-      fi
-    '';
+    linkpxe =
+      let
+        inherit (outputs.packages.${system}) ipxe;
+      in
+      {
+        text = ''
+          ${pkgs.coreutils}/bin/mkdir -p ${tftp-path}
+          ln -sfn ${ipxe}/ipxe.efi ${tftp-path}/ipxe.efi
+          ln -sfn ${ipxe}/undionly.kpxe ${tftp-path}/undionly.kpxe
+          ln -sfn ${ipxe}/snponly.efi ${tftp-path}/snponly.efi
+        '';
+      };
   };
 
   services = {

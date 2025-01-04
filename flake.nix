@@ -140,6 +140,10 @@
             }
           ];
         };
+        packages = nixpkgs.lib.filesystem.packagesFromDirectoryRecursive {
+          inherit (pkgs) callPackage;
+          directory = ./pkgs;
+        };
       }
     );
 }
