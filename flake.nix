@@ -141,10 +141,33 @@
             }
           ];
         };
-        packages = nixpkgs.lib.filesystem.packagesFromDirectoryRecursive {
-          inherit (pkgs) callPackage;
-          directory = ./pkgs;
-        };
+        packages =
+          nixpkgs.lib.filesystem.packagesFromDirectoryRecursive {
+            inherit (pkgs) callPackage;
+            directory = ./pkgs;
+          }
+          // builtins.listToAttrs (
+            builtins.concatLists (
+              builtins.concatLists (
+                builtins.map
+                  (
+                    name:
+                    builtins.map (
+                      version:
+                      builtins.map (asset: {
+                        name = pkgs.lib.removeSuffix ".nix" "${name}-${version}-${asset}";
+                        value = pkgs.callPackage ./assets/${name}/${version}/${asset} { };
+                      }) (builtins.attrNames (builtins.readDir ./assets/${name}/${version}))
+                    ) (builtins.attrNames (builtins.readDir ./assets/${name}))
+                  )
+                  (
+                    builtins.attrNames (
+                      pkgs.lib.attrsets.filterAttrs (_n: v: v == "directory") (builtins.readDir ./assets)
+                    )
+                  )
+              )
+            )
+          );
       }
     );
 }

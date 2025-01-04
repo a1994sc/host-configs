@@ -57,7 +57,7 @@ in
   };
 
   system.activationScripts = {
-    linkpxe =
+    ipxe =
       let
         inherit (outputs.packages.${system}) ipxe;
       in
@@ -68,6 +68,25 @@ in
           cp -rf ${ipxe}/undionly.kpxe ${tftp-path}/undionly.kpxe
           cp -rf ${ipxe}/undionly.kpxe ${tftp-path}/undionly.kpxe.0
           cp -rf ${ipxe}/snponly.efi ${tftp-path}/snponly.efi
+        '';
+      };
+    talos =
+      let
+        talos-version = "1-9";
+        initramfs-amd64 = outputs.packages.${system}."talos-${talos-version}-initramfs-amd64";
+        initramfs-arm64 = outputs.packages.${system}."talos-${talos-version}-initramfs-arm64";
+        vmlinuz-amd64 = outputs.packages.${system}."talos-${talos-version}-vmlinuz-amd64";
+        vmlinuz-arm64 = outputs.packages.${system}."talos-${talos-version}-vmlinuz-arm64";
+      in
+      {
+        text = ''
+          ${pkgs.coreutils}/bin/mkdir -p ${data-path}/assets/
+          cp -rf ${initramfs-amd64}/initramfs-amd64.xz ${data-path}/assets/initramfs-amd64.xz
+          cp -rf ${initramfs-arm64}/initramfs-arm64.xz ${data-path}/assets/initramfs-arm64.xz
+          cp -rf ${initramfs-arm64}/vmlinuz-amd64 ${data-path}/assets/vmlinuz-amd64
+          cp -rf ${initramfs-arm64}/vmlinuz-arm64 ${data-path}/assets/vmlinuz-arm64
+
+          ${pkgs.coreutils}/bin/chown ${config.users.users.matchbox.name}:${config.users.groups.matchbox.name} -R ${data-path}
         '';
       };
   };
@@ -92,7 +111,7 @@ in
         port = 0;
         log-queries = true;
         dhcp-no-override = true;
-        interface = "vlan20";
+        interface = "vlan20@eth0";
         dhcp-option = [ "option:domain-search,adrp.xyz" ];
       };
     };
