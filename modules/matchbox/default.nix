@@ -83,8 +83,8 @@ in
           ${pkgs.coreutils}/bin/mkdir -p ${data-path}/assets/
           cp -rf ${initramfs-amd64}/initramfs-amd64.xz ${data-path}/assets/initramfs-amd64.xz
           cp -rf ${initramfs-arm64}/initramfs-arm64.xz ${data-path}/assets/initramfs-arm64.xz
-          cp -rf ${initramfs-arm64}/vmlinuz-amd64 ${data-path}/assets/vmlinuz-amd64
-          cp -rf ${initramfs-arm64}/vmlinuz-arm64 ${data-path}/assets/vmlinuz-arm64
+          cp -rf ${vmlinuz-amd64}/vmlinuz-amd64 ${data-path}/assets/vmlinuz-amd64
+          cp -rf ${vmlinuz-arm64}/vmlinuz-arm64 ${data-path}/assets/vmlinuz-arm64
 
           ${pkgs.coreutils}/bin/chown ${config.users.users.matchbox.name}:${config.users.groups.matchbox.name} -R ${data-path}
         '';
