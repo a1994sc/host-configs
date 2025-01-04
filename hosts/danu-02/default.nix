@@ -2,6 +2,7 @@
   nixpkgs,
   inputs,
   outputs,
+  self,
   ...
 }:
 let
@@ -16,6 +17,7 @@ nixpkgs.lib.nixosSystem {
       outputs
       system
       version
+      self
       ;
   };
   modules = [

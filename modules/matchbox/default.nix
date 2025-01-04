@@ -66,6 +66,7 @@ in
           ${pkgs.coreutils}/bin/mkdir -p ${tftp-path}
           ln -sfn ${ipxe}/ipxe.efi ${tftp-path}/ipxe.efi
           ln -sfn ${ipxe}/undionly.kpxe ${tftp-path}/undionly.kpxe
+          ln -sfn ${ipxe}/undionly.kpxe ${tftp-path}/undionly.kpxe.0
           ln -sfn ${ipxe}/snponly.efi ${tftp-path}/snponly.efi
         '';
       };
@@ -83,14 +84,10 @@ in
         dhcp-range = "10.3.20.1,proxy,255.255.254.0";
         dhcp-userclass = "set:ipxe,iPXE";
         pxe-service = [
-          "tag:#ipxe, X86PC     , \"Chain to iPXE\"           , undionly.kpxe                  ,10.3.20.6"
-          "tag:ipxe , X86PC     , \"iPXE\"                    , http://10.3.20.6:8080/boot.ipxe"
-          "tag:#ipxe, X86-64_EFI, \"Chain to iPXE UEFI\"      , snponly.efi                    ,10.3.20.6"
-          "tag:ipxe , X86-64_EFI, \"iPXE UEFI\"               , http://10.3.20.6:8080/boot.ipxe"
-          "tag:#ipxe, ARM32_EFI , \"Chain to ARM32 iPXE UEFI\", snponly-arm64.efi              ,10.3.20.6"
-          "tag:ipxe , ARM32_EFI , \"iPXE UEFI\"               , http://10.3.20.6:8080/boot.ipxe"
-          "tag:#ipxe, ARM64_EFI , \"Chain to ARM64 iPXE UEFI\", snponly-arm64.efi              ,10.3.20.6"
-          "tag:ipxe , ARM64_EFI , \"iPXE UEFI\"               , http://10.3.20.6:8080/boot.ipxe"
+          "tag:#ipxe, X86PC     , \"Chain to iPXE\"           , undionly.kpxe                  ,10.3.20.7"
+          "tag:ipxe , X86PC     , \"iPXE\"                    , http://10.3.20.7:8080/boot.ipxe"
+          "tag:#ipxe, X86-64_EFI, \"Chain to iPXE UEFI\"      , snponly.efi                    ,10.3.20.7"
+          "tag:ipxe , X86-64_EFI, \"iPXE UEFI\"               , http://10.3.20.7:8080/boot.ipxe"
         ];
         port = 0;
         log-queries = true;

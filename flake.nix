@@ -85,6 +85,7 @@
           value = builtins.import ./hosts/${name} {
             inherit nixpkgs inputs;
             inherit (self) outputs;
+            inherit self;
           };
         }) (builtins.attrNames (builtins.readDir ./hosts))
       );
