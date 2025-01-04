@@ -37,6 +37,15 @@
         linkConfig.Name = "eth0";
       };
     };
+    netdevs = {
+      "20-vlan20" = {
+        netdevConfig = {
+          Kind = "vlan";
+          Name = "vlan20";
+        };
+        vlanConfig.Id = 20;
+      };
+    };
     networks = {
       "00-core" = {
         enable = true;
@@ -49,6 +58,15 @@
         ];
         routes = [
           { Gateway = "10.3.10.1"; }
+        ];
+      };
+      "40-vlan20" = {
+        matchConfig.Name = "vlan20";
+        address = [
+          "10.3.20.7/24"
+        ];
+        routes = [
+          { Gateway = "10.3.20.1"; }
         ];
       };
     };
@@ -82,9 +100,7 @@
       in
       {
         eth0 = FIREWALL_PORTS;
-        machine0 = FIREWALL_PORTS;
       };
     interfaces.eth0.useDHCP = lib.mkForce false;
-    # interfaces.machine0.useDHCP = lib.mkForce false;
   };
 }

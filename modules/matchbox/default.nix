@@ -64,10 +64,10 @@ in
       {
         text = ''
           ${pkgs.coreutils}/bin/mkdir -p ${tftp-path}
-          ln -sfn ${ipxe}/ipxe.efi ${tftp-path}/ipxe.efi
-          ln -sfn ${ipxe}/undionly.kpxe ${tftp-path}/undionly.kpxe
-          ln -sfn ${ipxe}/undionly.kpxe ${tftp-path}/undionly.kpxe.0
-          ln -sfn ${ipxe}/snponly.efi ${tftp-path}/snponly.efi
+          cp -rf ${ipxe}/ipxe.efi ${tftp-path}/ipxe.efi
+          cp -rf ${ipxe}/undionly.kpxe ${tftp-path}/undionly.kpxe
+          cp -rf ${ipxe}/undionly.kpxe ${tftp-path}/undionly.kpxe.0
+          cp -rf ${ipxe}/snponly.efi ${tftp-path}/snponly.efi
         '';
       };
   };
