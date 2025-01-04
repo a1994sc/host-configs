@@ -10,11 +10,9 @@ let
   user = "matchbox";
   data-path = "/var/lib/matchbox";
   tftp-path = "/var/lib/tftp";
+  talos-version = "1-9";
 in
 {
-
-  imports = [ ./scripts.nix ];
-
   environment.systemPackages = with pkgs; [ matchbox-server ];
 
   users = {
@@ -72,7 +70,6 @@ in
       };
     talos =
       let
-        talos-version = "1-9";
         initramfs-amd64 = outputs.packages.${system}."talos-${talos-version}-initramfs-amd64";
         initramfs-arm64 = outputs.packages.${system}."talos-${talos-version}-initramfs-arm64";
         vmlinuz-amd64 = outputs.packages.${system}."talos-${talos-version}-vmlinuz-amd64";
