@@ -66,7 +66,7 @@
       "40-vlan20" = {
         matchConfig.Name = "vlan20";
         address = [
-          "10.3.20.7/24"
+          "10.3.20.7/23"
         ];
         routes = [
           { Gateway = "10.3.20.1"; }
