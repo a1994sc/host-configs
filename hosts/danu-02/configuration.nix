@@ -36,15 +36,10 @@
         matchConfig.PermanentMACAddress = "c4:65:16:1f:d1:65";
         linkConfig.Name = "eth0";
       };
-      "01-machine" = {
-        matchConfig.PermanentMACAddress = "0c:37:96:44:49:14";
-        linkConfig.Name = "machine0";
-      };
     };
     networks = {
       "00-core" = {
         enable = true;
-        # dhcpV4Config.RouteMetric = 0;
         matchConfig = {
           MACAddress = "c4:65:16:1f:d1:65";
           Type = "ether";
@@ -52,46 +47,8 @@
         address = [
           "10.3.10.7/24"
         ];
-        # gateway = [
-        #   "10.3.10.1"
-        # ];
         routes = [
-          {
-            routeConfig = {
-              Scope = "global";
-              Gateway = "10.3.10.1";
-              # Destination = "0.0.0.0/0";
-              # Metric = 0;
-            };
-          }
-        ];
-      };
-      "01-machine" = {
-        enable = true;
-        linkConfig.RequiredForOnline = "no";
-        matchConfig = {
-          MACAddress = "0c:37:96:44:49:14";
-          Type = "ether";
-        };
-        networkConfig = {
-          DHCP = "ipv4";
-        };
-        # address = [
-        #   "10.3.20.7/23"
-        # ];
-        # gateway = [
-        #   "10.3.20.1"
-        # ];
-        routes = [
-          { routeConfig.Gateway = "10.3.20.1"; }
-          #   {
-          #     routeConfig = {
-          #       Scope = "link";
-          #       Gateway = "10.3.20.1";
-          #       Destination = "10.3.20.0/23";
-          #       # Metric = 400;
-          #     };
-          #   }
+          { routeConfig.Gateway = "10.3.10.1"; }
         ];
       };
     };

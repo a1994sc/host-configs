@@ -47,7 +47,6 @@
     };
     pre-commit-hooks = {
       inputs.nixpkgs.follows = "nixpkgs-unstable";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
       url = "github:cachix/pre-commit-hooks.nix";
     };
     sops-nix = {
