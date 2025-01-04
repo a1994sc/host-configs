@@ -48,7 +48,7 @@
           "10.3.10.7/24"
         ];
         routes = [
-          { routeConfig.Gateway = "10.3.10.1"; }
+          { Gateway = "10.3.10.1"; }
         ];
       };
     };
