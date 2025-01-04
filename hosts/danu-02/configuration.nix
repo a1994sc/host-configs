@@ -59,6 +59,9 @@
         routes = [
           { Gateway = "10.3.10.1"; }
         ];
+        vlan = [
+          "vlan20"
+        ];
       };
       "40-vlan20" = {
         matchConfig.Name = "vlan20";
