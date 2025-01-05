@@ -1,18 +1,18 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
-  stable =
-    let
-      ehistfilter = ''cat ${config.home.sessionVariables.HISTFILE} | grep -v -e "^#[0-9]*" | grep -v -e "^ehistory"'';
-    in
-    with pkgs;
-    [
-      # keep-sorted start
-      yq-go
-      # keep-sorted end
-      (writeShellScriptBin "ehistory" ''
-        ${ehistfilter} | grep --color "$@"
-      '')
-    ];
+  stable = with pkgs; [
+    # keep-sorted start
+    yq-go
+    # keep-sorted end
+    (writeShellScriptBin "ehistory" ''
+      ${pkgs.atuin}/bin/atuin search --limit 50 --search-mode full-text --cmd-only $@
+    '')
+  ];
   color = {
     red = "31";
     green = "32";
@@ -99,7 +99,21 @@ in
           if [ -d ${config.home.homeDirectory}/.nix-profile/etc/profile.d/hm-session-vars.sh ]; then
             . "${config.home.homeDirectory}/.nix-profile/etc/profile.d/hm-session-vars.sh"
           fi
-        '';
+        ''
+        + (
+          if config.programs.atuin.enable then
+            let
+              flagsStr = lib.escapeShellArgs config.programs.atuin.flags;
+            in
+            ''
+              if [[ :$SHELLOPTS: =~ :(vi|emacs): ]]; then
+                source "${pkgs.bash-preexec}/share/bash/bash-preexec.sh"
+                eval "$(${lib.getExe config.programs.atuin.package} init bash ${flagsStr})"
+              fi
+            ''
+          else
+            ""
+        );
     };
   };
   home = {
