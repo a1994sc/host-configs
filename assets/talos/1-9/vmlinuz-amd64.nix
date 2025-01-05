@@ -13,6 +13,6 @@ pkgs.stdenv.mkDerivation {
   phases = [ "installPhase" ];
   installPhase = ''
     mkdir -p $out
-    cp $src $out/${pname}.xz
+    cp $src $out/${pname}
   '';
 }
