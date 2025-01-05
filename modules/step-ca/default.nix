@@ -4,7 +4,6 @@ let
   nixos-path = "/etc/nixos";
 in
 {
-  sops.validateSopsFiles = false;
   age.secrets = {
     step-pass = {
       file = ../../encrypt/step-ca/pass.age;
