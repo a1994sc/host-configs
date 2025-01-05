@@ -1,24 +1,22 @@
-{ lib, ... }:
+{ lib, config, ... }:
 let
   step-path = "/var/lib/step-ca";
   nixos-path = "/etc/nixos";
 in
 {
   sops.validateSopsFiles = false;
-  sops.secrets = {
-    pass = {
-      sopsFile = ../../secrets/dns/step-ca.yml;
+  age.secrets = {
+    step-pass = {
+      file = ../../encrypt/step-ca/pass.age;
       mode = "0600";
       owner = "step-ca";
       group = "step-ca";
-      path = "${step-path}/pass";
     };
-    ca = {
-      sopsFile = ../../secrets/dns/step-ca.yml;
+    step-ca = {
+      file = ../../encrypt/step-ca/ca.key.age;
       mode = "0600";
       owner = "step-ca";
       group = "step-ca";
-      path = "${step-path}/ca.key";
     };
   };
 
@@ -26,18 +24,17 @@ in
     enable = true;
     openFirewall = false;
     port = 443;
-    intermediatePasswordFile = "${step-path}/pass";
+    intermediatePasswordFile = config.age.secrets.step-pass.path;
     address = "0.0.0.0";
     settings = {
       dnsNames = [
-        "10.3.10.5"
-        "10.3.20.5"
-        "dns1.adrp.xyz"
-        "step.adrp.xyz"
+        "10.3.10.7"
+        "10.3.20.7"
+        "danu-02.adrp.xyz"
       ];
       root = "${nixos-path}/certs/derpy.crt";
       crt = "${nixos-path}/certs/derpy-jump.crt";
-      key = "${step-path}/ca.key";
+      key = config.age.secrets.step-ca.path;
       db = {
         type = "badgerV2";
         dataSource = "${step-path}/db";
@@ -77,6 +74,37 @@ in
               minTLSCertDuration = "192h";
               maxTLSCertDuration = "8760h";
               defaultTLSCertDuration = "730h";
+            };
+          }
+          {
+            type = "JWK";
+            name = "admin-mtls";
+            encryptedKey = "eyJhbGciOiJQQkVTMi1IUzI1NitBMTI4S1ciLCJjdHkiOiJqd2sranNvbiIsImVuYyI6IkEyNTZHQ00iLCJwMmMiOjEwMDAwMCwicDJzIjoieThlSzFsdnJuV1MtMUlobTlZcFZ3dyJ9.IDNnI0xvNGcM81YE41cZ28k0edmnccmQ3Z72gSwkM33Yvz62-zA1yg.mXiFj4fx08yGClpQ.tZbKIpJzLRVFr1uEYI2fu0W0OOXaf6XajA7krQibMxL4ia4GwmoFX_AuibgYzGsoOIeOpj7I4W5E-c2paLSPfBeUrmZOHWEuXFjVn9x4teuultPqyQl8yP8V9vJM6dzwCYsjlQGzPSWBZb9gB-6BQobwvfRcWUNQHajy42hhNYrLQrZiHLa5Mw2G0NNEuvAFpMoQcaZg-cYm4GHUMlzfzAmYIQuSfpfSgEk8Xn4EN36w1vgxUC-DiOxlhZQ9Qj-1CtNugo9ddyZihpTExuopXUd7kV4leKy6hJTsl4eNUJeyf1kYxpiSyLNs5UGwAxOiMTNu5N0zSM0Ll8Ugktg.2Rr2TUrQSiTF2Lt0IFK7wQ";
+            key = {
+              use = "sig";
+              kty = "EC";
+              crv = "P-256";
+              alg = "ES256";
+              kid = "enYWyUm4LAkoKTPTxeKuFwGs6_o9sjfhAMNkmM-evI0";
+              x = "QpitIT9M24Q8NO3we2afx4A1VjCZ5W5qooYvdNltK1s";
+              y = "6p6uXqvkPXFW-6SFTy-T1oIcgSoMfpCzuMflcl3Gllg";
+            };
+            claims = {
+              minTLSCertDuration = "192h";
+              maxTLSCertDuration = "8760h";
+              defaultTLSCertDuration = "730h";
+            };
+            options.x509.template = {
+              subject = {
+                organizationalUnit = "{{ toJson .OrganizationalUnit }}";
+                commonName = "{{ toJson .Subject.CommonName }}";
+              };
+              sans = "{{ toJson .SANs }}";
+              keyUsage = [ "digitalSignature" ];
+              extKeyUsage = [
+                "serverAuth"
+                "clientAuth"
+              ];
             };
           }
           {

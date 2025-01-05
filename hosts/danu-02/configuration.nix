@@ -11,6 +11,7 @@
     ../../modules/bare
     ../../modules/dns
     ../../modules/matchbox
+    ../../modules/step-ca
   ];
 
   ascii.system.dns.enable = true;
@@ -96,6 +97,7 @@
           allowedTCPPorts = [
             22 # SSH
             53 # DNS
+            443 # STEP-CA
             8080 # Matchbox
             8443 # Matchbox
           ];
