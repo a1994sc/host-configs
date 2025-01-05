@@ -50,6 +50,15 @@ in
   services.home-manager.autoUpgrade.frequency = "weekly";
   programs = {
     home-manager.enable = true;
+    atuin = {
+      enable = true;
+      flags = [
+        "--disable-up-arrow"
+      ];
+      settings = {
+        exit_mode = "return-query";
+      };
+    };
     direnv = {
       enable = true;
       nix-direnv.enable = true;
