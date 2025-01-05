@@ -93,7 +93,7 @@ in
               maxTLSCertDuration = "8760h";
               defaultTLSCertDuration = "730h";
             };
-            options.x509.template = {
+            options.x509.templateData = {
               subject = {
                 organizationalUnit = "{{ toJson .OrganizationalUnit }}";
                 commonName = "{{ toJson .Subject.CommonName }}";
