@@ -29,7 +29,7 @@ nixpkgs.lib.nixosSystem {
         ./configuration.nix
         ./hardware-configuration.nix
       ];
-      home-manager.users.custodian = import ../../home/custodian;
+      home-manager.users.custodian = import ../../users/custodian;
     }
   ];
 }
