@@ -28,8 +28,8 @@ nixpkgs.lib.nixosSystem {
       imports = [
         ./configuration.nix
         ./hardware-configuration.nix
+        ../../users/custodian
       ];
-      home-manager.users.custodian = import ../../users/custodian;
     }
   ];
 }
