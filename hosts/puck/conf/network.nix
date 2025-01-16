@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  lib,
   ...
 }:
 {
@@ -16,10 +15,10 @@
     networkmanager.enable = true;
     wireless.userControlled.enable = true;
     nameservers = [
-      "100.100.100.100" # magic dns, tailscale
-      "10.3.10.5" # adrp.xyz, primary
-      "10.3.10.6" # adrp.xyz, replica
-      # "9.9.9.9" # fallback, clear web
+      # "100.100.100.100" # magic dns, tailscale
+      # "10.3.10.5" # adrp.xyz, primary
+      # "10.3.10.6" # adrp.xyz, replica
+      "9.9.9.9" # fallback, clear web
     ];
   };
   services = {
@@ -46,9 +45,9 @@
   };
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
-  environment.systemPackages = lib.mkMerge [
-    (lib.mkIf config.services.desktopManager.plasma6.enable [
-      pkgs.ktailctl
-    ])
-  ];
+  # environment.systemPackages = lib.mkMerge [
+  #   (lib.mkIf config.services.desktopManager.plasma6.enable [
+  #     pkgs.ktailctl
+  #   ])
+  # ];
 }

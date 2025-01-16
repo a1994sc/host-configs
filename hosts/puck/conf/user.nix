@@ -16,7 +16,6 @@
     # keep-sorted start
     firefox
     gnupg
-    google-chrome
     podman
     # keep-sorted end
   ];

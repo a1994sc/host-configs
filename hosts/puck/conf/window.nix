@@ -36,6 +36,7 @@
       layout = "us";
       variant = "";
     };
+    videoDrivers = [ "amdgpu" ];
     displayManager.lightdm.enable = lib.mkForce false;
     excludePackages = [ pkgs.xterm ];
   };
