@@ -2,7 +2,6 @@
   nixpkgs,
   inputs,
   outputs,
-  self,
   ...
 }:
 let

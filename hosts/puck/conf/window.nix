@@ -20,7 +20,6 @@
   services = {
     # keep-sorted start block=yes case=no
     fwupd.enable = true;
-    pcscd.enable = true;
     xserver = {
       enable = true;
     };

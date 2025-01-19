@@ -18,6 +18,9 @@
       speedcrunch
       vanilla-dmz
       kdePackages.discover
+      snapper
+      yubikey-personalization
+      btrfs-assistant
 
       libreoffice-qt6-still
       hunspell
