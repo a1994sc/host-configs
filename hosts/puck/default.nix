@@ -21,6 +21,7 @@ nixpkgs.lib.nixosSystem {
   modules = [
     ../../.
     inputs.home-manager.nixosModules.home-manager
+    inputs.disko.nixosModules.disko
     inputs.comin.nixosModules.comin
     inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     {

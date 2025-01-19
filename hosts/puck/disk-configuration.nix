@@ -46,6 +46,15 @@
                     ];
                     mountpoint = "/home";
                   };
+                  "@tmp" = {
+                    mountOptions = [
+                      "noatime"
+                      "compress-force=zstd:1"
+                      "space_cache=v2"
+                      "commit=15"
+                    ];
+                    mountpoint = "/tmp";
+                  };
                   "@home/aconlon" = { };
                   "@home/vroze" = { };
                   "@nix" = {

@@ -20,11 +20,6 @@
     initrd.kernelModules = [ "amdgpu" ];
     kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ ];
-    tmp = {
-      useTmpfs = true;
-      tmpfsSize = "50%";
-      cleanOnBoot = true;
-    };
   };
 
   swapDevices = [ ];
