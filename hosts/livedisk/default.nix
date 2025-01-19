@@ -2,11 +2,12 @@
   nixpkgs,
   inputs,
   outputs,
+  self,
   ...
 }:
 let
   system = "x86_64-linux";
-  version = "23.11";
+  version = "24.11";
 in
 nixpkgs.lib.nixosSystem {
   inherit system;
@@ -20,17 +21,18 @@ nixpkgs.lib.nixosSystem {
   };
   modules = [
     ../../.
-    inputs.home-manager.nixosModules.home-manager
+    "${nixpkgs}/nixos/modules/profiles/all-hardware.nix"
+    "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix"
+    inputs.disko.nixosModules.disko
     inputs.comin.nixosModules.comin
-    inputs.nixos-hardware.nixosModules.framework-13-7040-amd
+    inputs.home-manager.nixosModules.home-manager
     {
       imports = [
-        ../../users/ascii
-        ../../users/vroze
-        ./conf
-        ./disk-configuration.nix
         ./hardware-configuration.nix
       ];
+    }
+    {
+      system.stateVersion = version;
     }
   ];
 }

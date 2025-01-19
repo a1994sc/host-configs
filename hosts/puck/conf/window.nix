@@ -7,7 +7,7 @@
   hardware.graphics = {
     # driSupport = true;
     enable32Bit = true;
-    ## amdvlk: an open-source Vulkan driver from AMD
+    # amdvlk: an open-source Vulkan driver from AMD
     extraPackages = [ pkgs.amdvlk ];
     extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
   };
@@ -29,6 +29,7 @@
   services.desktopManager.plasma6.enable = true;
   services.displayManager = {
     sddm.enable = true;
+    sddm.wayland.enable = true;
     defaultSession = "plasma";
   };
   services.xserver = {
