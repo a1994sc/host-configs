@@ -3,14 +3,12 @@ _: {
   systemd.services."user@".serviceConfig.Delegate = "memory pids cpu cpuset";
 
   virtualisation.podman = {
-    enable = false;
-    dockerSocket.enable = true;
-    dockerCompat = true;
+    enable = true;
+    dockerSocket.enable = false;
+    dockerCompat = false;
   };
   virtualisation.docker = {
     storageDriver = "btrfs";
-    # rootless.setSocketVariable = true;
-    # rootless.enable = true;
     enable = true;
   };
 }
