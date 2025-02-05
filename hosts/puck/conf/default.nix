@@ -1,5 +1,7 @@
 {
   pkgs,
+  inputs,
+  system,
   ...
 }:
 {
@@ -25,6 +27,8 @@
       libreoffice-qt6-still
       hunspell
       vlc
+      inputs.nix-alien.packages.${system}.nix-alien
     ];
   };
+  programs.nix-ld.enable = true;
 }
