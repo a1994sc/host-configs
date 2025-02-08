@@ -23,6 +23,7 @@ in
       group = "${user}";
       home = "${data-path}";
       createHome = true;
+      shell = pkgs.bashInteractive;
       openssh.authorizedKeys.keys = config.users.users.custodian.openssh.authorizedKeys.keys;
     };
   };
