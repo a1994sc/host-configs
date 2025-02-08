@@ -1,8 +1,8 @@
 { pkgs }:
 let
   pname = "initramfs-arm64";
-  version = "1.9.1";
-  sha256 = "sha256-8X/GJBFaWBaDIZeQ58+NIpHH9uB2Jl2mcZaWKgc+zio=";
+  version = "1.9.3";
+  sha256 = "sha256-kCaqCOARUvgMknF40prGYYpcvfYmFYUkwKuyVN3f+g8=";
 in
 pkgs.stdenv.mkDerivation {
   inherit version pname;

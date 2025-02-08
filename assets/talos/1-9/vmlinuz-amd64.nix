@@ -1,8 +1,8 @@
 { pkgs }:
 let
   pname = "vmlinuz-amd64";
-  version = "1.9.1";
-  sha256 = "sha256-AIRxI81EyG2YHD05mTwet/40PS1Zt9sTn9KRbQhaCzs=";
+  version = "1.9.3";
+  sha256 = "sha256-60ipJwWEm5HM68EBS5ZjyYkOnL6cDXCI8RrFV6T/3W8=";
 in
 pkgs.stdenv.mkDerivation {
   inherit version pname;
