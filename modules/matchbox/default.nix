@@ -109,7 +109,7 @@ in
         port = 0;
         log-queries = true;
         dhcp-no-override = true;
-        interface = "vlan20@eth0";
+        interface = "vlan20";
         dhcp-option = [ "option:domain-search,adrp.xyz" ];
       };
     };
