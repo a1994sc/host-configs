@@ -33,7 +33,7 @@
   programs.bash.completion.enable = true;
   programs.nh = {
     enable = true;
-    flake = /etc/nixos;
+    flake = "/etc/nixos";
     package = pkgs.unstable.nh;
     clean = {
       enable = true;
