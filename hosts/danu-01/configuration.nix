@@ -102,6 +102,7 @@
       in
       {
         eth0 = FIREWALL_PORTS;
+        vlan20 = FIREWALL_PORTS;
       };
     interfaces.eth0.useDHCP = lib.mkForce false;
   };
