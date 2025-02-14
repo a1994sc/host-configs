@@ -10,17 +10,20 @@
     ../../modules
     ../../modules/bare
     ../../modules/dns
+    ../../modules/step-ca
   ];
 
   ascii.system.dns.enable = true;
 
   environment.systemPackages = [
     inputs.agenix.packages.${system}.default
+    pkgs.duf
+    pkgs.rage
   ];
 
   nix.gc.dates = "Thu 02:00";
   system.autoUpgrade.dates = "Thu 04:00";
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_6;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
   boot.kernel.sysctl = {
     "net.ipv4.conf.default.arp_filter" = 1;
     "net.ipv4.conf.all.arp_filter" = 1;
@@ -53,7 +56,7 @@
           Type = "ether";
         };
         address = [
-          "10.3.10.8/24"
+          "10.3.10.5/24"
         ];
         routes = [
           { Gateway = "10.3.10.1"; }
@@ -65,7 +68,7 @@
       "40-vlan20" = {
         matchConfig.Name = "vlan20";
         address = [
-          "10.3.20.8/23"
+          "10.3.20.5/23"
         ];
         routes = [
           { Gateway = "10.3.20.1"; }
@@ -93,6 +96,7 @@
           allowedTCPPorts = [
             22 # SSH
             53 # DNS
+            443 # STEP-CA
           ];
         };
       in

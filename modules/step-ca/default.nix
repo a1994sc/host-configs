@@ -27,9 +27,9 @@ in
     address = "0.0.0.0";
     settings = {
       dnsNames = [
-        "10.3.10.7"
-        "10.3.20.7"
-        "danu-02.adrp.xyz"
+        "10.3.10.5"
+        "10.3.20.5"
+        "danu-01.adrp.xyz"
       ];
       root = "${nixos-path}/certs/derpy.crt";
       crt = "${nixos-path}/certs/derpy-jump.crt";
