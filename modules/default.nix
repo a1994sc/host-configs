@@ -4,7 +4,7 @@
   ...
 }:
 {
-  import = [
+  imports = [
     ./cache
     ./dns
   ];
