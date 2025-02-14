@@ -8,7 +8,10 @@ let
   # keep-sorted start block=yes
   machines = {
     # keep-sorted start block=yes
-    danu-01 = [ ];
+    danu-01 = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKgtCFdGSN+0iuaD6WpspN7tB7bZk0nuUqeY4Mq7k5Df"
+      "age1smp9h8cudflpdzks2dgvgd698vlnz0487t3xznyx9slx8kz87d5q264uwg"
+    ];
     danu-02 = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGZ4rS2mbNzQYWtYxZIpDv+xLkI4UHLov8ICjH3FkkG"
       "age1phst52j05jgsjte2kgqu9v7kmhyndd2s3pm83mamdj0ts9avqpqsrwre93"
@@ -24,10 +27,10 @@ let
     "powerdns/primary.env" = machines.danu-01;
     "powerdns/primary.replica" = machines.danu-01;
     "powerdns/replica.env" = machines.danu-02;
-    "step-ca/ca.key" = machines.danu-02;
-    "step-ca/pass" = machines.danu-02;
-    "step-ca/tls.crt" = machines.danu-02;
-    "step-ca/tls.key" = machines.danu-02;
+    "step-ca/ca.key" = machines.danu-01;
+    "step-ca/pass" = machines.danu-01;
+    "step-ca/tls.crt" = machines.danu-01;
+    "step-ca/tls.key" = machines.danu-01;
     # keep-sorted end
   };
   # keep-sorted end
