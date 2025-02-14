@@ -4,6 +4,10 @@
   ...
 }:
 {
+  import = [
+    ./cache
+    ./dns
+  ];
   # keep-sorted start block=yes
   environment.systemPackages = with pkgs; [
     git
