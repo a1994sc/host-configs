@@ -8,9 +8,6 @@
 {
   imports = [
     ../../modules
-    ../../modules/bare
-    ../../modules/dns
-    ../../modules/matchbox
   ];
 
   ascii.system.bare.enable = true;
@@ -19,6 +16,10 @@
   ascii.system.cache.domain = "danu-02.adrp.xyz";
   ascii.system.matchbox.enable = true;
   ascii.system.matchbox.talosVersion = "1-9";
+  ascii.system.matchbox.age.ca = ../../encrypt/matchbox/ca.crt.age;
+  ascii.system.matchbox.age.crt = ../../encrypt/matchbox/tls.crt.age;
+  ascii.system.matchbox.age.key = ../../encrypt/matchbox/tls.key.age;
+  ascii.system.matchbox.age.env = ../../encrypt/matchbox/env.age;
 
   environment.systemPackages = [
     inputs.agenix.packages.${system}.default

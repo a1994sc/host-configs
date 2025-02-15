@@ -27,6 +27,20 @@ in
     talosVersion = lib.mkOption {
       type = lib.types.str;
     };
+    age = {
+      env = lib.mkOption {
+        type = lib.types.path;
+      };
+      ca = lib.mkOption {
+        type = lib.types.path;
+      };
+      crt = lib.mkOption {
+        type = lib.types.path;
+      };
+      key = lib.mkOption {
+        type = lib.types.path;
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -47,28 +61,28 @@ in
 
     age.secrets = {
       ca-crt = {
-        file = ../encrypt/matchbox/ca.crt.age;
+        file = cfg.age.ca;
         mode = "0600";
-        owner = "${config.users.users.${cfg.user}.name}";
-        group = "${config.users.groups.${cfg.user}.name}";
+        owner = cfg.user;
+        group = cfg.user;
       };
       tls-crt = {
-        file = ../encrypt/matchbox/tls.crt.age;
+        file = cfg.age.tls;
         mode = "0600";
-        owner = "${config.users.users.${cfg.user}.name}";
-        group = "${config.users.groups.${cfg.user}.name}";
+        owner = cfg.user;
+        group = cfg.user;
       };
       tls-key = {
-        file = ../encrypt/matchbox/tls.key.age;
+        file = cfg.age.key;
         mode = "0600";
-        owner = "${config.users.users.${cfg.user}.name}";
-        group = "${config.users.groups.${cfg.user}.name}";
+        owner = cfg.user;
+        group = cfg.user;
       };
       env = {
-        file = ../encrypt/matchbox/env.age;
+        file = cfg.age.env;
         mode = "0600";
-        owner = "${config.users.users.${cfg.user}.name}";
-        group = "${config.users.groups.${cfg.user}.name}";
+        owner = cfg.user;
+        group = cfg.user;
       };
     };
 

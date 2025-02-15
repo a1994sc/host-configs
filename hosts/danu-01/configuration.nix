@@ -20,6 +20,8 @@
     "10.3.20.5"
     "danu-01.adrp.xyz"
   ];
+  ascii.system.step.age.pass = ../../encrypt/step-ca/pass.age;
+  ascii.system.step.age.key = ../../encrypt/step-ca/ca.key.age;
 
   environment.systemPackages = [
     inputs.agenix.packages.${system}.default

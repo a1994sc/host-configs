@@ -24,18 +24,26 @@ in
     dnsNames = lib.mkOption {
       type = lib.types.listOf lib.types.str;
     };
+    age = {
+      pass = lib.mkOption {
+        type = lib.types.path;
+      };
+      key = lib.mkOption {
+        type = lib.types.path;
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
     age.secrets = {
       step-pass = {
-        file = ../encrypt/step-ca/pass.age;
+        file = cfg.age.pass;
         mode = "0600";
         owner = cfg.user;
         group = cfg.user;
       };
       step-ca = {
-        file = ../encrypt/step-ca/ca.key.age;
+        file = cfg.age.key;
         mode = "0600";
         owner = cfg.user;
         group = cfg.user;
