@@ -74,8 +74,8 @@ in
         authority = {
           claims = {
             minTLSCertDuration = "5m";
-            maxTLSCertDuration = "336h";
-            defaultTLSCertDuration = "504h";
+            maxTLSCertDuration = "504h";
+            defaultTLSCertDuration = "336h";
           };
           provisioners = [
             {
@@ -83,8 +83,8 @@ in
               name = "acme";
               claims = {
                 minTLSCertDuration = "5m";
-                maxTLSCertDuration = "336h";
-                defaultTLSCertDuration = "504h";
+                maxTLSCertDuration = "504h";
+                defaultTLSCertDuration = "336h";
               };
             }
             {
