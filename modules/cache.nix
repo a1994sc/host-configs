@@ -32,15 +32,15 @@ in
       enable = lib.mkEnableOption "ssl";
       cert = lib.mkOption {
         type = lib.types.str;
-        default = "${cfg.cacheDir}/cert.pem";
+        default = "/var/cache/nginx/cert.pem";
       };
       key = lib.mkOption {
         type = lib.types.str;
-        default = "${cfg.cacheDir}/key.pem";
+        default = "/var/cache/nginx/key.pem";
       };
       fullchain = lib.mkOption {
         type = lib.types.str;
-        default = "${cfg.cacheDir}/fullchain.pem";
+        default = "/var/cache/nginx/fullchain.pem";
       };
       port = lib.mkOption {
         type = lib.types.ints.u16;
