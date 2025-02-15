@@ -21,6 +21,10 @@ in
       type = lib.types.str;
       default = "/etc/nixos/certs/derpy-jump.crt";
     };
+    port = lib.mkOption {
+      type = lib.types.ints.u16;
+      default = 1443;
+    };
     dnsNames = lib.mkOption {
       type = lib.types.listOf lib.types.str;
     };
@@ -51,9 +55,9 @@ in
     };
 
     services.step-ca = {
+      inherit (cfg) port;
       enable = true;
       openFirewall = false;
-      port = 443;
       intermediatePasswordFile = config.age.secrets.step-pass.path;
       address = "0.0.0.0";
       settings = {
@@ -79,8 +83,8 @@ in
               name = "acme";
               claims = {
                 minTLSCertDuration = "5m";
-                maxTLSCertDuration = "192h";
-                defaultTLSCertDuration = "168h";
+                maxTLSCertDuration = "336h";
+                defaultTLSCertDuration = "504h";
               };
             }
             {

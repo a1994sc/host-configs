@@ -22,6 +22,10 @@
   ];
   ascii.system.step.age.pass = ../../encrypt/step-ca/pass.age;
   ascii.system.step.age.key = ../../encrypt/step-ca/ca.key.age;
+  ascii.security.certs = {
+    enable = true;
+    name = "danu-01.adrp.xyz";
+  };
 
   environment.systemPackages = [
     inputs.agenix.packages.${system}.default
@@ -105,7 +109,8 @@
             22 # SSH
             53 # DNS
             80 # HTTP
-            443 # STEP-CA
+            443 # HTTPS
+            1443 # STEP-CA
           ];
         };
       in
