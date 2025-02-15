@@ -104,6 +104,7 @@
           allowedTCPPorts = [
             22 # SSH
             53 # DNS
+            80 # HTTP
             443 # STEP-CA
           ];
         };
