@@ -79,8 +79,8 @@ in
       '';
 
       virtualHosts =
-        let
-          host-value =
+        {
+          "cache-${cfg.domain}" =
             {
               extraConfig = ''
                 proxy_cache nix_cache_zone;
@@ -129,14 +129,59 @@ in
                 }
               ];
             };
-        in
-        {
-          "cache-${cfg.domain}" = host-value;
         }
         // builtins.listToAttrs (
           builtins.map (san: {
             name = "cache-${san}";
-            value = host-value;
+            value =
+              {
+                extraConfig = ''
+                  proxy_cache nix_cache_zone;
+                  proxy_cache_valid 200 ${cfg.maxCacheAge};
+                  proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_504 http_403 http_404 http_429;
+                  proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie Vary;
+                  proxy_ssl_server_name on;
+                  proxy_ssl_verify on;
+                  proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+                  set $upstream_endpoint https://cache.nixos.org;
+                '';
+                locations."/" = {
+                  proxyPass = "$upstream_endpoint";
+                  extraConfig = ''
+                    proxy_send_timeout 300ms;
+                    proxy_connect_timeout 300ms;
+
+                    error_page 502 504 =404 @fallback;
+
+                    proxy_set_header Host $proxy_host;
+                  '';
+                };
+
+                locations."/nix-cache-info" = {
+                  extraConfig = ''
+                    return 200 "StoreDir: /nix/store\nWantMassQuery: 1\nPriority: ${cfg.priority}\n";
+                  '';
+                };
+
+                locations."@fallback" = {
+                  extraConfig = ''
+                    return 200 "404";
+                  '';
+                };
+              }
+              // lib.mkIf cfg.ssl.enable {
+                addSSL = true;
+                sslTrustedCertificate = cfg.ssl.fullchain;
+                sslCertificateKey = cfg.ssl.key;
+                sslCertificate = cfg.ssl.cert;
+                listen = [
+                  {
+                    inherit (cfg.ssl) port;
+                    addr = "0.0.0.0";
+                    ssl = true;
+                  }
+                ];
+              };
           }) cfg.sans
         );
     };
