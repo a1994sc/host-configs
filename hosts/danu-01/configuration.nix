@@ -14,6 +14,7 @@
   ascii.system.dns.enable = true;
   ascii.system.cache.enable = true;
   ascii.system.cache.domain = "danu-01.adrp.xyz";
+  ascii.system.cache.ssl.enable = true;
   ascii.system.step.enable = true;
   ascii.system.step.dnsNames = [
     "10.3.10.5"
@@ -25,6 +26,10 @@
   ascii.security.certs = {
     enable = true;
     name = "danu-01.adrp.xyz";
+    sans = [
+      "10.3.10.5"
+      "10.3.20.5"
+    ];
   };
 
   environment.systemPackages = [
