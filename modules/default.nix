@@ -21,7 +21,7 @@ let
   defaultImport = dir: map (name: "${dir}/${name}") ((nixFilesNoDefault' dir) ++ (dirs dir));
 in
 {
-  imports = lib.defaultImport ./.;
+  imports = defaultImport ./.;
   # keep-sorted start block=yes
   environment.systemPackages = with pkgs; [
     git
