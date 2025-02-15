@@ -74,8 +74,8 @@ in
         authority = {
           claims = {
             minTLSCertDuration = "5m";
-            maxTLSCertDuration = "192h";
-            defaultTLSCertDuration = "168h";
+            maxTLSCertDuration = "336h";
+            defaultTLSCertDuration = "504h";
           };
           provisioners = [
             {
