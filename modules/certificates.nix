@@ -7,10 +7,12 @@
 let
   cfg = config.ascii.security.certs;
   certs = pkgs.writeShellScriptBin "mv-certs" ''
-    ${pkgs.coreutils-full}/bin/cp ${config.users.users.${cfg.user}.home}/fullchain.pem ${
-      config.users.users.${cfg.user}.home
-    }/cert.pem ${config.users.users.${cfg.user}.home}/key.pem ${cfg.nginxDir}
-    ${pkgs.coreutils-full}/bin/chmod ${config.services.nginx.user}\:${config.services.nginx.group} -R ${cfg.nginxDir}
+    ${pkgs.coreutils-full}/bin/cp ${config.users.users.${cfg.user}.home}/fullchain.pem \
+      ${config.users.users.${cfg.user}.home}/cert.pem \
+      ${config.users.users.${cfg.user}.home}/key.pem \
+      ${cfg.nginxDir}
+
+    ${pkgs.coreutils-full}/bin/chown ${config.services.nginx.user}:${config.services.nginx.group} -R ${cfg.nginxDir}
   '';
 in
 {
@@ -41,7 +43,7 @@ in
     };
     nginxDir = lib.mkOption {
       type = lib.types.str;
-      default = "/var/cache/ngnix";
+      default = "/var/cache/nginx/";
     };
   };
 

@@ -28,6 +28,25 @@ in
       type = lib.types.str;
       default = "180d";
     };
+    ssl = {
+      enable = lib.mkEnableOption "ssl";
+      cert = lib.mkOption {
+        type = lib.types.str;
+        default = "${cfg.cacheDir}/cert.pem";
+      };
+      key = lib.mkOption {
+        type = lib.types.str;
+        default = "${cfg.cacheDir}/key.pem";
+      };
+      fullchain = lib.mkOption {
+        type = lib.types.str;
+        default = "${cfg.cacheDir}/fullchain.pem";
+      };
+      port = lib.mkOption {
+        type = lib.types.ints.u16;
+        default = 443;
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -55,41 +74,55 @@ in
         proxy_cache_path /run/nginx/cache/nix levels=1:2 keys_zone=nix_cache_zone:50m max_size=${cfg.maxCacheSize} inactive=${cfg.maxCacheAge};
       '';
 
-      virtualHosts."${cfg.domain}" = {
-        extraConfig = ''
-          proxy_cache nix_cache_zone;
-          proxy_cache_valid 200 ${cfg.maxCacheAge};
-          proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_504 http_403 http_404 http_429;
-          proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie Vary;
-          proxy_ssl_server_name on;
-          proxy_ssl_verify on;
-          proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
-          set $upstream_endpoint https://cache.nixos.org;
-        '';
-        locations."/" = {
-          proxyPass = "$upstream_endpoint";
+      virtualHosts."${cfg.domain}" =
+        {
           extraConfig = ''
-            proxy_send_timeout 300ms;
-            proxy_connect_timeout 300ms;
-
-            error_page 502 504 =404 @fallback;
-
-            proxy_set_header Host $proxy_host;
+            proxy_cache nix_cache_zone;
+            proxy_cache_valid 200 ${cfg.maxCacheAge};
+            proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_504 http_403 http_404 http_429;
+            proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie Vary;
+            proxy_ssl_server_name on;
+            proxy_ssl_verify on;
+            proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+            set $upstream_endpoint https://cache.nixos.org;
           '';
-        };
+          locations."/" = {
+            proxyPass = "$upstream_endpoint";
+            extraConfig = ''
+              proxy_send_timeout 300ms;
+              proxy_connect_timeout 300ms;
 
-        locations."/nix-cache-info" = {
-          extraConfig = ''
-            return 200 "StoreDir: /nix/store\nWantMassQuery: 1\nPriority: ${cfg.priority}\n";
-          '';
-        };
+              error_page 502 504 =404 @fallback;
 
-        locations."@fallback" = {
-          extraConfig = ''
-            return 200 "404";
-          '';
+              proxy_set_header Host $proxy_host;
+            '';
+          };
+
+          locations."/nix-cache-info" = {
+            extraConfig = ''
+              return 200 "StoreDir: /nix/store\nWantMassQuery: 1\nPriority: ${cfg.priority}\n";
+            '';
+          };
+
+          locations."@fallback" = {
+            extraConfig = ''
+              return 200 "404";
+            '';
+          };
+        }
+        // lib.mkIf cfg.ssl.enable {
+          addSSL = true;
+          sslTrustedCertificate = cfg.ssl.fullchain;
+          sslCertificateKey = cfg.ssl.key;
+          sslCertificate = cfg.ssl.cert;
+          listen = [
+            {
+              port = cfg.ssl.port;
+              addr = "0.0.0.0";
+              ssl = true;
+            }
+          ];
         };
-      };
     };
   };
 }
