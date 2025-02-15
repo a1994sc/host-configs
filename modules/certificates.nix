@@ -13,6 +13,8 @@ let
       ${cfg.nginxDir}
 
     ${pkgs.coreutils-full}/bin/chown ${config.services.nginx.user}:${config.services.nginx.group} -R ${cfg.nginxDir}
+
+    ${pkgs.systemd}/bin/systemctl reload nginx
   '';
 in
 {
