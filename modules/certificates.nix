@@ -69,8 +69,8 @@ in
     services.nginx = {
       enable = true;
       virtualHosts =
-        {
-          "acme-${cfg.name}" = {
+        let
+          host-value = {
             serverName = cfg.name;
             listen = [
               {
@@ -81,21 +81,14 @@ in
             ];
             locations."/".proxyPass = "http://127.0.0.1:${builtins.toString cfg.port}/";
           };
+        in
+        {
+          "acme-${cfg.name}" = host-value;
         }
         // builtins.listToAttrs (
           builtins.map (san: {
             name = "acme-${san}";
-            value = {
-              serverName = san;
-              listen = [
-                {
-                  port = 80;
-                  addr = "0.0.0.0";
-                  ssl = false;
-                }
-              ];
-              locations."/".proxyPass = "http://127.0.0.1:${builtins.toString cfg.port}/";
-            };
+            value = host-value;
           }) cfg.sans
         );
     };
