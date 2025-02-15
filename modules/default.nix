@@ -1,13 +1,27 @@
 {
   version,
   pkgs,
+  lib,
   ...
 }:
+with lib;
+let
+  nixFiles =
+    dir:
+    listToAttrs (
+      map (file: nameValuePair (removeSuffix ".nix" (baseNameOf file)) file) (
+        attrNames (
+          filterAttrs (name: type: (type == "regular") && (hasSuffix ".nix" name)) (builtins.readDir dir)
+        )
+      )
+    );
+  dirs = dir: attrNames (filterAttrs (_name: type: type == "directory") (builtins.readDir dir));
+  nixFilesNoDefault = dir: filterAttrs (name: _: name != "default") (nixFiles dir);
+  nixFilesNoDefault' = dir: attrValues (nixFilesNoDefault dir);
+  defaultImport = dir: map (name: "${dir}/${name}") ((nixFilesNoDefault' dir) ++ (dirs dir));
+in
 {
-  imports = [
-    ./cache
-    ./dns
-  ];
+  imports = lib.defaultImport ./.;
   # keep-sorted start block=yes
   environment.systemPackages = with pkgs; [
     git

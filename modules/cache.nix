@@ -42,6 +42,13 @@ in
       "d ${cfg.cacheDir} 0755 nginx nginx - -"
     ];
 
+    fileSystems = {
+      "/run/nginx/cache/nix" = {
+        options = [ "bind" ];
+        device = "${cfg.cacheDir}";
+      };
+    };
+
     services.nginx = {
       enable = true;
       appendHttpConfig = ''

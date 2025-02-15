@@ -13,7 +13,12 @@
     ../../modules/matchbox
   ];
 
+  ascii.system.bare.enable = true;
   ascii.system.dns.enable = true;
+  ascii.system.cache.enable = true;
+  ascii.system.cache.domain = "danu-02.adrp.xyz";
+  ascii.system.matchbox.enable = true;
+  ascii.system.matchbox.talosVersion = "1-9";
 
   environment.systemPackages = [
     inputs.agenix.packages.${system}.default

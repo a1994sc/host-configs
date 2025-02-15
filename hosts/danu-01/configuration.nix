@@ -8,12 +8,18 @@
 {
   imports = [
     ../../modules
-    ../../modules/bare
-    ../../modules/dns
-    ../../modules/step-ca
   ];
 
+  ascii.system.bare.enable = true;
   ascii.system.dns.enable = true;
+  ascii.system.cache.enable = true;
+  ascii.system.cache.domain = "danu-01.adrp.xyz";
+  ascii.system.step.enable = true;
+  ascii.system.step.dnsNames = [
+    "10.3.10.5"
+    "10.3.20.5"
+    "danu-01.adrp.xyz"
+  ];
 
   environment.systemPackages = [
     inputs.agenix.packages.${system}.default
