@@ -86,7 +86,7 @@ in
           builtins.map (san: {
             name = "acme-${san}";
             value = {
-              serverName = cfg.name;
+              serverName = san;
               listen = [
                 {
                   port = 80;

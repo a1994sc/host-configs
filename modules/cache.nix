@@ -82,6 +82,7 @@ in
         {
           "cache-${cfg.domain}" =
             {
+              serverName = cfg.domain;
               extraConfig = ''
                 proxy_cache nix_cache_zone;
                 proxy_cache_valid 200 ${cfg.maxCacheAge};
@@ -135,6 +136,7 @@ in
             name = "cache-${san}";
             value =
               {
+                serverName = san;
                 extraConfig = ''
                   proxy_cache nix_cache_zone;
                   proxy_cache_valid 200 ${cfg.maxCacheAge};
