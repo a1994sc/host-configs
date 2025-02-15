@@ -29,13 +29,13 @@ in
   config = lib.mkIf cfg.enable {
     age.secrets = {
       step-pass = {
-        file = ../../encrypt/step-ca/pass.age;
+        file = ../encrypt/step-ca/pass.age;
         mode = "0600";
         owner = cfg.user;
         group = cfg.user;
       };
       step-ca = {
-        file = ../../encrypt/step-ca/ca.key.age;
+        file = ../encrypt/step-ca/ca.key.age;
         mode = "0600";
         owner = cfg.user;
         group = cfg.user;

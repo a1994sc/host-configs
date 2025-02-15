@@ -47,25 +47,25 @@ in
 
     age.secrets = {
       ca-crt = {
-        file = ../../encrypt/matchbox/ca.crt.age;
+        file = ../encrypt/matchbox/ca.crt.age;
         mode = "0600";
         owner = "${config.users.users.${cfg.user}.name}";
         group = "${config.users.groups.${cfg.user}.name}";
       };
       tls-crt = {
-        file = ../../encrypt/matchbox/tls.crt.age;
+        file = ../encrypt/matchbox/tls.crt.age;
         mode = "0600";
         owner = "${config.users.users.${cfg.user}.name}";
         group = "${config.users.groups.${cfg.user}.name}";
       };
       tls-key = {
-        file = ../../encrypt/matchbox/tls.key.age;
+        file = ../encrypt/matchbox/tls.key.age;
         mode = "0600";
         owner = "${config.users.users.${cfg.user}.name}";
         group = "${config.users.groups.${cfg.user}.name}";
       };
       env = {
-        file = ../../encrypt/matchbox/env.age;
+        file = ../encrypt/matchbox/env.age;
         mode = "0600";
         owner = "${config.users.users.${cfg.user}.name}";
         group = "${config.users.groups.${cfg.user}.name}";
