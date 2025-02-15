@@ -67,7 +67,7 @@ in
         group = cfg.user;
       };
       tls-crt = {
-        file = cfg.age.tls;
+        file = cfg.age.crt;
         mode = "0600";
         owner = cfg.user;
         group = cfg.user;
