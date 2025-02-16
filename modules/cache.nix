@@ -90,7 +90,9 @@ in
               proxy_ssl_server_name on;
               proxy_ssl_verify on;
               proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+              resolver 1.1.1.1
               set $upstream_endpoint https://cache.nixos.org;
+              proxy_pass $upstream_endpoint
             '';
             locations."/" = {
               proxyPass = "$upstream_endpoint";
@@ -141,7 +143,9 @@ in
                 proxy_ssl_server_name on;
                 proxy_ssl_verify on;
                 proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+                resolver 1.1.1.1
                 set $upstream_endpoint https://cache.nixos.org;
+                proxy_pass $upstream_endpoint
               '';
               locations."/" = {
                 proxyPass = "$upstream_endpoint";
