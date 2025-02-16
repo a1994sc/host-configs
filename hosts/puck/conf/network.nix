@@ -20,6 +20,10 @@
       # "10.3.10.6" # adrp.xyz, replica
       "9.9.9.9" # fallback, clear web
     ];
+    hosts = {
+      "10.3.10.5" = [ "danu-01.adrp.xyz" ];
+      "10.3.10.6" = [ "danu-02.adrp.xyz" ];
+    };
   };
   services = {
     # keep-sorted start block=yes case=no
@@ -45,9 +49,4 @@
   };
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
-  # environment.systemPackages = lib.mkMerge [
-  #   (lib.mkIf config.services.desktopManager.plasma6.enable [
-  #     pkgs.ktailctl
-  #   ])
-  # ];
 }
