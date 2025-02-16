@@ -35,6 +35,11 @@
     pkgs.rage
   ];
 
+  networking.hosts = {
+    "10.3.10.5" = [ "danu-01.adrp.xyz" ];
+    "10.3.10.6" = [ "danu-02.adrp.xyz" ];
+  };
+
   nix.gc.dates = "Tue 02:00";
   system.autoUpgrade.dates = "Tue 04:00";
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
