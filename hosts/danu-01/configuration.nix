@@ -48,6 +48,10 @@
   };
 
   nix.gc.dates = "Thu 02:00";
+  nix.settings.substituters = [
+    "https:10.3.10.6:443?priority=10"
+    "https:10.3.10.5:443?priority=15"
+  ];
   system.autoUpgrade.dates = "Thu 04:00";
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
   boot.kernel.sysctl = {

@@ -14,6 +14,10 @@
   ascii.system.dns.enable = true;
   ascii.system.cache.enable = true;
   ascii.system.cache.domain = "danu-02.adrp.xyz";
+  ascii.system.cache.sans = [
+    "10.3.10.6"
+    "10.3.20.6"
+  ];
   ascii.system.matchbox.enable = true;
   ascii.system.matchbox.talosVersion = "1-9";
   ascii.system.matchbox.age.ca = ../../encrypt/matchbox/ca.crt.age;
@@ -41,6 +45,10 @@
   };
 
   nix.gc.dates = "Tue 02:00";
+  nix.settings.substituters = [
+    "https:10.3.10.5:443?priority=10"
+    "https:10.3.10.6:443?priority=15"
+  ];
   system.autoUpgrade.dates = "Tue 04:00";
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
   boot.kernel.sysctl = {
