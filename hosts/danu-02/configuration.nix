@@ -20,6 +20,14 @@
   ascii.system.matchbox.age.crt = ../../encrypt/matchbox/tls.crt.age;
   ascii.system.matchbox.age.key = ../../encrypt/matchbox/tls.key.age;
   ascii.system.matchbox.age.env = ../../encrypt/matchbox/env.age;
+  ascii.security.certs = {
+    enable = true;
+    name = "danu-02.adrp.xyz";
+    sans = [
+      "10.3.10.6"
+      "10.3.20.6"
+    ];
+  };
 
   environment.systemPackages = [
     inputs.agenix.packages.${system}.default
