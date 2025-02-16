@@ -91,21 +91,17 @@ in
         {
           "cache-${cfg.domain}" = {
             serverName = cfg.domain;
-            extraConfig =
-              ''
-                proxy_cache nix_cache_zone;
-                proxy_cache_valid 200 ${cfg.maxCacheAge};
-                proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_504 http_403 http_404 http_429;
-                proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie Vary;
-                proxy_ssl_server_name on;
-                proxy_ssl_verify on;
-                proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
-                resolver 1.1.1.1;
-                set $cache https://cache.nixos.org;
-              ''
-              + pkgs.lib.concatStringsSep "\n" (
-                builtins.map (alt: "set $${alt} ${cfg.alts.${alt}}") (builtins.attrNames cfg.alts)
-              );
+            extraConfig = ''
+              proxy_cache nix_cache_zone;
+              proxy_cache_valid 200 ${cfg.maxCacheAge};
+              proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_504 http_403 http_404 http_429;
+              proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie Vary;
+              proxy_ssl_server_name on;
+              proxy_ssl_verify on;
+              proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+              resolver 1.1.1.1;
+              set $cache https://cache.nixos.org;
+            '';
 
             locations = {
               "/" = {
@@ -202,64 +198,6 @@ in
             };
           }) cfg.sans
         );
-      # // (builtins.listToAttrs (
-      #   builtins.concatLists (
-      #     builtins.map (
-      #       san:
-      #       (builtins.map (alt: {
-      #         name = "cache-alt-${alt}-${san}";
-      #         value = {
-      #           serverName = san;
-      #           extraConfig = ''
-      #             proxy_cache nix_cache_zone;
-      #             proxy_cache_valid 200 ${cfg.maxCacheAge};
-      #             proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_504 http_403 http_404 http_429;
-      #             proxy_ignore_headers X-Accel-Expires Expires Cache-Control Set-Cookie Vary;
-      #             proxy_ssl_server_name on;
-      #             proxy_ssl_verify on;
-      #             proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
-      #             resolver 1.1.1.1;
-      #             set $${alt} ${cfg.alts.${alt}};
-      #           '';
-      #           locations."/${alt}/" = {
-      #             proxyPass = "$cache";
-      #             extraConfig = ''
-      #               proxy_send_timeout 300ms;
-      #               proxy_connect_timeout 300ms;
-
-      #               error_page 502 504 =404 @fallback;
-
-      #               proxy_set_header Host $proxy_host;
-      #             '';
-      #           };
-
-      #           locations."/${alt}/nix-cache-info" = {
-      #             extraConfig = ''
-      #               return 200 "StoreDir: /nix/store\nWantMassQuery: 1\n";
-      #             '';
-      #           };
-
-      #           locations."@fallback" = {
-      #             extraConfig = ''
-      #               return 200 "404";
-      #             '';
-      #           };
-      #           addSSL = lib.mkIf cfg.ssl.enable true;
-      #           sslTrustedCertificate = lib.mkIf cfg.ssl.enable cfg.ssl.fullchain;
-      #           sslCertificateKey = lib.mkIf cfg.ssl.enable cfg.ssl.key;
-      #           sslCertificate = lib.mkIf cfg.ssl.enable cfg.ssl.cert;
-      #           listen = lib.mkIf cfg.ssl.enable [
-      #             {
-      #               inherit (cfg.ssl) port;
-      #               addr = "0.0.0.0";
-      #               ssl = true;
-      #             }
-      #           ];
-      #         };
-      #       }) (builtins.attrNames cfg.alts))
-      #     ) cfg.sans
-      #   )
-      # ));
     };
   };
 }
