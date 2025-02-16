@@ -18,6 +18,7 @@
     "10.3.10.6"
     "10.3.20.6"
   ];
+  ascii.system.cache.ssl.enable = true;
   ascii.system.matchbox.enable = true;
   ascii.system.matchbox.talosVersion = "1-9";
   ascii.system.matchbox.age.ca = ../../encrypt/matchbox/ca.crt.age;
