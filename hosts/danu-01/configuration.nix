@@ -10,30 +10,41 @@
     ../../modules
   ];
 
-  ascii.system.bare.enable = true;
-  ascii.system.dns.enable = true;
-  ascii.system.cache.enable = true;
-  ascii.system.cache.domain = "danu-01.adrp.xyz";
-  ascii.system.cache.sans = [
-    "10.3.10.5"
-    "10.3.20.5"
-  ];
-  ascii.system.cache.ssl.enable = true;
-  ascii.system.step.enable = true;
-  ascii.system.step.dnsNames = [
-    "10.3.10.5"
-    "10.3.20.5"
-    "danu-01.adrp.xyz"
-  ];
-  ascii.system.step.age.pass = ../../encrypt/step-ca/pass.age;
-  ascii.system.step.age.key = ../../encrypt/step-ca/ca.key.age;
-  ascii.security.certs = {
-    enable = true;
-    name = "danu-01.adrp.xyz";
-    sans = [
-      "10.3.10.5"
-      "10.3.20.5"
-    ];
+  ascii = {
+    system = {
+      bare.enable = true;
+      dns.enable = true;
+      cache = {
+        enable = true;
+        domain = "danu-01.adrp.xyz";
+        sans = [
+          "10.3.10.5"
+          "10.3.20.5"
+        ];
+        ssl.enable = true;
+        alts = {
+          "a1994sc" = "https://a1994sc.cachix.org";
+        };
+      };
+      step = {
+        enable = true;
+        dnsNames = [
+          "10.3.10.5"
+          "10.3.20.5"
+          "danu-01.adrp.xyz"
+        ];
+        age.pass = ../../encrypt/step-ca/pass.age;
+        age.key = ../../encrypt/step-ca/ca.key.age;
+      };
+    };
+    security.certs = {
+      enable = true;
+      name = "danu-01.adrp.xyz";
+      sans = [
+        "10.3.10.5"
+        "10.3.20.5"
+      ];
+    };
   };
 
   environment.systemPackages = [
