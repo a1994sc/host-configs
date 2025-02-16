@@ -32,7 +32,7 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
-    alts = lib.mkEnableOption {
+    alts = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
       default = { };
     };
