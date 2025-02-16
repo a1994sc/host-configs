@@ -158,7 +158,7 @@ in
                   set $cache https://cache.nixos.org;
                 ''
                 + pkgs.lib.concatStringsSep "\n" (
-                  builtins.map (alt: "set $${alt} ${cfg.alts.${alt}}") (builtins.attrNames cfg.alts)
+                  builtins.map (alt: "set \$${alt} ${cfg.alts.${alt}};") (builtins.attrNames cfg.alts)
                 );
 
               locations = {
