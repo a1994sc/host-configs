@@ -10,28 +10,39 @@
     ../../modules
   ];
 
-  ascii.system.bare.enable = true;
-  ascii.system.dns.enable = true;
-  ascii.system.cache.enable = true;
-  ascii.system.cache.domain = "danu-02.adrp.xyz";
-  ascii.system.cache.sans = [
-    "10.3.10.6"
-    "10.3.20.6"
-  ];
-  ascii.system.cache.ssl.enable = true;
-  ascii.system.matchbox.enable = true;
-  ascii.system.matchbox.talosVersion = "1-9";
-  ascii.system.matchbox.age.ca = ../../encrypt/matchbox/ca.crt.age;
-  ascii.system.matchbox.age.crt = ../../encrypt/matchbox/tls.crt.age;
-  ascii.system.matchbox.age.key = ../../encrypt/matchbox/tls.key.age;
-  ascii.system.matchbox.age.env = ../../encrypt/matchbox/env.age;
-  ascii.security.certs = {
-    enable = true;
-    name = "danu-02.adrp.xyz";
-    sans = [
-      "10.3.10.6"
-      "10.3.20.6"
-    ];
+  ascii = {
+    system = {
+      bare.enable = true;
+      dns.enable = true;
+      cache = {
+        enable = true;
+        domain = "danu-02.adrp.xyz";
+        sans = [
+          "10.3.10.6"
+          "10.3.20.6"
+        ];
+        ssl.enable = true;
+        alts = {
+          "a1994sc" = "https://a1994sc.cachix.org";
+        };
+      };
+      matchbox = {
+        enable = true;
+        talosVersion = "1-9";
+        age.ca = ../../encrypt/matchbox/ca.crt.age;
+        age.crt = ../../encrypt/matchbox/tls.crt.age;
+        age.key = ../../encrypt/matchbox/tls.key.age;
+        age.env = ../../encrypt/matchbox/env.age;
+      };
+    };
+    security.certs = {
+      enable = true;
+      name = "danu-02.adrp.xyz";
+      sans = [
+        "10.3.10.6"
+        "10.3.20.6"
+      ];
+    };
   };
 
   environment.systemPackages = [
