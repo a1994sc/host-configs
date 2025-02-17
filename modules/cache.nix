@@ -230,7 +230,7 @@ in
                         proxy_set_header Host $proxy_host;
                       '';
                     };
-                  }) cfg.alts
+                  }) (builtins.attrNames cfg.alts)
                 )
                 // builtins.listToAttrs (
                   builtins.map (alt: {
@@ -240,7 +240,7 @@ in
                         return 200 "StoreDir: /nix/store\nWantMassQuery: 1\n;
                       '';
                     };
-                  }) cfg.alts
+                  }) (builtins.attrNames cfg.alts)
                 );
               addSSL = lib.mkIf cfg.ssl.enable true;
               sslTrustedCertificate = lib.mkIf cfg.ssl.enable cfg.ssl.fullchain;
