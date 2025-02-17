@@ -122,7 +122,7 @@ in
                 };
                 "/nix-cache-info" = {
                   extraConfig = ''
-                    return 200 "StoreDir: /nix/store\nWantMassQuery: 1\n;
+                    return 200 "StoreDir: /nix/store\nWantMassQuery: 1\n";
                   '';
                 };
                 "@fallback" = {
@@ -152,7 +152,7 @@ in
                   name = "/${alt}/nix-cache-info";
                   value = {
                     extraConfig = ''
-                      return 200 "StoreDir: /nix/store\nWantMassQuery: 1\n;"
+                      return 200 "StoreDir: /nix/store\nWantMassQuery: 1\n";
                     '';
                   };
                 }) (builtins.attrNames cfg.alts)
