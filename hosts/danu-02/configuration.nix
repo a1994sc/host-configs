@@ -22,9 +22,9 @@
           "10.3.20.6"
         ];
         ssl.enable = true;
-        alts = {
-          "a1994sc" = "https://a1994sc.cachix.org";
-        };
+        # alts = {
+        #   "a1994sc" = "https://a1994sc.cachix.org";
+        # };
       };
       matchbox = {
         enable = true;
