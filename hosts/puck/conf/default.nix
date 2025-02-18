@@ -22,8 +22,6 @@
       kdePackages.discover
       snapper
       yubikey-personalization
-      yubikey-manager
-      yubioath-flutter
       btrfs-assistant
 
       libreoffice-qt6-still
