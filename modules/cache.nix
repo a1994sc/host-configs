@@ -204,6 +204,11 @@ in
               locations =
                 {
                   "/" = {
+                    extraConfig = ''
+                      return 301 /${cfg.primary};
+                    '';
+                  };
+                  "/${cfg.primary}/" = {
                     proxyPass = "$cache";
                     extraConfig = ''
                       proxy_send_timeout 300ms;
@@ -214,9 +219,9 @@ in
                       proxy_set_header Host $proxy_host;
                     '';
                   };
-                  "/nix-cache-info" = {
+                  "/${cfg.primary}/nix-cache-info" = {
                     extraConfig = ''
-                      return 200 "StoreDir: /nix/store\nWantMassQuery: 1\nPriority: ${cfg.priority}\n";
+                      return 200 "StoreDir: /nix/store\nWantMassQuery: 1\n";
                     '';
                   };
                   "@fallback" = {
