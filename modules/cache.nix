@@ -41,6 +41,14 @@ in
       type = lib.types.attrsOf lib.types.str;
       default = { };
     };
+    primary = lib.mkOption {
+      type = lib.types.str;
+      default = "https://cache.nixos.org";
+    };
+    primaryPath = lib.mkOption {
+      type = lib.types.str;
+      default = "cache";
+    };
     ssl = {
       enable = lib.mkEnableOption "ssl";
       cert = lib.mkOption {
@@ -101,7 +109,7 @@ in
                 proxy_ssl_verify on;
                 proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
                 resolver 1.1.1.1;
-                set $cache https://cache.nixos.org;
+                set $cache ${cfg.primary};
               ''
               + pkgs.lib.concatStringsSep "\n" (
                 builtins.map (alt: "set \$${alt} ${cfg.alts.${alt}};") (builtins.attrNames cfg.alts)
@@ -109,7 +117,13 @@ in
 
             locations =
               {
-                "/" = {
+                "@fallback".extraConfig = ''
+                  return 200 "404";
+                '';
+                "/".extraConfig = ''
+                  return 301 /${cfg.primaryPath};
+                '';
+                "/${cfg.primaryPath}/" = {
                   proxyPass = "$cache";
                   extraConfig = ''
                     proxy_send_timeout 300ms;
@@ -117,17 +131,13 @@ in
 
                     error_page 502 504 =404 @fallback;
 
+                    rewrite /${cfg.primaryPath}/(.*) /$1 break;
                     proxy_set_header Host $proxy_host;
                   '';
                 };
-                "/nix-cache-info" = {
+                "/${cfg.primaryPath}/nix-cache-info" = {
                   extraConfig = ''
                     return 200 "StoreDir: /nix/store\nWantMassQuery: 1\n";
-                  '';
-                };
-                "@fallback" = {
-                  extraConfig = ''
-                    return 200 "404";
                   '';
                 };
               }
@@ -135,7 +145,7 @@ in
                 builtins.map (alt: {
                   name = "/${alt}/";
                   value = {
-                    proxyPass = "\$${alt}";
+                    proxyPass = "${cfg.alts.${alt}}";
                     extraConfig = ''
                       proxy_send_timeout 300ms;
                       proxy_connect_timeout 300ms;
@@ -186,7 +196,7 @@ in
                   proxy_ssl_verify on;
                   proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
                   resolver 1.1.1.1;
-                  set $cache https://cache.nixos.org;
+                  set $cache ${cfg.primary};
                 ''
                 + pkgs.lib.concatStringsSep "\n" (
                   builtins.map (alt: "set \$${alt} ${cfg.alts.${alt}};") (builtins.attrNames cfg.alts)
@@ -194,7 +204,13 @@ in
 
               locations =
                 {
-                  "/" = {
+                  "@fallback".extraConfig = ''
+                    return 200 "404";
+                  '';
+                  "/".extraConfig = ''
+                    return 301 /${cfg.primaryPath};
+                  '';
+                  "/${cfg.primaryPath}/" = {
                     proxyPass = "$cache";
                     extraConfig = ''
                       proxy_send_timeout 300ms;
@@ -202,17 +218,13 @@ in
 
                       error_page 502 504 =404 @fallback;
 
+                      rewrite /${cfg.primaryPath}/(.*) /$1 break;
                       proxy_set_header Host $proxy_host;
                     '';
                   };
-                  "/nix-cache-info" = {
+                  "/${cfg.primaryPath}/nix-cache-info" = {
                     extraConfig = ''
-                      return 200 "StoreDir: /nix/store\nWantMassQuery: 1\nPriority: ${cfg.priority}\n";
-                    '';
-                  };
-                  "@fallback" = {
-                    extraConfig = ''
-                      return 200 "404";
+                      return 200 "StoreDir: /nix/store\nWantMassQuery: 1\n";
                     '';
                   };
                 }
@@ -220,7 +232,7 @@ in
                   builtins.map (alt: {
                     name = "/${alt}/";
                     value = {
-                      proxyPass = "\$${alt}";
+                      proxyPass = "${cfg.alts.${alt}}";
                       extraConfig = ''
                         proxy_send_timeout 300ms;
                         proxy_connect_timeout 300ms;
