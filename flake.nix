@@ -135,9 +135,8 @@
             # { nixosConfigurations = self.nixosConfigurations; }
             {
               nixosConfigurations = {
-                inherit (self.nixosConfigurations) dns1;
-                inherit (self.nixosConfigurations) dns2;
-                # danu-02 = self.nixosConfigurations.danu-02;
+                danu-01 = self.nixosConfigurations.danu-01;
+                danu-02 = self.nixosConfigurations.danu-02;
               };
             }
           ];
