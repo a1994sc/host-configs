@@ -20,6 +20,8 @@
         sans = [
           "10.3.10.6"
           "10.3.20.6"
+          "cache.10.3.10.6.nip.io"
+          "ascii.10.3.10.6.nip.io"
         ];
         ssl.enable = true;
       };
