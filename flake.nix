@@ -9,6 +9,7 @@
       inputs.home-manager.follows = "home-manager";
       inputs.systems.follows = "systems";
     };
+    ascii-pkgs.url = "github:a1994sc/nix-pkgs";
     comin = {
       url = "github:nlewo/comin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -60,6 +61,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # keep-sorted end
+  };
+
+  nixConfig = {
+    extra-substituters = [
+      "https://a1994sc.cachix.org"
+    ];
   };
 
   outputs =
@@ -146,6 +153,7 @@
             inherit (pkgs) callPackage;
             directory = ./pkgs;
           }
+          // inputs.ascii-pkgs.packages.${system}
           // builtins.listToAttrs (
             builtins.concatLists (
               builtins.concatLists (
