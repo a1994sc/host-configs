@@ -20,8 +20,8 @@
         sans = [
           "10.3.10.5"
           "10.3.20.5"
-          "cache.10.3.10.5.nip.io"
-          "ascii.10.3.10.5.nip.io"
+          # "cache.10.3.10.5.nip.io"
+          # "ascii.10.3.10.5.nip.io"
         ];
         ssl.enable = true;
       };
@@ -42,6 +42,8 @@
       sans = [
         "10.3.10.5"
         "10.3.20.5"
+        "cache.10.3.10.5.nip.io"
+        "ascii.10.3.10.5.nip.io"
       ];
     };
   };
