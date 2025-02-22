@@ -246,7 +246,7 @@ in
                 }
               ];
             };
-          }) cfg.alts
+          }) (builtins.attrNames cfg.alts)
         );
     };
   };
