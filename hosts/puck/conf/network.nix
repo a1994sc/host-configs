@@ -16,13 +16,21 @@
     wireless.userControlled.enable = true;
     nameservers = [
       # "100.100.100.100" # magic dns, tailscale
-      # "10.3.10.5" # adrp.xyz, primary
-      # "10.3.10.6" # adrp.xyz, replica
+      "10.3.10.5" # adrp.xyz, primary
+      "10.3.10.6" # adrp.xyz, replica
       "9.9.9.9" # fallback, clear web
     ];
     hosts = {
-      "10.3.10.5" = [ "danu-01.adrp.xyz" ];
-      "10.3.10.6" = [ "danu-02.adrp.xyz" ];
+      "10.3.10.5" = [
+        "danu-01.adrp.xyz"
+        "ascii.danu-01.adrp.xyz"
+        "terra.danu-01.adrp.xyz"
+      ];
+      "10.3.10.6" = [
+        "danu-02.adrp.xyz"
+        "ascii.danu-02.adrp.xyz"
+        "terra.danu-02.adrp.xyz"
+      ];
     };
   };
   services = {

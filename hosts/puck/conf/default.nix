@@ -34,8 +34,8 @@
   };
   programs.nix-ld.enable = true;
   nix.settings.substituters = [
-    "https:10.3.10.5:443?priority=10"
-    "https:10.3.10.6:443?priority=10"
+    "https://danu-01.adrp.xyz?priority=10"
+    "https://danu-02.adrp.xyz?priority=10"
   ];
   nix.settings.trusted-public-keys = [
     "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="

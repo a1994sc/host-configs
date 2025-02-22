@@ -38,8 +38,8 @@
       sans = [
         "10.3.10.6"
         "10.3.20.6"
-        # "cache.10.3.10.6.nip.io"
-        # "ascii.10.3.10.6.nip.io"
+        "ascii.danu-02.adrp.xyz"
+        "terra.danu-02.adrp.xyz"
       ];
     };
   };
@@ -51,14 +51,22 @@
   ];
 
   networking.hosts = {
-    "10.3.10.5" = [ "danu-01.adrp.xyz" ];
-    "10.3.10.6" = [ "danu-02.adrp.xyz" ];
+    "10.3.10.5" = [
+      "danu-01.adrp.xyz"
+      "ascii.danu-01.adrp.xyz"
+      "terra.danu-01.adrp.xyz"
+    ];
+    "10.3.10.6" = [
+      "danu-02.adrp.xyz"
+      "ascii.danu-02.adrp.xyz"
+      "terra.danu-02.adrp.xyz"
+    ];
   };
 
   nix.gc.dates = "Tue 02:00";
   nix.settings.substituters = [
-    "https:10.3.10.5:443?priority=10"
-    "https:10.3.10.6:443?priority=15"
+    "https://danu-01.adrp.xyz?priority=10"
+    "https://danu-02.adrp.xyz?priority=15"
   ];
   nix.settings.trusted-public-keys = [
     "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
