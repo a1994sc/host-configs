@@ -95,7 +95,7 @@ in
               proxy_ssl_server_name on;
               proxy_ssl_verify on;
               proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
-              resolver 1.1.1.1;
+              resolver 1.1.1.2 1.0.0.2 8.8.8.8;
               set $cache https://cache.nixos.org;
             '';
 
@@ -149,7 +149,7 @@ in
                 proxy_ssl_server_name on;
                 proxy_ssl_verify on;
                 proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
-                resolver 1.1.1.1;
+                resolver 1.1.1.2 1.0.0.2 8.8.8.8;
                 set $cache https://cache.nixos.org;
               '';
 
