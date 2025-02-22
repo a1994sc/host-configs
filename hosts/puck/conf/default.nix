@@ -37,9 +37,12 @@
     "https://danu-01.adrp.xyz?priority=10"
     "https://danu-02.adrp.xyz?priority=10"
     "https://ascii.danu-01.adrp.xyz?priority=15"
-    "https://ascii.danu-02.adrp.xyz?priority=15"
+    "https://ascii.danu-02.adrp.xyz?priority=10"
+    "https://terra.danu-01.adrp.xyz?priority=10"
+    "https://terra.danu-02.adrp.xyz?priority=15"
   ];
   nix.settings.trusted-public-keys = [
     "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
+    "nixpkgs-terraform.cachix.org-1:8Sit092rIdAVENA3ZVeH9hzSiqI/jng6JiCrQ1Dmusw="
   ];
 }
