@@ -35,13 +35,24 @@ in
       ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
     };
   };
-  nix.settings.trusted-public-keys = lib.lists.unique (
+
+  nix.settings.substituters =
     [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "https://${danu-01.domain}?priority=10"
+      "https://${danu-02.domain}?priority=10"
     ]
-    ++ (builtins.map (alt: danu-01.alts.${alt}.key) (builtins.attrNames danu-01.alts))
-    ++ (builtins.map (alt: danu-02.alts.${alt}.key) (builtins.attrNames danu-02.alts))
-  );
+    ++ (builtins.map (alt: "https://${alt}.${danu-01.domain}?priority=15") (
+      builtins.attrNames danu-01.alts
+    ))
+    ++ (builtins.map (alt: "https://${alt}.${danu-02.domain}?priority=10") (
+      builtins.attrNames danu-02.alts
+    ));
+
+  nix.settings.trusted-public-keys = [
+    "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
+    "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+  ];
+
   services = {
     # keep-sorted start block=yes case=no
     resolved = {
