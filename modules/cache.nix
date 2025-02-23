@@ -97,9 +97,11 @@ in
       };
     };
 
-    nix.settings.trusted-public-keys = builtins.map (alt: cfg.alts.${alt}.key) (
-      builtins.attrNames cfg.alts
-    );
+    nix.settings.trusted-public-keys =
+      builtins.map (alt: cfg.alts.${alt}.key) (builtins.attrNames cfg.alts)
+      ++ [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      ];
 
     services.nginx = {
       enable = true;
