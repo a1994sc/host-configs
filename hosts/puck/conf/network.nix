@@ -35,14 +35,13 @@ in
       ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
     };
   };
-  nix.settings.trusted-public-keys =
+  nix.settings.trusted-public-keys = lib.lists.unique (
     [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     ]
-    ++ lib.lists.unique (
-      (builtins.map (alt: danu-01.${alt}.key) (builtins.attrNames danu-01))
-      ++ (builtins.map (alt: danu-02.${alt}.key) (builtins.attrNames danu-02))
-    );
+    ++ (builtins.map (alt: danu-01.alts.${alt}.key) (builtins.attrNames danu-01.alts))
+    ++ (builtins.map (alt: danu-02.alts.${alt}.key) (builtins.attrNames danu-02.alts))
+  );
   services = {
     # keep-sorted start block=yes case=no
     resolved = {
