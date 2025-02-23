@@ -32,6 +32,7 @@ in
         alts = {
           "ascii" = "https://a1994sc.cachix.org";
           "terra" = "https://nixpkgs-terraform.cachix.org";
+          "numtide" = "https://numtide.cachix.org";
         };
       };
       step = {
