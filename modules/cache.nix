@@ -224,7 +224,7 @@ in
 
               locations = {
                 "/" = {
-                  proxyPass = cfg.alts.${alt};
+                  proxyPass = cfg.alts.${alt}.url;
                   extraConfig = ''
                     proxy_send_timeout 300ms;
                     proxy_connect_timeout 300ms;
