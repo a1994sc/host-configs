@@ -6,6 +6,10 @@
   outputs,
   ...
 }:
+let
+  danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
+  danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
+in
 {
   imports = [
     ../../modules
@@ -43,9 +47,7 @@
       sans = [
         "10.3.10.6"
         "10.3.20.6"
-        "ascii.danu-02.adrp.xyz"
-        "terra.danu-02.adrp.xyz"
-      ];
+      ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
     };
   };
 
@@ -55,19 +57,14 @@
     pkgs.rage
   ];
 
-  networking.hosts =
-    let
-      danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
-      danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
-    in
-    {
-      "10.3.10.5" = [
-        "danu-01.adrp.xyz"
-      ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
-      "10.3.10.6" = [
-        "danu-02.adrp.xyz"
-      ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
-    };
+  networking.hosts = {
+    "10.3.10.5" = [
+      "danu-01.adrp.xyz"
+    ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
+    "10.3.10.6" = [
+      "danu-02.adrp.xyz"
+    ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
+  };
 
   nix.gc.dates = "Tue 02:00";
   nix.settings.substituters = [
