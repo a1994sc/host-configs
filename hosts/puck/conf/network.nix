@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  outputs,
   ...
 }:
 {
@@ -20,18 +21,19 @@
       "10.3.10.6" # adrp.xyz, replica
       "9.9.9.9" # fallback, clear web
     ];
-    hosts = {
-      "10.3.10.5" = [
-        "danu-01.adrp.xyz"
-        "ascii.danu-01.adrp.xyz"
-        "terra.danu-01.adrp.xyz"
-      ];
-      "10.3.10.6" = [
-        "danu-02.adrp.xyz"
-        "ascii.danu-02.adrp.xyz"
-        "terra.danu-02.adrp.xyz"
-      ];
-    };
+    hosts =
+      let
+        danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
+        danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
+      in
+      {
+        "10.3.10.5" = [
+          "danu-01.adrp.xyz"
+        ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
+        "10.3.10.6" = [
+          "danu-02.adrp.xyz"
+        ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
+      };
   };
   services = {
     # keep-sorted start block=yes case=no
