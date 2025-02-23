@@ -97,6 +97,10 @@ in
       };
     };
 
+    nix.settings.trusted-public-keys = builtins.map (alt: cfg.alts.${alt}.key) (
+      builtins.attrNames cfg.alts
+    );
+
     services.nginx = {
       enable = true;
       appendHttpConfig = ''

@@ -1,9 +1,14 @@
 {
   pkgs,
+  lib,
   config,
   outputs,
   ...
 }:
+let
+  danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
+  danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
+in
 {
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
@@ -21,20 +26,19 @@
       "10.3.10.6" # adrp.xyz, replica
       "9.9.9.9" # fallback, clear web
     ];
-    hosts =
-      let
-        danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
-        danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
-      in
-      {
-        "10.3.10.5" = [
-          "danu-01.adrp.xyz"
-        ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
-        "10.3.10.6" = [
-          "danu-02.adrp.xyz"
-        ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
-      };
+    hosts = {
+      "10.3.10.5" = [
+        "danu-01.adrp.xyz"
+      ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
+      "10.3.10.6" = [
+        "danu-02.adrp.xyz"
+      ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
+    };
   };
+  nix.settings.trusted-public-keys = lib.lists.unique (
+    (builtins.map (alt: danu-01.${alt}.key) (builtins.attrNames danu-01))
+    ++ (builtins.map (alt: danu-02.${alt}.key) (builtins.attrNames danu-02))
+  );
   services = {
     # keep-sorted start block=yes case=no
     resolved = {
