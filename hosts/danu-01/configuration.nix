@@ -30,9 +30,18 @@ in
         ];
         ssl.enable = true;
         alts = {
-          "ascii" = "https://a1994sc.cachix.org";
-          "terra" = "https://nixpkgs-terraform.cachix.org";
-          "numtide" = "https://numtide.cachix.org";
+          "ascii" = {
+            url = "https://a1994sc.cachix.org";
+            key = "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI=";
+          };
+          "terra" = {
+            url = "https://nixpkgs-terraform.cachix.org";
+            key = "nixpkgs-terraform.cachix.org-1:8Sit092rIdAVENA3ZVeH9hzSiqI/jng6JiCrQ1Dmusw=";
+          };
+          "numtide" = {
+            url = "https://numtide.cachix.org";
+            key = "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=";
+          };
         };
       };
       step = {
@@ -71,16 +80,19 @@ in
     ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
   };
 
+  nix.settings.substituters =
+    [
+      "https://${danu-01.domain}?priority=15"
+      "https://${danu-02.domain}?priority=10"
+    ]
+    ++ (builtins.map (alt: "https://${alt}.${danu-01.domain}?priority=15") (
+      builtins.attrNames danu-01.alts
+    ))
+    ++ (builtins.map (alt: "https://${alt}.${danu-02.domain}?priority=10") (
+      builtins.attrNames danu-02.alts
+    ));
+
   nix.gc.dates = "Thu 02:00";
-  nix.settings.substituters = [
-    "https://danu-01.adrp.xyz?priority=15"
-    "https://danu-02.adrp.xyz?priority=10"
-    "https://ascii.danu-01.adrp.xyz?priority=15"
-    "https://ascii.danu-02.adrp.xyz?priority=10"
-  ];
-  nix.settings.trusted-public-keys = [
-    "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
-  ];
   system.autoUpgrade.dates = "Thu 04:00";
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
   boot.kernel.sysctl = {

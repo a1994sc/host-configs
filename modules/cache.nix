@@ -41,7 +41,18 @@ in
       default = [ ];
     };
     alts = lib.mkOption {
-      type = lib.types.attrsOf lib.types.str;
+      type = lib.types.attrsOf lib.types.submodule {
+        options = {
+          url = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+          };
+          key = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+          };
+        };
+      };
       default = { };
     };
     ssl = {
