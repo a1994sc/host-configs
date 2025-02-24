@@ -67,6 +67,9 @@
     extra-substituters = [
       "https://a1994sc.cachix.org"
     ];
+    extra-trusted-public-keys = [
+      "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
+    ];
   };
 
   outputs =
