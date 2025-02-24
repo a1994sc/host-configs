@@ -32,4 +32,5 @@
     google-chrome
     # keep-sorted end
   ];
+  services.logind.extraConfig = "RuntimeDirectorySize=50%";
 }
