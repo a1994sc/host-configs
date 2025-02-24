@@ -57,7 +57,7 @@ in
           privacy = false;
         };
         minTlsServeVersion = "1.3";
-        ports.dns = 8153;
+        ports.dns = 53;
         prometheus.enable = false;
         upstreams = {
           init.strategy = "blocking";
@@ -68,7 +68,7 @@ in
       };
 
       dnsdist = {
-        enable = true;
+        enable = false;
         listenPort = 53;
         listenAddress = "0.0.0.0";
         extraConfig = ''
@@ -114,7 +114,7 @@ in
       };
     };
 
-    systemd.services.dnsdist.before = [ "unbound.service" ];
+    # systemd.services.dnsdist.before = [ "unbound.service" ];
     systemd.services.unbound.before = [ "blocky.service" ];
 
     boot.kernel.sysctl = {
