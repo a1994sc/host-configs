@@ -102,6 +102,12 @@ in
 
   services.resolved.enable = false;
 
+  services.tailscale = {
+    enable = true;
+    permitCertUid = "1000";
+    useRoutingFeatures = "server";
+  };
+
   systemd.network = {
     enable = true;
     links = {
