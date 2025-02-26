@@ -101,7 +101,8 @@ in
   };
 
   services.resolved = {
-    enable = true;
+    # disabled because it does not play nice with custom dns servers
+    enable = false;
     domains = [
       "adrp.xyz"
       "barb-neon.ts.net"
