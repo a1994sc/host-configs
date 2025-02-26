@@ -25,6 +25,7 @@ in
         sans = [
           "10.3.10.6"
           "10.3.20.6"
+          "100.126.110.27"
         ];
         ssl.enable = true;
         alts = {
@@ -57,6 +58,7 @@ in
       sans = [
         "10.3.10.6"
         "10.3.20.6"
+        "100.126.110.27"
       ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
     };
   };
@@ -96,7 +98,13 @@ in
     "net.ipv4.conf.all.arp_filter" = 1;
   };
 
-  services.resolved.enable = false;
+  services.resolved = {
+    enable = true;
+    domains = [
+      "adrp.xyz"
+      "barb-neon.ts.net"
+    ];
+  };
 
   services.tailscale = {
     enable = true;
@@ -153,6 +161,7 @@ in
   networking = {
     hostName = "danu-02";
     nameservers = [
+      "100.100.100.100"
       "1.1.1.2"
       "1.0.0.2"
     ];
