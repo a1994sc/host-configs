@@ -115,6 +115,21 @@ in
     useRoutingFeatures = "server";
   };
 
+  services.coredns = {
+    enable = true;
+    config = ''
+      barb-neon.ts.net:5353 {
+        forward . 100.100.100.100
+      }
+
+      .:5353 {
+        forward . 127.0.0.1:8155
+        errors
+        cache
+      }
+    '';
+  };
+
   systemd.network = {
     enable = true;
     links = {
@@ -177,6 +192,7 @@ in
           allowedUDPPorts = [
             53 # DNS
             67 # DHCP
+            5353 # coredns testing
           ];
           allowedTCPPorts = [
             22 # SSH
@@ -184,6 +200,7 @@ in
             80 # HTTP
             443 # HTTPS
             1443 # STEP-CA
+            5353 # coredns testing
           ];
         };
       in
