@@ -15,7 +15,15 @@
 
   nixpkgs.overlays = [
     outputs.overlays.packages
-    outputs.overlays.build-packages
+    (
+      _final: _prev:
+      builtins.listToAttrs (
+        builtins.map (name: {
+          inherit name;
+          value = outputs.packages.${system}.${name};
+        }) (builtins.attrNames outputs.packages.${system})
+      )
+    )
   ];
   system.stateVersion = version;
   programs.bash.completion.enable = true;
