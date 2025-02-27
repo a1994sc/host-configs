@@ -115,21 +115,6 @@ in
     useRoutingFeatures = "server";
   };
 
-  services.coredns = {
-    enable = true;
-    config = ''
-      barb-neon.ts.net:5353 {
-        forward . 100.100.100.100
-      }
-
-      .:5353 {
-        forward . 127.0.0.1:8155
-        errors
-        cache
-      }
-    '';
-  };
-
   systemd.network = {
     enable = true;
     links = {
@@ -179,7 +164,8 @@ in
   networking = {
     hostName = "danu-01";
     nameservers = [
-      "100.100.100.100"
+      "10.3.10.5"
+      "10.3.10.6"
       "1.1.1.2"
       "1.0.0.2"
     ];

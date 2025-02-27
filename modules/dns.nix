@@ -57,7 +57,7 @@ in
           privacy = false;
         };
         minTlsServeVersion = "1.3";
-        ports.dns = 53;
+        ports.dns = 8153;
         prometheus.enable = false;
         upstreams = {
           init.strategy = "blocking";
@@ -67,17 +67,18 @@ in
         # keep-sorted end
       };
 
-      dnsdist = {
-        enable = false;
-        listenPort = 53;
-        listenAddress = "0.0.0.0";
-        extraConfig = ''
-          setACL({'0.0.0.0/0'})
-          truncateTC(true)
-          newServer("127.0.0.1:8153")
-          newServer({address="127.0.0.1:8154", pool="lab"})
-          addAction({'example.io.', 'adrp.xyz.', '10.in-addr.arpa.'}, PoolAction("lab"))
-          setSecurityPollSuffix("")
+      coredns = {
+        enable = true;
+        config = ''
+          barb-neon.ts.net:53 {
+            forward . 100.100.100.100
+          }
+
+          .:53 {
+            forward . 127.0.0.1:8153
+            errors
+            cache
+          }
         '';
       };
 
@@ -114,7 +115,7 @@ in
       };
     };
 
-    # systemd.services.dnsdist.before = [ "unbound.service" ];
+    systemd.services.coredns.before = [ "unbound.service" ];
     systemd.services.unbound.before = [ "blocky.service" ];
 
     boot.kernel.sysctl = {
