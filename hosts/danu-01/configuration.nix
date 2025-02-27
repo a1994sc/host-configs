@@ -178,7 +178,6 @@ in
           allowedUDPPorts = [
             53 # DNS
             67 # DHCP
-            5353 # coredns testing
           ];
           allowedTCPPorts = [
             22 # SSH
@@ -186,7 +185,6 @@ in
             80 # HTTP
             443 # HTTPS
             1443 # STEP-CA
-            5353 # coredns testing
           ];
         };
       in
