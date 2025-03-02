@@ -22,7 +22,6 @@ nixpkgs.lib.nixosSystem {
   };
   modules = [
     ../../.
-    inputs.nix-topology.nixosModules.default
     inputs.disko.nixosModules.disko
     ./disk-configuration.nix
 

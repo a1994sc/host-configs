@@ -26,34 +26,14 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    kapack = {
-      url = "github:oar-team/nur-kapack";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
     nix-alien.url = "github:thiagokokada/nix-alien";
-    nix-topology = {
-      url = "github:oddlama/nix-topology";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs-staging.url = "github:nixos/nixpkgs/staging-next";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    NUR.url = "github:nix-community/NUR";
-    nxc = {
-      url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.kapack.follows = "kapack";
-    };
     pre-commit-hooks = {
       inputs.nixpkgs.follows = "nixpkgs-unstable";
       url = "github:cachix/pre-commit-hooks.nix";
-    };
-    sops-nix = {
-      url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     systems.url = "github:nix-systems/default";
     treefmt-nix = {
@@ -106,7 +86,7 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ inputs.nix-topology.overlays.default ];
+          overlays = [ ];
         };
         agepkgs = inputs.agenix.packages.${system}.agenix;
         treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
@@ -138,19 +118,6 @@
         };
         formatter = treefmtEval.config.build.wrapper;
         devShells.default = nixpkgs.legacyPackages.${system}.mkShell { inherit shellHook buildInputs; };
-        topology = import inputs.nix-topology {
-          inherit pkgs;
-          modules = [
-            ./topology.nix
-            # { nixosConfigurations = self.nixosConfigurations; }
-            {
-              nixosConfigurations = {
-                inherit (self.nixosConfigurations) danu-01;
-                inherit (self.nixosConfigurations) danu-02;
-              };
-            }
-          ];
-        };
         packages =
           nixpkgs.lib.filesystem.packagesFromDirectoryRecursive {
             inherit (pkgs) callPackage;
