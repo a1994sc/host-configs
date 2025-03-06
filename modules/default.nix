@@ -51,7 +51,7 @@ in
   programs.bash.completion.enable = true;
   programs.nh = {
     enable = true;
-    flake = "/etc/nixos";
+    flake = inputs.self.outPath;
     package = pkgs.unstable.nh;
     clean = {
       enable = true;
@@ -70,6 +70,7 @@ in
   system.autoUpgrade = {
     enable = true;
     allowReboot = true;
+    flake = inputs.self.outPath;
   };
   system.stateVersion = version;
   time.timeZone = "America/New_York";
