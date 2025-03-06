@@ -69,7 +69,6 @@ in
         "100.89.86.119"
       ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
     };
-    security.harden.enable = true;
   };
 
   environment.systemPackages = [
