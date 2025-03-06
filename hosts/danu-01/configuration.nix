@@ -98,13 +98,6 @@ in
       builtins.attrNames danu-02.alts
     ));
 
-  # nixpkgs.overlays = [
-  #   (final: prev: {
-  #     final.config.systemd.services.comin.serviceConfig.ExecStart =
-  #       prev.config.systemd.services.comin.serviceConfig.ExecStart;
-  #   })
-  # ];
-
   nix.gc.dates = "Thu 02:00";
   system.autoUpgrade.dates = "Thu 04:00";
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
