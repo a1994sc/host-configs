@@ -9,6 +9,12 @@
       inputs.home-manager.follows = "home-manager";
       inputs.systems.follows = "systems";
     };
+    agenix-rekey = {
+      url = "github:oddlama/agenix-rekey";
+      # inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.pre-commit-hooks.follows = "pre-commit-hooks";
+      # inputs.treefmt-nix.follows = "treefmt-nix";
+    };
     ascii-pkgs.url = "github:a1994sc/nix-pkgs";
     comin = {
       url = "github:nlewo/comin";
@@ -80,13 +86,17 @@
           };
         }) (builtins.attrNames (builtins.readDir ./hosts))
       );
+      agenix-rekey = inputs.agenix-rekey.configure {
+        userFlake = self;
+        inherit (self) nixosConfigurations;
+      };
     }
     // flake-utils.lib.eachSystem sys (
       system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ ];
+          overlays = [ inputs.agenix-rekey.overlays.default ];
         };
         agepkgs = inputs.agenix.packages.${system}.agenix;
         treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
@@ -97,11 +107,11 @@
             mkdir -p $TMPDIR
           '';
         buildInputs = self.checks.${system}.pre-commit-check.enabledPackages ++ [
-          agepkgs
           pkgs.git
           pkgs.gnumake
           pkgs.nh
           pkgs.mdbook
+          pkgs.agenix-rekey
         ];
       in
       {

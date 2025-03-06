@@ -23,6 +23,8 @@ nixpkgs.lib.nixosSystem {
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.comin.nixosModules.comin
+    inputs.agenix.nixosModules.default
+    inputs.agenix-rekey.nixosModules.default
     inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     {
       imports = [
