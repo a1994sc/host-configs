@@ -25,12 +25,10 @@ nixpkgs.lib.nixosSystem {
     ./disk-configuration.nix
     {
       imports = [
-        ./agenix.nix
         ./configuration.nix
         ./hardware-configuration.nix
         ../../users/custodian
       ];
-      age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKgtCFdGSN+0iuaD6WpspN7tB7bZk0nuUqeY4Mq7k5Df";
     }
   ];
 }

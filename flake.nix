@@ -9,12 +9,6 @@
       inputs.home-manager.follows = "home-manager";
       inputs.systems.follows = "systems";
     };
-    agenix-rekey = {
-      url = "github:oddlama/agenix-rekey";
-      # inputs.nixpkgs.follows = "nixpkgs";
-      # inputs.pre-commit-hooks.follows = "pre-commit-hooks";
-      # inputs.treefmt-nix.follows = "treefmt-nix";
-    };
     ascii-pkgs.url = "github:a1994sc/nix-pkgs";
     comin = {
       url = "github:nlewo/comin";
@@ -86,19 +80,13 @@
           };
         }) (builtins.attrNames (builtins.readDir ./hosts))
       );
-      agenix-rekey = inputs.agenix-rekey.configure {
-        userFlake = self;
-        nixosConfigurations = {
-          inherit (self.nixosConfigurations) danu-01 danu-02 puck;
-        };
-      };
     }
     // flake-utils.lib.eachSystem sys (
       system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ inputs.agenix-rekey.overlays.default ];
+          overlays = [ ];
         };
         treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
         shellHook =
@@ -112,7 +100,6 @@
           pkgs.gnumake
           pkgs.nh
           pkgs.mdbook
-          pkgs.agenix-rekey
         ];
       in
       {
