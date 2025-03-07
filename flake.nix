@@ -88,7 +88,9 @@
       );
       agenix-rekey = inputs.agenix-rekey.configure {
         userFlake = self;
-        inherit (self) nixosConfigurations;
+        nixosConfigurations = {
+          inherit (self.nixosConfigurations) danu-01 danu-02 puck;
+        };
       };
     }
     // flake-utils.lib.eachSystem sys (
@@ -98,7 +100,6 @@
           inherit system;
           overlays = [ inputs.agenix-rekey.overlays.default ];
         };
-        agepkgs = inputs.agenix.packages.${system}.agenix;
         treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
         shellHook =
           self.checks.${system}.pre-commit-check.shellHook

@@ -22,19 +22,15 @@ nixpkgs.lib.nixosSystem {
   };
   modules = [
     ../../.
-    inputs.disko.nixosModules.disko
     ./disk-configuration.nix
-
-    inputs.home-manager.nixosModules.home-manager
-    inputs.comin.nixosModules.comin
-    inputs.agenix.nixosModules.default
-    inputs.agenix-rekey.nixosModules.default
     {
       imports = [
+        ./agenix.nix
         ./configuration.nix
         ./hardware-configuration.nix
         ../../users/custodian
       ];
+      age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGZ4rS2mbNzQYWtYxZIpDv+xLkI4UHLov8ICjH3FkkG";
     }
   ];
 }

@@ -20,11 +20,6 @@ nixpkgs.lib.nixosSystem {
   };
   modules = [
     ../../.
-    inputs.home-manager.nixosModules.home-manager
-    inputs.disko.nixosModules.disko
-    inputs.comin.nixosModules.comin
-    inputs.agenix.nixosModules.default
-    inputs.agenix-rekey.nixosModules.default
     inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     {
       imports = [
@@ -34,6 +29,7 @@ nixpkgs.lib.nixosSystem {
         ./disk-configuration.nix
         ./hardware-configuration.nix
       ];
+      age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKgtCFdGSN+0iuaD6WpspN7tB7bZk0nuUqeY4Mq7k5Df";
     }
   ];
 }
