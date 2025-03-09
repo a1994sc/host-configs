@@ -22,9 +22,6 @@ nixpkgs.lib.nixosSystem {
     ../../.
     "${nixpkgs}/nixos/modules/profiles/all-hardware.nix"
     "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix"
-    inputs.disko.nixosModules.disko
-    inputs.comin.nixosModules.comin
-    inputs.home-manager.nixosModules.home-manager
     {
       imports = [
         ./hardware-configuration.nix
