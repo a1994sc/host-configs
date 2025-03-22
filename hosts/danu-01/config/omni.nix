@@ -58,8 +58,8 @@ in
 
           export PS1
 
-          if [ -d ${config.home.homeDirectory}/.nix-profile/etc/profile.d/hm-session-vars.sh ]; then
-            . "${config.home.homeDirectory}/.nix-profile/etc/profile.d/hm-session-vars.sh"
+          if [ -d ${config.users.users.omni.home}/.nix-profile/etc/profile.d/hm-session-vars.sh ]; then
+            . "${config.users.users.omni.home}/.nix-profile/etc/profile.d/hm-session-vars.sh"
           fi
         '';
       };
