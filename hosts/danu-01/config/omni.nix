@@ -38,6 +38,7 @@ in
   nix.settings.allowed-users = [ "omni" ];
 
   systemd.tmpfiles.rules = [
+    ''v "${config.users.users.omni.home}/omni" 0770 omni omni''
     ''v "${config.users.users.omni.home}/omni/etcd" 0770 omni omni''
     ''v "${config.users.users.omni.home}/omni/certs" 0770 omni omni''
   ];
