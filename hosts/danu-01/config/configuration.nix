@@ -56,8 +56,8 @@ in
           "10.3.20.5"
           "danu-01.adrp.xyz"
         ];
-        age.pass = ../../encrypt/step-ca/pass.age;
-        age.key = ../../encrypt/step-ca/ca.key.age;
+        age.pass = (inputs.self.outPath + "/encrypt/step-ca/pass.age");
+        age.key = (inputs.self.outPath + "/encrypt/step-ca/ca.key.age");
       };
     };
     security.certs = {
