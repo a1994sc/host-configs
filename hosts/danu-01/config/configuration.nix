@@ -12,7 +12,7 @@ let
 in
 {
   imports = [
-    ../../modules
+    (inputs.self.outPath + "/modules")
   ];
 
   ascii = {

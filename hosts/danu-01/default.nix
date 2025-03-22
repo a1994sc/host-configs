@@ -23,12 +23,20 @@ nixpkgs.lib.nixosSystem {
   modules = [
     ../../.
     ./disk-configuration.nix
-    {
-      imports = [
-        ./configuration.nix
-        ./hardware-configuration.nix
-        ../../users/custodian
-      ];
-    }
+    (
+      _:
+      let
+        files = builtins.readDir ./config;
+        nixFiles = builtins.filter (name: name != "default.nix" && builtins.match ".*\\.nix" name != null) (
+          builtins.attrNames files
+        );
+        configImport = map (name: ./config + "/${name}") nixFiles;
+      in
+      {
+        imports = [
+          ../../users/custodian
+        ] ++ configImport;
+      }
+    )
   ];
 }

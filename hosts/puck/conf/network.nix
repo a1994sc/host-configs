@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   config,
   outputs,
   ...
@@ -47,10 +48,10 @@ in
       builtins.attrNames danu-02.alts
     ));
 
-  nix.settings.trusted-public-keys = [
-    "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
-    "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
-  ];
+  nix.settings.trusted-public-keys = lib.lists.unique (
+    (builtins.map (alt: danu-01.alts.${alt}.key) (builtins.attrNames danu-01.alts))
+    ++ (builtins.map (alt: danu-02.alts.${alt}.key) (builtins.attrNames danu-02.alts))
+  );
 
   services = {
     # keep-sorted start block=yes case=no
