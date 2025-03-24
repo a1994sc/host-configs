@@ -220,6 +220,7 @@ in
             value = {
               serverName = "${alt}.${cfg.domain}";
               extraConfig = ''
+                proxy_cache_lock on;
                 proxy_cache nix_cache_zone;
                 proxy_cache_valid 200 ${cfg.maxCacheAge};
                 proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_504 http_403 http_404 http_429;
