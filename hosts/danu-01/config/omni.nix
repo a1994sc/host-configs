@@ -6,7 +6,6 @@ let
     white = "97";
   };
   font.reset = "0";
-  format = font: color: "${font};${color}";
   escape = input: "\\[\\e[${input};11m\\]";
 in
 {
