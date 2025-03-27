@@ -10,6 +10,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
     loader.efi.canTouchEfiVariables = true;
     loader.systemd-boot.enable = true;
+    binfmt.preferStaticEmulators = true;
     binfmt.emulatedSystems = [
       "wasm32-wasi"
       "aarch64-linux"
