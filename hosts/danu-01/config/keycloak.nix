@@ -15,7 +15,7 @@
     };
     database = {
       inherit (config.services.postgresql) port;
-      type = "postgres";
+      type = "postgresql";
       name = "keycloak";
       host = "localhost";
     };
