@@ -67,6 +67,7 @@ in
         "10.3.10.5"
         "10.3.20.5"
         "100.89.86.119"
+        "keycloak.danu-01.adrp.xyz"
       ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
     };
   };
