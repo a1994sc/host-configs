@@ -14,7 +14,7 @@
       hostname-strict-https = false;
     };
     database = {
-      inherit (config.services.postgresql) port;
+      inherit (config.services.postgresql.settings) port;
       type = "postgresql";
       name = "keycloak";
       host = "localhost";
