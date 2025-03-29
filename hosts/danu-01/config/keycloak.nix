@@ -22,7 +22,7 @@
   };
 
   services.postgresql = {
-    port = 3306;
+    settings.port = 3306;
     package = pkgs.postgresql;
   };
 
