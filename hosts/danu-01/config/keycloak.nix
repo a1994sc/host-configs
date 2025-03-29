@@ -5,7 +5,7 @@
     package = pkgs.keycloak;
     settings = {
       hostname = "keycloak.danu-01.adrp.xyz";
-      hostname-strict-backchannel = true;
+      hostname-backchannel-dynamic = true;
       http-port = 8080;
       http-enabled = true;
       http-relative-path = "/";
