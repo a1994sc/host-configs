@@ -221,9 +221,9 @@ in
               --auth-saml-url "https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor"
             '';
 
-            devices = [
-              "/dev/net/tun:/dev/net/tun"
-            ];
+            # devices = [
+            #   "/dev/net/tun:/dev/net/tun"
+            # ];
 
             autoStart = true;
             autoUpdate = "registry";
