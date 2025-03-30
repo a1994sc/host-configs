@@ -177,64 +177,67 @@ in
           RestartSec = "1s";
         };
       };
-      services.podman.containers = {
-        omni-talos = {
-          image = "ghcr.io/siderolabs/omni:v0.47.1";
-          description = "Start Omni (podman)";
+      services.podman.containers =
+        let
+          cert = pkgs.writeText "ca.crt" (builtins.readFile (inputs.self.outPath + "/certs/derpy.crt"));
+        in
+        {
+          omni-talos = {
+            image = "ghcr.io/siderolabs/omni:v0.47.1";
+            description = "Start Omni (podman)";
 
-          labels.PODMAN_SYSTEMD_UNIT = "podman-pod-omni.service";
+            labels.PODMAN_SYSTEMD_UNIT = "podman-pod-omni.service";
 
-          extraConfig = {
-            Unit = {
-              Wants = [ "network-online.target" ];
-              Requires = [
-                "podman-pod-omni.service"
-              ];
-              After = [
-                "network-online.target"
-                "podman-pod-omni.service"
-              ];
+            extraConfig = {
+              Unit = {
+                Wants = [ "network-online.target" ];
+                Requires = [
+                  "podman-pod-omni.service"
+                ];
+                After = [
+                  "network-online.target"
+                  "podman-pod-omni.service"
+                ];
+              };
+              Install = {
+                WantedBy = [ "default.target" ];
+              };
             };
-            Install = {
-              WantedBy = [ "default.target" ];
-            };
+
+            exec = ''
+              --account-id="0ee79fa5-9387-4b31-aa53-d5e1a5f54384" \
+              --name=omni \
+              --private-key-source=file:///certs/omni.asc \
+              --event-sink-port=8091 \
+              --bind-addr=127.0.0.1:8087 \
+              --advertised-api-url=https://omni.danu-01.adrp.xyz:443/ \
+              --machine-api-bind-addr=127.0.0.1:8090 \
+              --siderolink-api-advertised-url=https://api.danu-01.adrp.xyz:443 \
+              --k8s-proxy-bind-addr=127.0.0.1:8100 \
+              --advertised-kubernetes-proxy-url=https://kube.danu-01.adrp.xyz:443 \
+              --siderolink-wireguard-advertised-addr=omni.danu-01.adrp.xyz:50180 \
+              --auth-auth0-enabled=false \
+              --auth-saml-enabled \
+              --auth-saml-url "https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor"
+            '';
+
+            autoStart = true;
+            autoUpdate = "registry";
+            extraPodmanArgs = [
+              "--net=host"
+              "--cap-add=NET_ADMIN"
+              "--pod=omni"
+              "--group-add=keep-groups"
+            ];
+
+            volumes = [
+              "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
+              "${config.age.secrets.omni-etcd.path}:/certs/omni.asc:ro"
+              "${cert}/ca.crt:/etc/ssl/certs/ca.crt:ro"
+              "/nix/store:/nix/store:ro"
+            ];
           };
-
-          exec = ''
-            --account-id="0ee79fa5-9387-4b31-aa53-d5e1a5f54384" \
-            --name=omni \
-            --private-key-source=file:///certs/omni.asc \
-            --event-sink-port=8091 \
-            --bind-addr=127.0.0.1:8087 \
-            --advertised-api-url=https://omni.danu-01.adrp.xyz:443/ \
-            --machine-api-bind-addr=127.0.0.1:8090 \
-            --siderolink-api-advertised-url=https://api.danu-01.adrp.xyz:443 \
-            --k8s-proxy-bind-addr=127.0.0.1:8100 \
-            --advertised-kubernetes-proxy-url=https://kube.danu-01.adrp.xyz:443 \
-            --siderolink-wireguard-advertised-addr=omni.danu-01.adrp.xyz:50180 \
-            --auth-auth0-enabled=false \
-            --auth-saml-enabled \
-            --auth-saml-url "https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor"
-          '';
-
-          autoStart = true;
-          autoUpdate = "registry";
-          extraPodmanArgs = [
-            "--net=host"
-            "--cap-add=NET_ADMIN"
-            "--pod=omni"
-            "--group-add=keep-groups"
-          ];
-
-          volumes = [
-            "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
-            "${config.age.secrets.omni-etcd.path}:/certs/omni.asc:ro"
-            "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro"
-            "/etc/static/ssl/certs/ca-certificates.crt:/etc/static/ssl/certs/ca-certificates.crt:ro"
-            "/nix/store:/nix/store:ro"
-          ];
         };
-      };
       home.stateVersion = "24.11";
     };
 }
