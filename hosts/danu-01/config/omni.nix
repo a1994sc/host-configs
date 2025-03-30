@@ -229,6 +229,9 @@ in
           volumes = [
             "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
             "${config.age.secrets.omni-etcd.path}:/certs/omni.asc:ro"
+            "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro"
+            "/etc/static/ssl/certs/ca-certificates.crt:/etc/static/ssl/certs/ca-certificates.crt:ro"
+            "/nix/store:/nix/store:ro"
           ];
         };
       };
