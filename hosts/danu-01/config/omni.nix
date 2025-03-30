@@ -53,13 +53,13 @@ in
     "omni-web" = {
       serverName = "omni.danu-01.adrp.xyz";
       locations."/" = {
-        proxyPass = "http://127.0.0.1:8080";
+        proxyPass = "http://127.0.0.1:8087";
         extraConfig = ''
           proxy_redirect      off;
           proxy_http_version  1.1;
           proxy_set_header    Upgrade $http_upgrade;
           proxy_set_header    Connection $connection_upgrade;
-          grpc_pass           grpc://127.0.0.1:8080;
+          grpc_pass           grpc://127.0.0.1:8087;
         '';
       };
       addSSL = lib.mkIf config.ascii.system.cache.ssl.enable true;
@@ -205,7 +205,7 @@ in
             --name=omni \
             --private-key-source=file:///certs/omni.asc \
             --event-sink-port=8091 \
-            --bind-addr=127.0.0.1:8080 \
+            --bind-addr=127.0.0.1:8087 \
             --advertised-api-url=https://omni.danu-01.adrp.xyz:443/ \
             --machine-api-bind-addr=127.0.0.1:8090 \
             --siderolink-api-advertised-url=https://api.danu-01.adrp.xyz:443 \
