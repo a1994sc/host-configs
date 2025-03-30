@@ -11,10 +11,10 @@
   };
 
   services.keycloak = {
-    enable = false;
+    enable = true;
     package = pkgs.keycloak;
     settings = {
-      hostname = "keycloak.danu-01.adrp.xyz";
+      hostname = "https://keycloak.danu-01.adrp.xyz";
       hostname-backchannel-dynamic = true;
       http-port = 8080;
       http-enabled = true;
@@ -33,7 +33,7 @@
   };
 
   services.postgresql = {
-    settings.port = 3306;
+    settings.port = 5432;
     package = pkgs.postgresql;
   };
 
