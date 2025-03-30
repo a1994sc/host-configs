@@ -8,7 +8,6 @@
 }:
 let
   danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
-  danu-01-vh = outputs.nixosConfigurations.danu-01.config.services.nginx.virtualHosts;
   danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
 in
 {
@@ -70,13 +69,14 @@ in
           "10.3.10.5"
           "10.3.20.5"
           "100.89.86.119"
+          "keycloak.danu-01.adrp.xyz"
+          "api.danu-01.adrp.xyz"
+          "omni.danu-01.adrp.xyz"
+          "kube.danu-01.adrp.xyz"
         ]
-        ++ (
-          lib.lists.unique (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts))
-          ++ (builtins.filter (name: builtins.match ".*\\.xyz" name != null) (
-            builtins.map (vh: danu-01-vh.${vh}.serverName) (builtins.attrNames danu-01-vh)
-          ))
-        );
+        ++ (lib.lists.unique (
+          builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts)
+        ));
     };
   };
 
