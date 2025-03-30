@@ -64,6 +64,11 @@ in
         '';
       };
 
+      programs.gpg = {
+        enable = true;
+        homedir = "${config.users.users.omni.home}/.config/gnupg";
+      };
+
       services.podman = {
         enable = true;
         autoUpdate.enable = true;
