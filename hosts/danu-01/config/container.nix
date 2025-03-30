@@ -2,14 +2,12 @@
 {
   virtualisation = {
     containers.enable = true;
-    oci-containers.backend = "podman";
-    podman = {
+    oci-containers.backend = "docker";
+    docker = {
       enable = true;
-      autoPrune.enable = true;
-      # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
-      # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
+      storageDriver = "btrfs";
+      rootless.enable = true;
+      rootless.setSocketVariable = true;
     };
 
     containers.storage.settings = {
@@ -28,9 +26,6 @@
 
   environment.systemPackages = with pkgs; [
     dive # look into docker image layers
-    podman
-    podman-tui # Terminal mgmt UI for Podman
-    passt # For Pasta rootless networking
   ];
 
   # Add 'newuidmap' and 'sh' to the PATH for users' Systemd units.

@@ -49,7 +49,6 @@ in
     ];
   };
 
-  virtualisation.oci-containers.backend = "docker";
   virtualisation.oci-containers.containers =
     let
       cert = inputs.self.outPath + "/certs/derpy-bundle.crt";
