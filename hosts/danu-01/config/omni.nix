@@ -49,12 +49,14 @@ in
     ];
   };
 
+  virtualisation.oci-containers.backend = "docker";
   virtualisation.oci-containers.containers =
     let
       cert = inputs.self.outPath + "/certs/derpy-bundle.crt";
     in
     {
       omni-talos = {
+        autoStart = true;
         image = "ghcr.io/siderolabs/omni:v0.47.1";
         hostname = "omni-talos";
         cmd = [
