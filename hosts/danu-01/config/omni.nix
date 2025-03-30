@@ -68,6 +68,10 @@ in
         enable = true;
       };
 
+      home.packages = [
+        pkgs.pinentry-tty
+      ];
+
       services.podman = {
         enable = true;
         autoUpdate.enable = true;
