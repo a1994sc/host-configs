@@ -179,7 +179,7 @@ in
       };
       services.podman.containers =
         let
-          cert = pkgs.writeText "ca.crt" (builtins.readFile (inputs.self.outPath + "/certs/derpy.crt"));
+          cert = inputs.self.outPath + "/certs/derpy.crt";
         in
         {
           omni-talos = {
