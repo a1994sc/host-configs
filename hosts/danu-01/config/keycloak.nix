@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 {
   services.keycloak = {
-    enable = true;
+    enable = false;
     package = pkgs.keycloak;
     settings = {
       hostname = "keycloak.danu-01.adrp.xyz";
