@@ -20,6 +20,7 @@ let
   };
   secrets = {
     # keep-sorted start
+    "keycloak/base.word" = machines.danu-01;
     "matchbox/ca.crt" = machines.danu-02;
     "matchbox/env" = machines.danu-02;
     "matchbox/tls.crt" = machines.danu-02;
@@ -31,7 +32,6 @@ let
     "step-ca/pass" = machines.danu-01;
     "step-ca/tls.crt" = machines.danu-01;
     "step-ca/tls.key" = machines.danu-01;
-    "keycloak/base.word" = machines.danu-01;
     # keep-sorted end
   };
   # keep-sorted end
