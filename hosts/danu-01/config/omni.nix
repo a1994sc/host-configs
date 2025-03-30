@@ -229,7 +229,10 @@ in
             autoUpdate = "registry";
             extraPodmanArgs = [
               "--net=host"
-              "--cap-add=NET_ADMIN"
+              "--cap-add=NET_ADMIN,NET_RAW,SYS_MODULE"
+              "--cap-drop=MKNOD,AUDIT_WRITE"
+              "--sysctl=net.ipv4.ip_forward=1"
+              "--sysctl=net.ipv4.conf.all.src_valid_mark=1"
               "--pod=omni"
               "--group-add=keep-groups"
             ];
