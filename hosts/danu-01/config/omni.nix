@@ -84,7 +84,8 @@ in
           "--device=/dev/net/tun:/dev/net/tun"
           "--net=host"
           "--privileged=true"
-          "--cap-add=NET_ADMIN,NET_RAW"
+          "--cap-add=NET_RAW"
+          "--cap-add=NET_ADMIN"
         ];
       };
     };
