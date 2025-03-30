@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 let
   color = {
     magenta = "35";
@@ -9,6 +14,13 @@ let
   escape = input: "\\[\\e[${input};11m\\]";
 in
 {
+  age.secrets.omni-etcd = {
+    file = inputs.self.outPath + "/encrypt/omni/etcd.asc.age";
+    mode = "0600";
+    owner = config.users.users.omni.name;
+    group = config.users.groups.omni.name;
+  };
+
   users.groups.omni = {
     name = "omni";
     gid = 917; # I setup UID/GID manually since I refer to those later
@@ -64,14 +76,6 @@ in
         '';
       };
 
-      programs.gpg = {
-        enable = true;
-      };
-
-      home.packages = [
-        pkgs.pinentry-tty
-      ];
-
       services.podman = {
         enable = true;
         autoUpdate.enable = true;
@@ -93,9 +97,6 @@ in
             ''
               -${pkgs.podman}/bin/podman pod create \
                 --replace \
-                --network=pasta \
-                --userns=host \
-                --label=PODMAN_SYSTEMD_UNIT="podman-pod-omni.service" \
                 omni
             ''
           ];
@@ -106,13 +107,15 @@ in
       };
       services.podman.containers = {
         omni-talos = {
-          # image = "ghcr.io/siderolabs/omni:v0.47.1";
-          image = "docker.io/library/registry:2.8.3";
+          image = "ghcr.io/siderolabs/omni:v0.47.1";
           description = "Start Omni (podman)";
+
+          labels.PODMAN_SYSTEMD_UNIT = "podman-pod-omni.service";
+          userns = "host";
 
           extraConfig = {
             Unit = {
-              Wants = [ "network-online.target" ]; # This might be ignored
+              Wants = [ "network-online.target" ];
               Requires = [
                 "podman-pod-omni.service"
               ];
@@ -126,16 +129,35 @@ in
             };
           };
 
+          exec = ''
+            --account-id="0ee79fa5-9387-4b31-aa53-d5e1a5f54384" \
+            --name=omni \
+            --private-key-source=file:///certs/omni.asc \
+            --event-sink-port=8091 \
+            --bind-addr=127.0.0.1:8080 \
+            --advertised-api-url=https://omni.danu-01.adrp.xyz:443/ \
+            --machine-api-bind-addr=127.0.0.1:8090 \
+            --siderolink-api-advertised-url=https://api.danu-01.adrp.xyz:443 \
+            --k8s-proxy-bind-addr=127.0.0.1:8100 \
+            --advertised-kubernetes-proxy-url=https://kube.danu-01.adrp.xyz:443 \
+            --siderolink-wireguard-advertised-addr=omni.danu-01.adrp.xyz:50180 \
+            --auth-auth0-enabled=false \
+            --auth-saml-enabled \
+            --auth-saml-url "https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor"
+          '';
+
           autoStart = true;
           autoUpdate = "registry";
           extraPodmanArgs = [
+            "--net=host"
+            "--cap-add=NET_ADMIN"
             "--pod=omni"
             "--group-add=keep-groups"
           ];
 
           volumes = [
             "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
-            "${config.users.users.omni.home}/omni/certs:/certs:ro"
+            "${config.age.secrets.omni-etcd.path}:/certs/omni.asc:ro"
           ];
         };
       };
