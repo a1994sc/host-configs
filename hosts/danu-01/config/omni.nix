@@ -72,7 +72,7 @@ in
           "--siderolink-wireguard-advertised-addr=omni.danu-01.adrp.xyz:50180"
           "--auth-auth0-enabled=false"
           "--auth-saml-enabled"
-          "--auth-saml-url \"https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor\""
+          "--auth-saml-url=https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor"
         ];
         volumes = [
           "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
