@@ -8,7 +8,7 @@
 }:
 let
   danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
-  danu-01-vh = outputs.nixosConfigurations.danu-01.config.services.nginx.virtualHost;
+  danu-01-vh = outputs.nixosConfigurations.danu-01.config.services.nginx.virtualHosts;
   danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
 in
 {
