@@ -38,7 +38,7 @@
       real_ip_recursive on;
     '';
     locations."/" = {
-      proxyPass = "localhost:8080";
+      proxyPass = "http://localhost:${builtins.toString config.services.keycloak.settings.http-port}";
       extraConfig = ''
         proxy_redirect off;
         proxy_set_header Host $host;
