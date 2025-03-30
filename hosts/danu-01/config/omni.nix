@@ -179,11 +179,7 @@ in
       };
       services.podman.containers =
         let
-          cert = pkgs.cacert.override {
-            extraCertificateFiles = [
-              (inputs.self.outPath + "/certs/derpy.crt")
-            ];
-          };
+          cert = (inputs.self.outPath + "/certs/derpy-bundle.crt");
         in
         {
           omni-talos = {
@@ -237,9 +233,8 @@ in
             volumes = [
               "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
               "${config.age.secrets.omni-etcd.path}:/certs/omni.asc:ro"
-              "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro"
-              "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/pki/tls/certs/ca-bundle.crt:ro"
-              "/nix/store:/nix/store:ro"
+              "${cert}:/etc/ssl/certs/ca-certificates.crt:ro"
+              "${cert}:/etc/pki/tls/certs/ca-bundle.crt:ro"
             ];
           };
         };
