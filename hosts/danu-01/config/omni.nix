@@ -33,7 +33,10 @@ in
     linger = true;
     isNormalUser = true;
     description = "Omni Controller";
-    extraGroups = [ "podman" ];
+    extraGroups = [
+      "podman"
+      "netdev"
+    ];
     shell = pkgs.bash;
     openssh.authorizedKeys.keys = [
       # keep-sorted start
