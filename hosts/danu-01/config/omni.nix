@@ -35,7 +35,6 @@ in
     description = "Omni Controller";
     extraGroups = [
       "podman"
-      "netdev"
     ];
     shell = pkgs.bash;
     openssh.authorizedKeys.keys = [
@@ -49,6 +48,45 @@ in
       # keep-sorted end
     ];
   };
+
+  virtualisation.oci-containers.containers =
+    let
+      cert = inputs.self.outPath + "/certs/derpy-bundle.crt";
+    in
+    {
+      omni-talos = {
+        image = "ghcr.io/siderolabs/omni:v0.47.1";
+        hostname = "omni-talos";
+        cmd = [
+          "--account-id=\"0ee79fa5-9387-4b31-aa53-d5e1a5f54384\""
+          "--name=omni"
+          "--private-key-source=file:///certs/omni.asc"
+          "--event-sink-port=8091"
+          "--bind-addr=127.0.0.1:8087"
+          "--advertised-api-url=https://omni.danu-01.adrp.xyz:443/"
+          "--machine-api-bind-addr=127.0.0.1:8090"
+          "--siderolink-api-advertised-url=https://api.danu-01.adrp.xyz:443"
+          "--k8s-proxy-bind-addr=127.0.0.1:8100"
+          "--advertised-kubernetes-proxy-url=https://kube.danu-01.adrp.xyz:443"
+          "--siderolink-wireguard-advertised-addr=omni.danu-01.adrp.xyz:50180"
+          "--auth-auth0-enabled=false"
+          "--auth-saml-enabled"
+          "--auth-saml-url \"https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor\""
+        ];
+        volumes = [
+          "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
+          "${config.age.secrets.omni-etcd.path}:/certs/omni.asc:ro"
+          "${cert}:/etc/ssl/certs/ca-certificates.crt:ro"
+          "${cert}:/etc/pki/tls/certs/ca-bundle.crt:ro"
+        ];
+        extraOptions = [
+          "--device=/dev/net/tun:/dev/net/tun"
+          "--net=host"
+          "--privileged=true"
+          "--cap-add=NET_ADMIN,NET_RAW"
+        ];
+      };
+    };
 
   nix.settings.allowed-users = [ "omni" ];
 
@@ -128,125 +166,25 @@ in
     ''v "${config.users.users.omni.home}/omni/etcd" 0770 omni omni''
   ];
 
-  home-manager.users.omni =
-    { pkgs, ... }:
-    {
-      manual.manpages.enable = false;
-      nixpkgs.config.allowUnfree = true;
-      news.display = "silent";
-      xdg.enable = true;
+  home-manager.users.omni = _: {
+    manual.manpages.enable = false;
+    nixpkgs.config.allowUnfree = true;
+    news.display = "silent";
+    xdg.enable = true;
 
-      programs.bash = {
-        enable = true;
-        enableCompletion = true;
-        bashrcExtra = ''
-          PS1="${escape color.magenta}\u${escape color.white}@\h:${escape color.cyan}[\w]: ${escape font.reset}"
+    programs.bash = {
+      enable = true;
+      enableCompletion = true;
+      bashrcExtra = ''
+        PS1="${escape color.magenta}\u${escape color.white}@\h:${escape color.cyan}[\w]: ${escape font.reset}"
 
-          export PS1
+        export PS1
 
-          if [ -d ${config.users.users.omni.home}/.nix-profile/etc/profile.d/hm-session-vars.sh ]; then
-            . "${config.users.users.omni.home}/.nix-profile/etc/profile.d/hm-session-vars.sh"
-          fi
-        '';
-      };
-
-      services.podman = {
-        enable = true;
-        autoUpdate.enable = true;
-      };
-
-      systemd.user.services.podman-pod-omni = {
-        Unit = {
-          Description = "Start podman 'omni' pod";
-          Wants = [ "network-online.target" ];
-          Requires = [ ];
-          After = [ "network-online.target" ];
-        };
-        Install.WantedBy = [ ];
-        Service = {
-          Type = "forking";
-          ExecStartPre = [
-            # This is needed for the Pod start automatically
-            "${pkgs.coreutils}/bin/sleep 3s"
-            ''
-              -${pkgs.podman}/bin/podman pod create \
-                --replace \
-                --userns=host \
-                omni
-            ''
-          ];
-          ExecStart = "${pkgs.podman}/bin/podman pod start omni";
-          ExecStop = "${pkgs.podman}/bin/podman pod stop omni";
-          RestartSec = "1s";
-        };
-      };
-      services.podman.containers =
-        let
-          cert = (inputs.self.outPath + "/certs/derpy-bundle.crt");
-        in
-        {
-          omni-talos = {
-            image = "ghcr.io/siderolabs/omni:v0.47.1";
-            description = "Start Omni (podman)";
-
-            labels.PODMAN_SYSTEMD_UNIT = "podman-pod-omni.service";
-
-            extraConfig = {
-              Unit = {
-                Wants = [ "network-online.target" ];
-                Requires = [
-                  "podman-pod-omni.service"
-                ];
-                After = [
-                  "network-online.target"
-                  "podman-pod-omni.service"
-                ];
-              };
-              Install = {
-                WantedBy = [ "default.target" ];
-              };
-            };
-
-            exec = ''
-              --account-id="0ee79fa5-9387-4b31-aa53-d5e1a5f54384" \
-              --name=omni \
-              --private-key-source=file:///certs/omni.asc \
-              --event-sink-port=8091 \
-              --bind-addr=127.0.0.1:8087 \
-              --advertised-api-url=https://omni.danu-01.adrp.xyz:443/ \
-              --machine-api-bind-addr=127.0.0.1:8090 \
-              --siderolink-api-advertised-url=https://api.danu-01.adrp.xyz:443 \
-              --k8s-proxy-bind-addr=127.0.0.1:8100 \
-              --advertised-kubernetes-proxy-url=https://kube.danu-01.adrp.xyz:443 \
-              --siderolink-wireguard-advertised-addr=omni.danu-01.adrp.xyz:50180 \
-              --auth-auth0-enabled=false \
-              --auth-saml-enabled \
-              --auth-saml-url "https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor"
-            '';
-
-            devices = [
-              "/dev/net/tun:/dev/net/tun"
-            ];
-
-            autoStart = true;
-            autoUpdate = "registry";
-            extraPodmanArgs = [
-              "--net=host"
-              "--privileged=true"
-              "--cap-add=NET_ADMIN,NET_RAW,SYS_MODULE"
-              "--cap-drop=MKNOD,AUDIT_WRITE"
-              "--pod=omni"
-              "--group-add=keep-groups"
-            ];
-
-            volumes = [
-              "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
-              "${config.age.secrets.omni-etcd.path}:/certs/omni.asc:ro"
-              "${cert}:/etc/ssl/certs/ca-certificates.crt:ro"
-              "${cert}:/etc/pki/tls/certs/ca-bundle.crt:ro"
-            ];
-          };
-        };
-      home.stateVersion = "24.11";
+        if [ -d ${config.users.users.omni.home}/.nix-profile/etc/profile.d/hm-session-vars.sh ]; then
+          . "${config.users.users.omni.home}/.nix-profile/etc/profile.d/hm-session-vars.sh"
+        fi
+      '';
     };
+    home.stateVersion = "24.11";
+  };
 }
