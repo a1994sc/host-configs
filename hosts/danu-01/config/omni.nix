@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
 }:
 let
@@ -48,10 +49,81 @@ in
 
   nix.settings.allowed-users = [ "omni" ];
 
+  services.nginx.virtualHosts = {
+    "omni-web" = {
+      serverName = "omni.danu-01.adrp.xyz";
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8080";
+        extraConfig = ''
+          proxy_redirect      off;
+          proxy_http_version  1.1;
+          proxy_set_header    Upgrade $http_upgrade;
+          proxy_set_header    Connection $connection_upgrade;
+          grpc_pass           grpc://127.0.0.1:8080;
+        '';
+      };
+      addSSL = lib.mkIf config.ascii.system.cache.ssl.enable true;
+      sslTrustedCertificate = lib.mkIf config.ascii.system.cache.ssl.enable config.ascii.system.cache.ssl.fullchain;
+      sslCertificateKey = lib.mkIf config.ascii.system.cache.ssl.enable config.ascii.system.cache.ssl.key;
+      sslCertificate = lib.mkIf config.ascii.system.cache.ssl.enable config.ascii.system.cache.ssl.cert;
+      listen = lib.mkIf config.ascii.system.cache.ssl.enable [
+        {
+          inherit (config.ascii.system.cache.ssl) port;
+          addr = "0.0.0.0";
+          ssl = true;
+        }
+      ];
+    };
+    "omni-api" = {
+      serverName = "api.danu-01.adrp.xyz";
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8090";
+        extraConfig = ''
+          proxy_redirect      off;
+          grpc_pass           grpc://127.0.0.1:8090;
+        '';
+      };
+      addSSL = lib.mkIf config.ascii.system.cache.ssl.enable true;
+      sslTrustedCertificate = lib.mkIf config.ascii.system.cache.ssl.enable config.ascii.system.cache.ssl.fullchain;
+      sslCertificateKey = lib.mkIf config.ascii.system.cache.ssl.enable config.ascii.system.cache.ssl.key;
+      sslCertificate = lib.mkIf config.ascii.system.cache.ssl.enable config.ascii.system.cache.ssl.cert;
+      listen = lib.mkIf config.ascii.system.cache.ssl.enable [
+        {
+          inherit (config.ascii.system.cache.ssl) port;
+          addr = "0.0.0.0";
+          ssl = true;
+        }
+      ];
+    };
+    "omni-k8s" = {
+      serverName = "kube.danu-01.adrp.xyz";
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8100";
+        extraConfig = ''
+          proxy_redirect      off;
+          proxy_pass          http://127.0.0.1:8100;
+          proxy_http_version  1.1;
+          proxy_set_header    Upgrade $http_upgrade;
+          proxy_set_header    Connection $connection_upgrade;
+        '';
+      };
+      addSSL = lib.mkIf config.ascii.system.cache.ssl.enable true;
+      sslTrustedCertificate = lib.mkIf config.ascii.system.cache.ssl.enable config.ascii.system.cache.ssl.fullchain;
+      sslCertificateKey = lib.mkIf config.ascii.system.cache.ssl.enable config.ascii.system.cache.ssl.key;
+      sslCertificate = lib.mkIf config.ascii.system.cache.ssl.enable config.ascii.system.cache.ssl.cert;
+      listen = lib.mkIf config.ascii.system.cache.ssl.enable [
+        {
+          inherit (config.ascii.system.cache.ssl) port;
+          addr = "0.0.0.0";
+          ssl = true;
+        }
+      ];
+    };
+  };
+
   systemd.tmpfiles.rules = [
-    ''v "${config.users.users.omni.home}/omni" 0770 omni omni''
+    ''v "${config.users.users.omni.home}/omni"      0770 omni omni''
     ''v "${config.users.users.omni.home}/omni/etcd" 0770 omni omni''
-    ''v "${config.users.users.omni.home}/omni/certs" 0770 omni omni''
   ];
 
   home-manager.users.omni =
@@ -97,6 +169,7 @@ in
             ''
               -${pkgs.podman}/bin/podman pod create \
                 --replace \
+                --userns=host \
                 omni
             ''
           ];
@@ -111,7 +184,6 @@ in
           description = "Start Omni (podman)";
 
           labels.PODMAN_SYSTEMD_UNIT = "podman-pod-omni.service";
-          userns = "host";
 
           extraConfig = {
             Unit = {
