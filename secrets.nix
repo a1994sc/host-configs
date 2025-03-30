@@ -31,6 +31,7 @@ let
     "step-ca/pass" = machines.danu-01;
     "step-ca/tls.crt" = machines.danu-01;
     "step-ca/tls.key" = machines.danu-01;
+    "keycloak/base.word" = machines.danu-01;
     # keep-sorted end
   };
   # keep-sorted end

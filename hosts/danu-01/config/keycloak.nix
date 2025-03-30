@@ -1,5 +1,15 @@
-{ pkgs, config, ... }:
 {
+  pkgs,
+  config,
+  inputs,
+  ...
+}:
+{
+  age.secrets.keycloak-database = {
+    file = inputs.self.outPath + "/encrypt/keycloak/base.word.age";
+    mode = "0600";
+  };
+
   services.keycloak = {
     enable = false;
     package = pkgs.keycloak;
@@ -18,6 +28,7 @@
       type = "postgresql";
       name = "keycloak";
       host = "localhost";
+      passwordFile = "${config.age.secrets.keycloak-database.path}";
     };
   };
 
