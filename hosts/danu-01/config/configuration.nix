@@ -59,6 +59,7 @@ in
         age.pass = inputs.self.outPath + "/encrypt/step-ca/pass.age";
         age.key = inputs.self.outPath + "/encrypt/step-ca/ca.key.age";
       };
+      getty.enable = true;
     };
     security.certs = {
       enable = true;
