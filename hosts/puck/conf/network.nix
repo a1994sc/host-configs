@@ -6,8 +6,8 @@
   ...
 }:
 let
-  danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
-  danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
+  danu-01 = outputs.nixosConfigurations.danu-01.config.ascii;
+  danu-02 = outputs.nixosConfigurations.danu-02.config.ascii;
 in
 {
   boot.kernel.sysctl = {
@@ -27,31 +27,48 @@ in
       "9.9.9.9" # fallback, clear web
     ];
     hosts = {
-      "10.3.10.5" = [
-        "danu-01.adrp.xyz"
-        "keycloak.danu-01.adrp.xyz"
-      ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
-      "10.3.10.6" = [
-        "danu-02.adrp.xyz"
-      ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
+      "10.3.10.5" =
+        [
+          "danu-01.adrp.xyz"
+        ]
+        ++ (lib.lists.unique (
+          (builtins.filter (name: builtins.match ".*\\.xyz" name != null) danu-01.security.certs.sans)
+          ++ (builtins.map (alt: "${alt}.${danu-01.system.cache.domain}") (
+            builtins.attrNames danu-01.system.cache.alts
+          ))
+        ));
+      "10.3.10.6" =
+        [
+          "danu-02.adrp.xyz"
+        ]
+        ++ (lib.lists.unique (
+          (builtins.filter (name: builtins.match ".*\\.xyz" name != null) danu-02.security.certs.sans)
+          ++ (builtins.map (alt: "${alt}.${danu-02.system.cache.domain}") (
+            builtins.attrNames danu-02.system.cache.alts
+          ))
+        ));
     };
   };
 
   nix.settings.substituters =
     [
-      "https://${danu-01.domain}?priority=10"
-      "https://${danu-02.domain}?priority=10"
+      "https://${danu-01.system.cache.domain}?priority=10"
+      "https://${danu-02.system.cache.domain}?priority=10"
     ]
-    ++ (builtins.map (alt: "https://${alt}.${danu-01.domain}?priority=15") (
-      builtins.attrNames danu-01.alts
+    ++ (builtins.map (alt: "https://${alt}.${danu-01.system.cache.domain}?priority=15") (
+      builtins.attrNames danu-01.system.cache.alts
     ))
-    ++ (builtins.map (alt: "https://${alt}.${danu-02.domain}?priority=10") (
-      builtins.attrNames danu-02.alts
+    ++ (builtins.map (alt: "https://${alt}.${danu-02.system.cache.domain}?priority=10") (
+      builtins.attrNames danu-02.system.cache.alts
     ));
 
   nix.settings.trusted-public-keys = lib.lists.unique (
-    (builtins.map (alt: danu-01.alts.${alt}.key) (builtins.attrNames danu-01.alts))
-    ++ (builtins.map (alt: danu-02.alts.${alt}.key) (builtins.attrNames danu-02.alts))
+    (builtins.map (alt: danu-01.system.cache.alts.${alt}.key) (
+      builtins.attrNames danu-01.system.cache.alts
+    ))
+    ++ (builtins.map (alt: danu-02.system.cache.alts.${alt}.key) (
+      builtins.attrNames danu-02.system.cache.alts
+    ))
   );
 
   services = {
