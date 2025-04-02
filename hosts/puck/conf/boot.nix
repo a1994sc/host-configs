@@ -25,6 +25,7 @@
     packages = [
       pkgs.yubikey-personalization
       pkgs.headsetcontrol
+      pkgs.logitech-udev-rules
     ];
   };
   system.autoUpgrade = {
