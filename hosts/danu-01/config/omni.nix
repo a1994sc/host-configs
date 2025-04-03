@@ -122,8 +122,10 @@ in
 
   nix.settings.allowed-users = [ "omni" ];
 
-  systemd.services.docker-rootless-registry.serviceConfig.User = "${config.users.users.custodian.name
-  }";
+  systemd.services.docker-rootless-registry = {
+    environment.DOCKER_HOST = "unix:///run/user/${toString config.users.users.custodian.uid}/docker.sock";
+    serviceConfig.User = "${config.users.users.custodian.name}";
+  };
 
   services.nginx.virtualHosts = {
     "omni-web" = {
