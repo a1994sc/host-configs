@@ -22,6 +22,13 @@ in
     group = config.users.groups.omni.name;
   };
 
+  age.secrets.omni-bare-metal = {
+    file = inputs.self.outPath + "/encrypt/omni/bare-metal.env.age";
+    mode = "0600";
+    owner = config.users.users.omni.name;
+    group = config.users.groups.omni.name;
+  };
+
   users.groups.omni = {
     name = "omni";
     gid = 917; # I setup UID/GID manually since I refer to those later
@@ -64,12 +71,12 @@ in
           "--private-key-source=file:///certs/omni.asc"
           "--event-sink-port=8091"
           "--bind-addr=127.0.0.1:8087"
-          "--advertised-api-url=https://omni.danu-01.adrp.xyz:443/"
+          "--advertised-api-url=https://omni.danu-01.adrp.xyz"
           "--machine-api-bind-addr=127.0.0.1:8090"
-          "--siderolink-api-advertised-url=https://api.danu-01.adrp.xyz:443"
+          "--siderolink-api-advertised-url=https://api.danu-01.adrp.xyz"
           "--k8s-proxy-bind-addr=127.0.0.1:8100"
-          "--advertised-kubernetes-proxy-url=https://kube.danu-01.adrp.xyz:443"
-          "--siderolink-wireguard-advertised-addr=omni.danu-01.adrp.xyz:50180"
+          "--advertised-kubernetes-proxy-url=https://kube.danu-01.adrp.xyz"
+          "--siderolink-wireguard-advertised-addr=10.3.20.5:50180"
           "--auth-auth0-enabled=false"
           "--auth-saml-enabled"
           "--auth-saml-url=https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor"
@@ -86,6 +93,24 @@ in
           "--privileged=true"
           "--cap-add=NET_RAW"
           "--cap-add=NET_ADMIN"
+        ];
+      };
+      omni-bare-metal = {
+        autoStart = true;
+        image = "ghcr.io/siderolabs/omni-infra-provider-bare-metal:v0.1.3";
+        hostname = "omni-bare-metal";
+        cmd = [
+          "--api-advertise-address=10.3.20.5"
+        ];
+        volumes = [
+          "${cert}:/etc/ssl/certs/ca-certificates.crt:ro"
+          "${cert}:/etc/pki/tls/certs/ca-bundle.crt:ro"
+        ];
+        environmentFiles = [
+          config.age.secrets.omni-bare-metal.path
+        ];
+        extraOptions = [
+          "--net=host"
         ];
       };
     };
