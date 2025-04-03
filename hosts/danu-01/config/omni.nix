@@ -113,9 +113,17 @@ in
           "--net=host"
         ];
       };
+      rootless-registry = {
+        autoStart = true;
+        image = "ghcr.io/distribution/distribution:3.0.0";
+        hostname = "registry";
+      };
     };
 
   nix.settings.allowed-users = [ "omni" ];
+
+  systemd.services.docker-rootless-registry.serviceConfig.User = "${config.users.users.custodian.name
+  }";
 
   services.nginx.virtualHosts = {
     "omni-web" = {
