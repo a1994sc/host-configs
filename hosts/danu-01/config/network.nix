@@ -1,0 +1,126 @@
+{
+  system,
+  lib,
+  pkgs,
+  outputs,
+  ...
+}:
+let
+  danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
+  danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
+in
+{
+  networking.hosts = {
+    "10.3.10.5" = [
+      "danu-01.adrp.xyz"
+      "keycloak.danu-01.adrp.xyz"
+      "api.danu-01.adrp.xyz"
+      "omni.danu-01.adrp.xyz"
+      "kube.danu-01.adrp.xyz"
+    ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
+    "10.3.10.6" = [
+      "danu-02.adrp.xyz"
+    ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
+  };
+
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.default.arp_filter" = 1;
+    "net.ipv4.conf.all.arp_filter" = 1;
+  };
+
+  services.resolved = {
+    # disabled because it does not play nice with custom dns servers
+    enable = false;
+    domains = [
+      "adrp.xyz"
+      "barb-neon.ts.net"
+    ];
+  };
+
+  services.tailscale = {
+    enable = true;
+    permitCertUid = "1000";
+    useRoutingFeatures = "server";
+  };
+
+  systemd.network = {
+    enable = true;
+    links = {
+      "00-core" = {
+        matchConfig.PermanentMACAddress = "10:e7:c6:14:ae:56";
+        linkConfig.Name = "eth0";
+      };
+    };
+    netdevs = {
+      "20-vlan20" = {
+        netdevConfig = {
+          Kind = "vlan";
+          Name = "vlan20";
+        };
+        vlanConfig.Id = 20;
+      };
+    };
+    networks = {
+      "00-core" = {
+        enable = true;
+        matchConfig = {
+          MACAddress = "10:e7:c6:14:ae:56";
+          Type = "ether";
+        };
+        address = [
+          "10.3.10.5/24"
+        ];
+        routes = [
+          { Gateway = "10.3.10.1"; }
+        ];
+        vlan = [
+          "vlan20"
+        ];
+      };
+      "40-vlan20" = {
+        matchConfig.Name = "vlan20";
+        address = [
+          "10.3.20.5/23"
+        ];
+        routes = [
+          { Gateway = "10.3.20.1"; }
+        ];
+      };
+    };
+  };
+
+  networking = {
+    hostName = "danu-01";
+    nameservers = [
+      "10.3.10.5"
+      "10.3.10.6"
+      "1.1.1.2"
+      "1.0.0.2"
+    ];
+    useNetworkd = true;
+    useDHCP = false;
+    firewall.enable = pkgs.lib.mkForce true;
+    firewall.interfaces =
+      let
+        FIREWALL_PORTS = {
+          allowedUDPPorts = [
+            53 # DNS
+            67 # DHCP
+            69 # TFTP
+          ];
+          allowedTCPPorts = [
+            22 # SSH
+            53 # DNS
+            80 # HTTP
+            443 # HTTPS
+            1443 # STEP-CA
+          ];
+        };
+      in
+      {
+        eth0 = FIREWALL_PORTS;
+        vlan20 = FIREWALL_PORTS;
+      };
+    interfaces.eth0.useDHCP = lib.mkForce false;
+  };
+}

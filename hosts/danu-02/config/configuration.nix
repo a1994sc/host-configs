@@ -11,6 +11,6 @@
     pkgs.rage
   ];
 
-  system.autoUpgrade.dates = "Thu 04:00";
+  system.autoUpgrade.dates = "Tue 04:00";
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
 }
