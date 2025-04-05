@@ -95,29 +95,29 @@ in
           "--cap-add=NET_ADMIN"
         ];
       };
-      omni-bare-metal = {
-        autoStart = true;
-        image = "ghcr.io/siderolabs/omni-infra-provider-bare-metal:v0.1.3";
-        hostname = "omni-bare-metal";
-        cmd = [
-          "--api-advertise-address=10.3.20.5"
-        ];
-        volumes = [
-          "${cert}:/etc/ssl/certs/ca-certificates.crt:ro"
-          "${cert}:/etc/pki/tls/certs/ca-bundle.crt:ro"
-        ];
-        environmentFiles = [
-          config.age.secrets.omni-bare-metal.path
-        ];
-        extraOptions = [
-          "--net=host"
-        ];
-      };
-      rootless-registry = {
-        autoStart = true;
-        image = "ghcr.io/distribution/distribution:3.0.0";
-        hostname = "registry";
-      };
+      # omni-bare-metal = {
+      #   autoStart = true;
+      #   image = "ghcr.io/siderolabs/omni-infra-provider-bare-metal:v0.1.3";
+      #   hostname = "omni-bare-metal";
+      #   cmd = [
+      #     "--api-advertise-address=10.3.20.5"
+      #   ];
+      #   volumes = [
+      #     "${cert}:/etc/ssl/certs/ca-certificates.crt:ro"
+      #     "${cert}:/etc/pki/tls/certs/ca-bundle.crt:ro"
+      #   ];
+      #   environmentFiles = [
+      #     config.age.secrets.omni-bare-metal.path
+      #   ];
+      #   extraOptions = [
+      #     "--net=host"
+      #   ];
+      # };
+      # rootless-registry = {
+      #   autoStart = true;
+      #   image = "ghcr.io/distribution/distribution:3.0.0";
+      #   hostname = "registry";
+      # };
     };
 
   nix.settings.allowed-users = [ "omni" ];
