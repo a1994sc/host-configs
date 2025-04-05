@@ -47,6 +47,7 @@ in
   nix.settings.allowed-users = [ "canister" ];
 
   systemd.services.docker-rootless-registry = {
+    enable = true;
     environment.DOCKER_HOST = "unix:///run/user/${toString config.users.users.canister.uid}/docker.sock";
     serviceConfig.User = "${config.users.users.canister.name}";
   };
