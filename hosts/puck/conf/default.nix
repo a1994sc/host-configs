@@ -29,6 +29,7 @@ in
       yubikey-manager
       yubioath-flutter
       btrfs-assistant
+      solaar
 
       libreoffice-qt6-still
       hunspell
