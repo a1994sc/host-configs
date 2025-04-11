@@ -30,6 +30,7 @@ in
       yubioath-flutter
       btrfs-assistant
       solaar
+      docker-compose
 
       libreoffice-qt6-still
       hunspell
