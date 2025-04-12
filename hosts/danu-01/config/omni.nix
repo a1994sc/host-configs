@@ -22,13 +22,6 @@ in
     group = config.users.groups.omni.name;
   };
 
-  age.secrets.omni-bare-metal = {
-    file = inputs.self.outPath + "/encrypt/omni/bare-metal.env.age";
-    mode = "0600";
-    owner = config.users.users.omni.name;
-    group = config.users.groups.omni.name;
-  };
-
   users.groups.omni = {
     name = "omni";
     gid = 917; # I setup UID/GID manually since I refer to those later
