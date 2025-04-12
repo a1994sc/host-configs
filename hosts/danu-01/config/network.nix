@@ -6,21 +6,31 @@
   ...
 }:
 let
-  danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
-  danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
+  danu-01 = outputs.nixosConfigurations.danu-01.config.ascii;
+  danu-02 = outputs.nixosConfigurations.danu-02.config.ascii;
 in
 {
   networking.hosts = {
-    "10.3.10.5" = [
-      "danu-01.adrp.xyz"
-      "keycloak.danu-01.adrp.xyz"
-      "api.danu-01.adrp.xyz"
-      "omni.danu-01.adrp.xyz"
-      "kube.danu-01.adrp.xyz"
-    ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
-    "10.3.10.6" = [
-      "danu-02.adrp.xyz"
-    ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
+    "10.3.10.5" =
+      [
+        "danu-01.adrp.xyz"
+      ]
+      ++ (lib.lists.unique (
+        (builtins.filter (name: builtins.match ".*\\.xyz" name != null) danu-01.security.certs.sans)
+        ++ (builtins.map (alt: "${alt}.${danu-01.system.cache.domain}") (
+          builtins.attrNames danu-01.system.cache.alts
+        ))
+      ));
+    "10.3.10.6" =
+      [
+        "danu-02.adrp.xyz"
+      ]
+      ++ (lib.lists.unique (
+        (builtins.filter (name: builtins.match ".*\\.xyz" name != null) danu-02.security.certs.sans)
+        ++ (builtins.map (alt: "${alt}.${danu-02.system.cache.domain}") (
+          builtins.attrNames danu-02.system.cache.alts
+        ))
+      ));
   };
 
   boot.kernel.sysctl = {
