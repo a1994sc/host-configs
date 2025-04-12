@@ -51,7 +51,11 @@ in
 
   virtualisation.oci-containers.containers.omni-talos =
     let
-      cert = inputs.self.outPath + "/certs/derpy-bundle.crt";
+      cert = pkgs.cacert.override {
+        extraCertificateFiles = [
+          (inputs.self.outPath + "/certs/derpy-bundle.crt")
+        ];
+      };
     in
     {
       autoStart = true;
@@ -76,8 +80,8 @@ in
       volumes = [
         "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
         "${config.age.secrets.omni-etcd.path}:/certs/omni.asc:ro"
-        "${cert}:/etc/ssl/certs/ca-certificates.crt:ro"
-        "${cert}:/etc/pki/tls/certs/ca-bundle.crt:ro"
+        "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro"
+        "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/pki/tls/certs/ca-bundle.crt:ro"
       ];
       extraOptions = [
         "--device=/dev/net/tun:/dev/net/tun"
