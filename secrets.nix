@@ -25,7 +25,7 @@ let
     "matchbox/env" = machines.danu-02;
     "matchbox/tls.crt" = machines.danu-02;
     "matchbox/tls.key" = machines.danu-02;
-    "omni/bare-metal.env" = machines.danu-01;
+    "omni/bare-metal.env" = machines.danu-02;
     "omni/etcd.asc" = machines.danu-01;
     "powerdns/primary.env" = machines.danu-01;
     "powerdns/primary.replica" = machines.danu-01;
