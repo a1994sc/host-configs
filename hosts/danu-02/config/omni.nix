@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -42,9 +43,42 @@ in
     hostname = "registry";
   };
 
+  virtualisation.oci-containers.containers.omni-bare-metal =
+    let
+      cert = pkgs.cacert {
+        extraCertificateFiles = [
+          (inputs.self.outPath + "/certs/derpy-bundle.crt")
+        ];
+      };
+    in
+    {
+      autoStart = true;
+      image = "ghcr.io/siderolabs/omni-infra-provider-bare-metal:v0.1.3";
+      hostname = "omni-bare-metal";
+      cmd = [
+        "--api-advertise-address=10.3.20.6"
+      ];
+      volumes = [
+        "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro"
+        "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/pki/tls/certs/ca-bundle.crt:ro"
+      ];
+      environmentFiles = [
+        config.age.secrets.omni-bare-metal.path
+      ];
+      extraOptions = [
+        "--net=host"
+      ];
+    };
+
   nix.settings.allowed-users = [ "canister" ];
 
   systemd.services.docker-rootless-registry = {
+    enable = true;
+    environment.DOCKER_HOST = "unix:///run/user/${toString config.users.users.canister.uid}/docker.sock";
+    serviceConfig.User = "${config.users.users.canister.name}";
+  };
+
+  systemd.services.omni-bare-metal = {
     enable = true;
     environment.DOCKER_HOST = "unix:///run/user/${toString config.users.users.canister.uid}/docker.sock";
     serviceConfig.User = "${config.users.users.canister.name}";
