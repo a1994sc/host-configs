@@ -21,15 +21,8 @@ let
   secrets = {
     # keep-sorted start
     "keycloak/base.word" = machines.danu-01;
-    "matchbox/ca.crt" = machines.danu-02;
-    "matchbox/env" = machines.danu-02;
-    "matchbox/tls.crt" = machines.danu-02;
-    "matchbox/tls.key" = machines.danu-02;
-    "omni/bare-metal.env" = machines.danu-02;
+    "omni/bare-metal.env" = machines.danu-01;
     "omni/etcd.asc" = machines.danu-01;
-    "powerdns/primary.env" = machines.danu-01;
-    "powerdns/primary.replica" = machines.danu-01;
-    "powerdns/replica.env" = machines.danu-02;
     "step-ca/ca.key" = machines.danu-01;
     "step-ca/pass" = machines.danu-01;
     "step-ca/tls.crt" = machines.danu-01;
