@@ -14,6 +14,13 @@ let
   escape = input: "\\[\\e[${input};11m\\]";
 in
 {
+  age.secrets.omni-bare-metal = {
+    file = inputs.self.outPath + "/encrypt/omni/bare-metal.env.age";
+    mode = "0600";
+    owner = config.users.users.canister.name;
+    group = config.users.groups.canister.name;
+  };
+
   users.groups.canister = {
     name = "canister";
     gid = 917;
