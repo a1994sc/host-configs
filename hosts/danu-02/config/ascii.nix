@@ -46,14 +46,6 @@ in
           # keep-sorted end
         };
       };
-      matchbox = {
-        enable = false;
-        talosVersion = "1-9";
-        age.ca = ../../encrypt/matchbox/ca.crt.age;
-        age.crt = ../../encrypt/matchbox/tls.crt.age;
-        age.key = ../../encrypt/matchbox/tls.key.age;
-        age.env = ../../encrypt/matchbox/env.age;
-      };
     };
     security.certs = {
       enable = true;

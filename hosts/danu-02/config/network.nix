@@ -115,17 +115,14 @@ in
         FIREWALL_PORTS = {
           allowedUDPPorts = [
             53 # DNS
-            # 67 # DHCP
-            # 69 # TFTP
-            # 4011 # TFTP
+            67 # DHCP
+            69 # TFTP
           ];
           allowedTCPPorts = [
             22 # SSH
             53 # DNS
             80 # HTTP
             443 # HTTPS
-            # 8080 # Matchbox
-            # 8443 # Matchbox
           ];
         };
       in
