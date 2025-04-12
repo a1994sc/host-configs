@@ -90,11 +90,6 @@ in
 
   nix.settings.allowed-users = [ "omni" ];
 
-  systemd.services.docker-omni-talos = {
-    environment.DOCKER_HOST = "unix:///run/user/${toString config.users.users.omni.uid}/docker.sock";
-    serviceConfig.User = "${config.users.users.omni.name}";
-  };
-
   services.nginx.virtualHosts = {
     "omni-web" = {
       serverName = "omni.danu-01.adrp.xyz";
