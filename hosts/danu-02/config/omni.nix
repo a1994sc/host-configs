@@ -52,7 +52,7 @@ in
 
   virtualisation.oci-containers.containers.omni-bare-metal =
     let
-      cert = pkgs.cacert {
+      cert = pkgs.cacert.override {
         extraCertificateFiles = [
           (inputs.self.outPath + "/certs/derpy-bundle.crt")
         ];
