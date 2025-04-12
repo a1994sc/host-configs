@@ -13,6 +13,11 @@ let
   };
   font.reset = "0";
   escape = input: "\\[\\e[${input};11m\\]";
+  cert = pkgs.cacert.override {
+    extraCertificateFiles = [
+      (inputs.self.outPath + "/certs/derpy-bundle.crt")
+    ];
+  };
 in
 {
   age.secrets.omni-etcd = {
@@ -49,48 +54,62 @@ in
     ];
   };
 
-  virtualisation.oci-containers.containers.omni-talos =
-    let
-      cert = pkgs.cacert.override {
-        extraCertificateFiles = [
-          (inputs.self.outPath + "/certs/derpy-bundle.crt")
-        ];
-      };
-    in
-    {
-      autoStart = true;
-      image = "ghcr.io/siderolabs/omni:v0.47.1";
-      hostname = "omni-talos";
-      cmd = [
-        "--account-id=\"0ee79fa5-9387-4b31-aa53-d5e1a5f54384\""
-        "--name=omni"
-        "--private-key-source=file:///certs/omni.asc"
-        "--event-sink-port=8091"
-        "--bind-addr=127.0.0.1:8087"
-        "--advertised-api-url=https://omni.danu-01.adrp.xyz"
-        "--machine-api-bind-addr=127.0.0.1:8090"
-        "--siderolink-api-advertised-url=https://api.danu-01.adrp.xyz"
-        "--k8s-proxy-bind-addr=127.0.0.1:8100"
-        "--advertised-kubernetes-proxy-url=https://kube.danu-01.adrp.xyz"
-        "--siderolink-wireguard-advertised-addr=10.3.20.5:50180"
-        "--auth-auth0-enabled=false"
-        "--auth-saml-enabled"
-        "--auth-saml-url=https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor"
-      ];
-      volumes = [
-        "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
-        "${config.age.secrets.omni-etcd.path}:/certs/omni.asc:ro"
-        "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro"
-        "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/pki/tls/certs/ca-bundle.crt:ro"
-      ];
-      extraOptions = [
-        "--device=/dev/net/tun:/dev/net/tun"
-        "--net=host"
-        "--privileged=true"
-        "--cap-add=NET_RAW"
-        "--cap-add=NET_ADMIN"
-      ];
-    };
+  virtualisation.oci-containers.containers.omni-talos = {
+    autoStart = true;
+    image = "ghcr.io/siderolabs/omni:v0.47.1";
+    hostname = "omni-talos";
+    cmd = [
+      "--account-id=\"0ee79fa5-9387-4b31-aa53-d5e1a5f54384\""
+      "--name=omni"
+      "--private-key-source=file:///certs/omni.asc"
+      "--event-sink-port=8091"
+      "--bind-addr=127.0.0.1:8087"
+      "--advertised-api-url=https://omni.danu-01.adrp.xyz"
+      "--machine-api-bind-addr=127.0.0.1:8090"
+      "--siderolink-api-advertised-url=https://api.danu-01.adrp.xyz"
+      "--k8s-proxy-bind-addr=127.0.0.1:8100"
+      "--advertised-kubernetes-proxy-url=https://kube.danu-01.adrp.xyz"
+      "--siderolink-wireguard-advertised-addr=10.3.20.5:50180"
+      "--auth-auth0-enabled=false"
+      "--auth-saml-enabled"
+      "--auth-saml-url=https://keycloak.danu-01.adrp.xyz/realms/omni/protocol/saml/descriptor"
+    ];
+    volumes = [
+      "${config.users.users.omni.home}/omni/etcd:/_out/etcd"
+      "${config.age.secrets.omni-etcd.path}:/certs/omni.asc:ro"
+      "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro"
+      "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/pki/tls/certs/ca-bundle.crt:ro"
+    ];
+    extraOptions = [
+      "--device=/dev/net/tun:/dev/net/tun"
+      "--net=host"
+      "--privileged=true"
+      "--cap-add=NET_RAW"
+      "--cap-add=NET_ADMIN"
+    ];
+  };
+
+  virtualisation.oci-containers.containers.omni-bare-metal = {
+    autoStart = true;
+    image = "ghcr.io/siderolabs/omni-infra-provider-bare-metal:v0.1.3";
+    hostname = "omni-bare-metal";
+    cmd = [
+      "--api-advertise-address=10.3.20.5"
+    ];
+    volumes = [
+      "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro"
+      "${cert}/etc/ssl/certs/ca-bundle.crt:/etc/pki/tls/certs/ca-bundle.crt:ro"
+    ];
+    environmentFiles = [
+      config.age.secrets.omni-bare-metal.path
+    ];
+    extraOptions = [
+      "--net=host"
+      "--privileged=true"
+      "--cap-add=NET_RAW"
+      "--cap-add=NET_ADMIN"
+    ];
+  };
 
   nix.settings.allowed-users = [ "omni" ];
 
