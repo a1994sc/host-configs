@@ -78,7 +78,7 @@ in
     serviceConfig.User = "${config.users.users.canister.name}";
   };
 
-  systemd.services.omni-bare-metal = {
+  systemd.services.docker-omni-bare-metal = {
     enable = true;
     environment.DOCKER_HOST = "unix:///run/user/${toString config.users.users.canister.uid}/docker.sock";
     serviceConfig.User = "${config.users.users.canister.name}";
