@@ -91,8 +91,8 @@ in
   nix.settings.allowed-users = [ "omni" ];
 
   systemd.services.docker-omni-talos = {
-    environment.DOCKER_HOST = "unix:///run/user/${toString config.users.users.custodian.uid}/docker.sock";
-    serviceConfig.User = "${config.users.users.custodian.name}";
+    environment.DOCKER_HOST = "unix:///run/user/${toString config.users.users.omni.uid}/docker.sock";
+    serviceConfig.User = "${config.users.users.omni.name}";
   };
 
   services.nginx.virtualHosts = {
