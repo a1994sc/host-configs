@@ -20,12 +20,8 @@
     };
   };
 
-  users.groups.podman = {
-    name = "podman";
-  };
-
   environment.systemPackages = with pkgs; [
-    dive # look into docker image layers
+    dive
   ];
 
   # Add 'newuidmap' and 'sh' to the PATH for users' Systemd units.
