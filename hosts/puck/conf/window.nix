@@ -45,7 +45,7 @@
     pkgs.xdg-desktop-portal-gtk
   ];
   environment.sessionVariables = {
-    WAYLAND_DISPLAY = "wayland-0";
+    # WAYLAND_DISPLAY = "wayland-0";
     QT_QPA_PLATFORM = "wayland"; # Qt Applications
     GDK_BACKEND = "wayland"; # GTK Applications
     XDG_SESSION_TYPE = "wayland"; # Electron Applications
