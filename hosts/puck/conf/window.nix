@@ -29,6 +29,7 @@
   services.displayManager = {
     sddm.enable = true;
     sddm.wayland.enable = true;
+    # sddm.settings.General.DisplayServer = "wayland";
     defaultSession = "plasma";
   };
   services.xserver = {
@@ -49,5 +50,6 @@
     QT_QPA_PLATFORM = "wayland"; # Qt Applications
     GDK_BACKEND = "wayland"; # GTK Applications
     XDG_SESSION_TYPE = "wayland"; # Electron Applications
+    # NIXOS_OZONE_WL = "1";
   };
 }
