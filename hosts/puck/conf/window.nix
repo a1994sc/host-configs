@@ -50,6 +50,8 @@
     QT_QPA_PLATFORM = "wayland"; # Qt Applications
     GDK_BACKEND = "wayland"; # GTK Applications
     XDG_SESSION_TYPE = "wayland"; # Electron Applications
+    SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+    NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
     # NIXOS_OZONE_WL = "1";
   };
 }
