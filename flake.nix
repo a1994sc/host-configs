@@ -70,16 +70,23 @@
     in
     {
       overlays = import ./overlays { inherit inputs; };
-      nixosConfigurations = builtins.listToAttrs (
-        map (name: {
-          inherit name;
-          value = builtins.import ./hosts/${name} {
-            inherit nixpkgs inputs;
-            inherit (self) outputs;
-            inherit self;
-          };
-        }) (builtins.attrNames (builtins.readDir ./hosts))
-      );
+      nixosConfigurations = {
+        puck = builtins.import ./hosts/puck {
+          inherit nixpkgs inputs;
+          inherit (self) outputs;
+          inherit self;
+        };
+        danu-01 = builtins.import ./hosts/danu-01 {
+          inherit nixpkgs inputs;
+          inherit (self) outputs;
+          inherit self;
+        };
+        danu-02 = builtins.import ./hosts/danu-02 {
+          inherit nixpkgs inputs;
+          inherit (self) outputs;
+          inherit self;
+        };
+      };
     }
     // flake-utils.lib.eachSystem sys (
       system:
@@ -121,29 +128,7 @@
             inherit (pkgs) callPackage;
             directory = ./pkgs;
           }
-          // inputs.ascii-pkgs.packages.${system}
-          // builtins.listToAttrs (
-            builtins.concatLists (
-              builtins.concatLists (
-                builtins.map
-                  (
-                    name:
-                    builtins.map (
-                      version:
-                      builtins.map (asset: {
-                        name = pkgs.lib.removeSuffix ".nix" "${name}-${version}-${asset}";
-                        value = pkgs.callPackage ./assets/${name}/${version}/${asset} { };
-                      }) (builtins.attrNames (builtins.readDir ./assets/${name}/${version}))
-                    ) (builtins.attrNames (builtins.readDir ./assets/${name}))
-                  )
-                  (
-                    builtins.attrNames (
-                      pkgs.lib.attrsets.filterAttrs (_n: v: v == "directory") (builtins.readDir ./assets)
-                    )
-                  )
-              )
-            )
-          );
+          // inputs.ascii-pkgs.packages.${system};
       }
     );
 }

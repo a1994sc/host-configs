@@ -63,7 +63,7 @@ in
 
   virtualisation.oci-containers.containers.omni-talos = {
     autoStart = true;
-    image = "ghcr.io/siderolabs/omni:v0.47.1";
+    image = "ghcr.io/siderolabs/omni:v0.48.3";
     hostname = "omni-talos";
     cmd = [
       "--account-id=\"0ee79fa5-9387-4b31-aa53-d5e1a5f54384\""
