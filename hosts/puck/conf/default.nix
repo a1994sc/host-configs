@@ -36,6 +36,7 @@ in
       hunspell
       vlc
       inputs.nix-alien.packages.${system}.nix-alien
+      qemu_full
     ];
   };
   programs.nix-ld.enable = true;
