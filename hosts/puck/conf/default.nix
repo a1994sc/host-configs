@@ -37,6 +37,7 @@ in
       vlc
       inputs.nix-alien.packages.${system}.nix-alien
       qemu_full
+      virtiofsd
     ];
   };
   programs.nix-ld.enable = true;
