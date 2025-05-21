@@ -27,7 +27,7 @@ in
       "9.9.9.9" # fallback, clear web
     ];
     hosts = {
-      "10.3.10.5" =
+      "100.89.86.119" =
         [
           "danu-01.adrp.xyz"
         ]
@@ -37,7 +37,7 @@ in
             builtins.attrNames danu-01.system.cache.alts
           ))
         ));
-      "10.3.10.6" =
+      "100.126.110.27" =
         [
           "danu-02.adrp.xyz"
         ]
