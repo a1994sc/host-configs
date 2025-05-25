@@ -8,7 +8,7 @@
       headsetcontrol
     ];
   };
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services = {
     # keep-sorted start block=yes case=no

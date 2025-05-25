@@ -43,7 +43,6 @@ let
 in
 {
   manual.manpages.enable = false;
-  nixpkgs.config.allowUnfree = true;
   news.display = "silent";
   xdg.enable = true;
   services.home-manager.autoUpgrade.enable = true;
