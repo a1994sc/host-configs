@@ -93,6 +93,7 @@
     python3
     wget
     # keep-sorted end
+    (lib.hiPrio pkgs.uutils-coreutils-noprefix)
   ];
   system.autoUpgrade = {
     enable = true;
