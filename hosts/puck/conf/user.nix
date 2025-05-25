@@ -4,6 +4,7 @@
 }:
 {
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
+  programs.fish.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
@@ -13,6 +14,7 @@
     sudo.u2fAuth = true;
   };
   services.pcscd.enable = true;
+  users.users.ascii.shell = pkgs.fish;
   users.users.ascii.packages = with pkgs; [
     # keep-sorted start
     firefox
