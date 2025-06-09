@@ -18,8 +18,8 @@
       ],
       "groupName": "Sidero Labs",
       "groupSlug": "sidero-labs",
-      "matchPackagePatterns": [
-        "ghcr.io/siderolabs/*"
+      "matchPackageNames": [
+        "/ghcr.io/siderolabs/*/"
       ]
     }
   ],
