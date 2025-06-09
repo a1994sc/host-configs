@@ -11,6 +11,18 @@
   "github-actions": {
     "enabled": false
   },
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "groupName": "Sidero Labs",
+      "groupSlug": "sidero-labs",
+      "matchPackagePatterns": [
+        "ghcr.io/siderolabs/*"
+      ]
+    }
+  ],
   "separateMajorMinor": false,
   "customManagers": [
     {
