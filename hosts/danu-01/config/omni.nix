@@ -63,6 +63,7 @@ in
 
   virtualisation.oci-containers.containers.omni-talos = {
     autoStart = true;
+    # renovate: datasource=docker
     image = "ghcr.io/siderolabs/omni:v0.48.3";
     hostname = "omni-talos";
     cmd = [
@@ -98,6 +99,7 @@ in
 
   virtualisation.oci-containers.containers.omni-bare-metal = {
     autoStart = true;
+    # renovate: datasource=docker
     image = "ghcr.io/siderolabs/omni-infra-provider-bare-metal:v0.1.3";
     hostname = "omni-bare-metal";
     cmd = [

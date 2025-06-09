@@ -11,5 +11,20 @@
   "github-actions": {
     "enabled": false
   },
-  "separateMajorMinor": false
+  "separateMajorMinor": false,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": [
+        "Process custom dependencies"
+      ],
+      "managerFilePatterns": [
+        "/(^|/).+\\.nix$/"
+      ],
+      "matchStrings": [
+        "(?m:# renovate: datasource=(?<datasource>\\S+)\n.+image = \"(?<depName>[a-z0-9\\.].+):(?<currentValue>v?(?:[0-9]+\\.?){3})\";\n)"
+      ],
+      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}"
+    }
+  ]
 }
