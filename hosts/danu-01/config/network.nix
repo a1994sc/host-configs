@@ -49,6 +49,7 @@ in
 
   services.tailscale = {
     enable = true;
+    package = pkgs.unstable.tailscale;
     permitCertUid = "1000";
     useRoutingFeatures = "server";
   };
