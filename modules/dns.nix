@@ -71,7 +71,7 @@ in
       coredns = {
         enable = true;
         package = (
-          pkgs.coredns {
+          pkgs.coredns.override {
             externalPlugins = [
               "records"
             ];
