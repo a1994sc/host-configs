@@ -70,6 +70,13 @@ in
       coredns = {
         enable = true;
         config = ''
+          adrp.xyz {
+            records {
+              omni.danu-01 360 IN A 10.3.20.5
+              kube.danu-01 360 IN A 10.3.20.5
+              api.danu-01  360 IN A 10.3.20.5
+            }
+          }
           barb-neon.ts.net:53 {
             forward . 100.100.100.100
           }
