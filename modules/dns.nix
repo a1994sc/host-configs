@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -69,6 +70,13 @@ in
 
       coredns = {
         enable = true;
+        package = (
+          pkgs.coredns {
+            externalPlugins = [
+              "records"
+            ];
+          }
+        );
         config = ''
           adrp.xyz {
             records {
