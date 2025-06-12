@@ -74,7 +74,7 @@ in
       "--bind-addr=127.0.0.1:8087"
       "--advertised-api-url=https://omni.danu-01.adrp.xyz"
       "--machine-api-bind-addr=0.0.0.0:8090"
-      "--siderolink-api-advertised-url=grpc://10.3.20.5:8100"
+      "--siderolink-api-advertised-url=grpc://10.3.20.5:8090"
       "--k8s-proxy-bind-addr=127.0.0.1:8100"
       "--advertised-kubernetes-proxy-url=https://kube.danu-01.adrp.xyz"
       "--siderolink-wireguard-advertised-addr=10.3.20.5:50180"
