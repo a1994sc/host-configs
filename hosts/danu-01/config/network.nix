@@ -126,6 +126,7 @@ in
             443 # HTTPS
             1443 # STEP-CA
             50042 # OMNI
+            8090 # OMNI
           ];
         };
       in
