@@ -73,8 +73,13 @@ in
         package = (
           pkgs.coredns.override {
             externalPlugins = [
-              "records"
+              {
+                name = "records";
+                repo = "github.com/coredns/records";
+                version = "a3157e710d9e57c75e4950a3750228f3ed9bb47a";
+              }
             ];
+            vendorHash = "sha256-7AmuJfwhCWP98SrXT01DYsDVhoKvI3bq1cA4bpNv/Sc=";
           }
         );
         config = ''
