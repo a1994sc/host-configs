@@ -103,8 +103,6 @@ in
   networking = {
     hostName = "danu-01";
     nameservers = [
-      "10.3.10.5"
-      "10.3.10.6"
       "1.1.1.2"
       "1.0.0.2"
     ];
