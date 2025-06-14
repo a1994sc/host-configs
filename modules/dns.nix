@@ -86,6 +86,7 @@ in
           }
 
           .:53 {
+            hosts
             forward . 127.0.0.1:8153
             errors
             cache
