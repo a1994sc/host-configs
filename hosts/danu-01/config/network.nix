@@ -40,7 +40,7 @@ in
 
   services.resolved = {
     # disabled because it does not play nice with custom dns servers
-    enable = false;
+    enable = true;
     domains = [
       "adrp.xyz"
       "barb-neon.ts.net"
@@ -90,6 +90,10 @@ in
     hostName = "danu-01";
     useNetworkd = true;
     useDHCP = false;
+    nameservers = [
+      "1.1.1.2"
+      "1.0.0.2"
+    ];
     firewall.enable = pkgs.lib.mkForce true;
     firewall.interfaces =
       let
