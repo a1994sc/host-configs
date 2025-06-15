@@ -10,20 +10,6 @@ let
   port = 8153;
 in
 {
-  networking.nat.enable = true;
-  networking.nat.externalInterface = "eth0";
-  networking.nat.forwardPorts = [
-    {
-      destination = "127.0.0.1:${builtins.toString port}";
-      proto = "tcp";
-      sourcePort = 53;
-    }
-    {
-      destination = "127.0.0.1:${builtins.toString port}";
-      proto = "udp";
-      sourcePort = 53;
-    }
-  ];
   services = {
     blocky.enable = true;
     blocky.settings = {
@@ -83,11 +69,13 @@ in
       enable = true;
       package = inputs.ascii-pkgs.packages.${system}.coredns-records;
       config = ''
-        barb-neon.ts.net:${builtins.toString port} {
+        barb-neon.ts.net:53 {
+          bind eth0
           forward . 100.100.100.100
         }
 
-        .:${builtins.toString port} {
+        .:53 {
+          bind eth0
           hosts
           forward . 127.0.0.1:${builtins.toString (port + 1)}
           errors
