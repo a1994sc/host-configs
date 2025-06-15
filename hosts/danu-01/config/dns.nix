@@ -85,7 +85,7 @@ in
           forward . 100.100.100.100
         }
 
-        .:${port} {
+        .:${builtins.toString port} {
           hosts
           forward . 127.0.0.1:${builtins.toString (port + 1)}
           errors
