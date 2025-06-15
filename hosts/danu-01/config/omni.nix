@@ -200,7 +200,6 @@ in
 
   home-manager.users.omni = _: {
     manual.manpages.enable = false;
-    nixpkgs.config.allowUnfree = true;
     news.display = "silent";
     xdg.enable = true;
 
