@@ -76,11 +76,16 @@ in
 
         .:53 {
           bind eth0
-          hosts
           log
           forward . 127.0.0.1:${builtins.toString (port + 1)}
           errors
           cache
+        }
+
+        adrp.xyz:53 {
+          bind eth0
+          hosts
+          log
         }
       '';
     };
