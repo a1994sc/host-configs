@@ -12,6 +12,10 @@ in
 {
   options.ascii.system.dns = with lib; {
     enable = mkEnableOption "dns";
+    port = lib.mkOption {
+      type = lib.types.ints.u16;
+      default = 8153;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -60,11 +64,11 @@ in
           privacy = false;
         };
         minTlsServeVersion = "1.3";
-        ports.dns = 8153;
+        ports.dns = cfg.port + 1;
         prometheus.enable = false;
         upstreams = {
           init.strategy = "blocking";
-          groups.default = [ "127.0.0.1:8155" ];
+          groups.default = [ "127.0.0.1:${builtins.toString (cfg.port + 2)}" ];
           timeout = "2s";
         };
         # keep-sorted end
@@ -75,14 +79,22 @@ in
         package = inputs.ascii-pkgs.packages.${system}.coredns-records;
         config = ''
           barb-neon.ts.net:53 {
+            bind eth0
             forward . 100.100.100.100
           }
 
           .:53 {
-            hosts
-            forward . 127.0.0.1:8153
+            bind eth0
+            log
+            forward . 127.0.0.1:${builtins.toString (cfg.port + 1)}
             errors
             cache
+          }
+
+          adrp.xyz:53 {
+            bind eth0
+            hosts
+            log
           }
         '';
       };
@@ -100,7 +112,7 @@ in
         harden-glue = "yes";
         interface = "127.0.0.1";
         num-threads = 1;
-        port = 8155;
+        port = cfg.port + 2;
         prefer-ip6 = "no";
         prefetch = "yes";
         private-address = [

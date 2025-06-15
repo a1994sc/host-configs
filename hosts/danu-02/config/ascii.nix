@@ -14,7 +14,6 @@ in
 
   ascii = {
     system = {
-      bare.enable = true;
       dns.enable = true;
       cache = {
         enable = false;
