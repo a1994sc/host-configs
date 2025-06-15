@@ -59,7 +59,7 @@ in
       prometheus.enable = false;
       upstreams = {
         init.strategy = "blocking";
-        groups.default = [ "127.0.0.1:8155" ];
+        groups.default = [ "127.0.0.1:${builtins.toString port + 2}" ];
         timeout = "2s";
       };
       # keep-sorted end
@@ -77,6 +77,7 @@ in
         .:53 {
           bind eth0
           hosts
+          log
           forward . 127.0.0.1:${builtins.toString (port + 1)}
           errors
           cache
