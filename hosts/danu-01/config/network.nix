@@ -39,7 +39,6 @@ in
   };
 
   services.resolved = {
-    # disabled because it does not play nice with custom dns servers
     enable = true;
     domains = [
       "adrp.xyz"
