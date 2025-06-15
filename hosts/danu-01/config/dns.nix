@@ -81,7 +81,7 @@ in
       enable = true;
       package = inputs.ascii-pkgs.packages.${system}.coredns-records;
       config = ''
-        barb-neon.ts.net:${port} {
+        barb-neon.ts.net:${builtins.toString port} {
           forward . 100.100.100.100
         }
 
