@@ -10,6 +10,7 @@ let
   port = 8153;
 in
 {
+  networking.nat.enable = true;
   networking.nat.forwardPorts = [
     {
       destination = "127.0.0.1:${8153}";
