@@ -47,7 +47,7 @@ in
       };
     };
     security.certs = {
-      enable = false;
+      enable = true;
       name = "danu-02.adrp.xyz";
       sans = [
         "10.3.10.6"
