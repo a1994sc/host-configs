@@ -16,7 +16,7 @@ in
     system = {
       dns.enable = true;
       cache = {
-        enable = false;
+        enable = true;
         domain = "danu-02.adrp.xyz";
         sans = [
           "10.3.10.6"
