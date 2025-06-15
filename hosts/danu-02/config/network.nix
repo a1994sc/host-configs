@@ -87,8 +87,13 @@ in
         vlan = [
           "vlan20"
         ];
+        dns = [
+          "1.1.1.2"
+          "1.0.0.2"
+        ];
       };
       "40-vlan20" = {
+        enable = false;
         matchConfig.Name = "vlan20";
         address = [
           "10.3.20.6/23"
@@ -96,16 +101,16 @@ in
         routes = [
           { Gateway = "10.3.20.1"; }
         ];
+        dns = [
+          "1.1.1.2"
+          "1.0.0.2"
+        ];
       };
     };
   };
 
   networking = {
     hostName = "danu-02";
-    nameservers = [
-      "1.1.1.2"
-      "1.0.0.2"
-    ];
     useNetworkd = true;
     useDHCP = false;
     firewall.enable = pkgs.lib.mkForce true;

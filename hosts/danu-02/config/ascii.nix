@@ -17,7 +17,7 @@ in
       bare.enable = true;
       dns.enable = true;
       cache = {
-        enable = true;
+        enable = false;
         domain = "danu-02.adrp.xyz";
         sans = [
           "10.3.10.6"
@@ -48,7 +48,7 @@ in
       };
     };
     security.certs = {
-      enable = true;
+      enable = false;
       name = "danu-02.adrp.xyz";
       sans = [
         "10.3.10.6"

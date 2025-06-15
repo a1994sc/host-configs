@@ -62,15 +62,6 @@ in
         linkConfig.Name = "eth0";
       };
     };
-    netdevs = {
-      "20-vlan20" = {
-        netdevConfig = {
-          Kind = "vlan";
-          Name = "vlan20";
-        };
-        vlanConfig.Id = 20;
-      };
-    };
     networks = {
       "00-core" = {
         enable = true;
@@ -87,14 +78,9 @@ in
         vlan = [
           "vlan20"
         ];
-      };
-      "40-vlan20" = {
-        matchConfig.Name = "vlan20";
-        address = [
-          "10.3.20.5/23"
-        ];
-        routes = [
-          { Gateway = "10.3.20.1"; }
+        dns = [
+          "1.1.1.2"
+          "1.0.0.2"
         ];
       };
     };
@@ -102,10 +88,6 @@ in
 
   networking = {
     hostName = "danu-01";
-    nameservers = [
-      "1.1.1.2"
-      "1.0.0.2"
-    ];
     useNetworkd = true;
     useDHCP = false;
     firewall.enable = pkgs.lib.mkForce true;
@@ -130,7 +112,6 @@ in
       in
       {
         eth0 = FIREWALL_PORTS;
-        vlan20 = FIREWALL_PORTS;
       };
     interfaces.eth0.useDHCP = lib.mkForce false;
   };

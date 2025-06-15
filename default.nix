@@ -77,11 +77,11 @@
   # Set your time zone.
   time.timeZone = "America/New_York";
   nixpkgs.config.allowUnfree = true;
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-    extraLocaleSettings.LC_ALL = "en_US.UTF-8";
-    supportedLocales = [ "all" ];
-  };
+  # i18n = {
+  #   defaultLocale = "en_US.UTF-8";
+  #   extraLocaleSettings.LC_ALL = "en_US.UTF-8";
+  #   supportedLocales = [ "all" ];
+  # };
   environment.systemPackages = with pkgs; [
     # keep-sorted start prefix_order=staging,unstable,
     unstable.nh
