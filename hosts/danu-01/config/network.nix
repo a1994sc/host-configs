@@ -10,28 +10,28 @@ let
   danu-02 = outputs.nixosConfigurations.danu-02.config.ascii;
 in
 {
-  # networking.hosts = {
-  #   "10.3.10.5" =
-  #     [
-  #       "danu-01.adrp.xyz"
-  #     ]
-  #     ++ (lib.lists.unique (
-  #       (builtins.filter (name: builtins.match ".*\\.xyz" name != null) danu-01.security.certs.sans)
-  #       ++ (builtins.map (alt: "${alt}.${danu-01.system.cache.domain}") (
-  #         builtins.attrNames danu-01.system.cache.alts
-  #       ))
-  #     ));
-  #   "10.3.10.6" =
-  #     [
-  #       "danu-02.adrp.xyz"
-  #     ]
-  #     ++ (lib.lists.unique (
-  #       (builtins.filter (name: builtins.match ".*\\.xyz" name != null) danu-02.security.certs.sans)
-  #       ++ (builtins.map (alt: "${alt}.${danu-02.system.cache.domain}") (
-  #         builtins.attrNames danu-02.system.cache.alts
-  #       ))
-  #     ));
-  # };
+  networking.hosts = {
+    "10.3.10.5" =
+      [
+        "danu-01.adrp.xyz"
+      ]
+      ++ (lib.lists.unique (
+        (builtins.filter (name: builtins.match ".*\\.xyz" name != null) danu-01.security.certs.sans)
+        ++ (builtins.map (alt: "${alt}.${danu-01.system.cache.domain}") (
+          builtins.attrNames danu-01.system.cache.alts
+        ))
+      ));
+    "10.3.10.6" =
+      [
+        "danu-02.adrp.xyz"
+      ]
+      ++ (lib.lists.unique (
+        (builtins.filter (name: builtins.match ".*\\.xyz" name != null) danu-02.security.certs.sans)
+        ++ (builtins.map (alt: "${alt}.${danu-02.system.cache.domain}") (
+          builtins.attrNames danu-02.system.cache.alts
+        ))
+      ));
+  };
 
   boot.kernel.sysctl = {
     "net.ipv4.conf.default.arp_filter" = 1;
@@ -46,12 +46,12 @@ in
     ];
   };
 
-  # services.tailscale = {
-  #   enable = true;
-  #   package = pkgs.unstable.tailscale;
-  #   permitCertUid = "1000";
-  #   useRoutingFeatures = "server";
-  # };
+  services.tailscale = {
+    enable = true;
+    package = pkgs.unstable.tailscale;
+    permitCertUid = "1000";
+    useRoutingFeatures = "server";
+  };
 
   systemd.network = {
     enable = true;

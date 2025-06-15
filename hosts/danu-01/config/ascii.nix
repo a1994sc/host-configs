@@ -17,7 +17,7 @@ in
     system = {
       dns.enable = true;
       cache = {
-        enable = false;
+        enable = true;
         domain = "danu-01.adrp.xyz";
         sans = [
           "10.3.10.5"
@@ -47,7 +47,7 @@ in
         };
       };
       step = {
-        enable = false;
+        enable = true;
         dnsNames = [
           "10.3.10.5"
           "10.3.20.5"
@@ -56,10 +56,9 @@ in
         age.pass = inputs.self.outPath + "/encrypt/step-ca/pass.age";
         age.key = inputs.self.outPath + "/encrypt/step-ca/ca.key.age";
       };
-      getty.enable = true;
     };
     security.certs = {
-      enable = false;
+      enable = true;
       name = "danu-01.adrp.xyz";
       sans =
         [

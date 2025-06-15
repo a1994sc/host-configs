@@ -12,7 +12,7 @@
   };
 
   services.keycloak = {
-    enable = false;
+    enable = true;
     package = pkgs.keycloak;
     settings = {
       hostname = "https://keycloak.danu-01.adrp.xyz";
