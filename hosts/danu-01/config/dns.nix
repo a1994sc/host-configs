@@ -14,12 +14,12 @@ in
   networking.nat.externalInterface = "eth0";
   networking.nat.forwardPorts = [
     {
-      destination = "127.0.0.1:${8153}";
+      destination = "127.0.0.1:${builtins.toString port}";
       proto = "tcp";
       sourcePort = 53;
     }
     {
-      destination = "127.0.0.1:${8153}";
+      destination = "127.0.0.1:${builtins.toString port}";
       proto = "udp";
       sourcePort = 53;
     }
