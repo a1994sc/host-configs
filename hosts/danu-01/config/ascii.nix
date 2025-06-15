@@ -21,7 +21,7 @@ in
         domain = "danu-01.adrp.xyz";
         sans = [
           "10.3.10.5"
-          "10.3.20.5"
+          # "10.3.20.5"
           "100.89.86.119"
         ];
         ssl.enable = true;
@@ -63,7 +63,7 @@ in
       sans =
         [
           "10.3.10.5"
-          "10.3.20.5"
+          # "10.3.20.5"
           "100.89.86.119"
           "keycloak.danu-01.adrp.xyz"
           "api.danu-01.adrp.xyz"
