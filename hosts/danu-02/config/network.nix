@@ -92,7 +92,7 @@ in
         ];
       };
       "40-vlan20" = {
-        enable = false;
+        enable = true;
         matchConfig.Name = "vlan20";
         address = [
           "10.3.20.6/23"
