@@ -11,6 +11,7 @@ let
 in
 {
   networking.nat.enable = true;
+  networking.nat.externalInterface = "eth0";
   networking.nat.forwardPorts = [
     {
       destination = "127.0.0.1:${8153}";
