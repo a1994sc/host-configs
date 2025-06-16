@@ -32,12 +32,12 @@ in
             # Advertising
             "https://v.firebog.net/hosts/AdguardDNS.txt"
             "https://v.firebog.net/hosts/Admiral.txt"
-            # Malicious
-            "https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt"
-            "https://phishing.army/download/phishing_army_blocklist_extended.txt"
             # Tracking
             "https://v.firebog.net/hosts/Easyprivacy.txt"
             "https://v.firebog.net/hosts/Prigent-Ads.txt"
+            # Malicious
+            "https://v.firebog.net/hosts/Prigent-Crypto.txt"
+            "https://v.firebog.net/hosts/RPiList-Malware.txt"
           ];
           blockTTL = "1m";
           blockType = "zeroIp";
