@@ -56,6 +56,15 @@ in
         bootstrapDns = "1.1.1.1";
         connectIPVersion = "dual";
         filtering.queryTypes = [ "AAAA" ];
+        hostsFile = {
+          sources = [
+            "/etc/hosts"
+          ];
+          hostsTTL = "360s";
+          refreshPeriod = "1h";
+          filterLoopback = true;
+          loading.strategy = "fast";
+        };
         log = {
           level = "info";
           format = "text";
@@ -88,12 +97,6 @@ in
             forward . 127.0.0.1:${builtins.toString (cfg.port + 1)}
             errors
             cache
-          }
-
-          adrp.xyz:53 {
-            bind eth0
-            hosts
-            log
           }
         '';
       };
