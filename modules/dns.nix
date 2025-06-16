@@ -75,7 +75,7 @@ in
 
       coredns = {
         enable = true;
-        package = inputs.ascii-pkgs.packages.${system}.coredns-records;
+        package = inputs.ascii-pkgs.packages.${system}.coredns;
         config = ''
           barb-neon.ts.net:53 {
             bind eth0
