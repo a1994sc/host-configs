@@ -5,6 +5,7 @@
   version,
   inputs,
   system,
+  self,
   ...
 }:
 {
@@ -45,6 +46,7 @@
     domain = "adrp.xyz";
     search = [ "adrp.xyz" ];
   };
+  users.defaultUserShell = pkgs.fish;
   nix = {
     # keep-sorted start block=yes case=no
     gc = {
@@ -93,7 +95,6 @@
     python3
     wget
     # keep-sorted end
-    # (lib.hiPrio pkgs.uutils-coreutils-noprefix)
   ];
   system.autoUpgrade = {
     enable = true;
@@ -109,7 +110,7 @@
   };
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
-  home-manager.users.root = import ./users/root;
+  home-manager.users.root = import "${self}/users/root";
   services.comin = {
     hostname = config.networking.hostName;
     enable = true;

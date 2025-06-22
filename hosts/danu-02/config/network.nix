@@ -3,6 +3,7 @@
   lib,
   pkgs,
   outputs,
+  config,
   ...
 }:
 let
@@ -51,6 +52,27 @@ in
     package = pkgs.unstable.tailscale;
     permitCertUid = "1000";
     useRoutingFeatures = "server";
+  };
+
+  services.comin = {
+    hostname = config.networking.hostName;
+    enable = true;
+    remotes = [
+      {
+        name = "origin";
+        url = "https://github.com/a1994sc/host-configs.git";
+        branches.main.name = "main";
+      }
+    ];
+  };
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+      LoginGraceTime = 0;
+    };
   };
 
   systemd.network = {
@@ -109,6 +131,8 @@ in
   };
 
   networking = {
+    domain = "adrp.xyz";
+    search = [ "adrp.xyz" ];
     hostName = "danu-02";
     useNetworkd = true;
     useDHCP = false;
