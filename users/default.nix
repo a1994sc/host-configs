@@ -41,6 +41,8 @@
       set fish_greeting # Disable greeting
 
       set -gx TMPDIR "/run/user/$(${pkgs.uutils-coreutils-noprefix}/bin/id -u)/tmp"
+
+      mkdir -p $TMPDIR
     '';
     functions = {
       prompt_pwd.body = ''
