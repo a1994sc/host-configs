@@ -3,6 +3,7 @@
   version,
   pkgs,
   lib,
+  self,
   ...
 }:
 with lib;
@@ -22,7 +23,7 @@ let
   defaultImport = dir: map (name: "${dir}/${name}") ((nixFilesNoDefault' dir) ++ (dirs dir));
 in
 {
-  imports = defaultImport ./.;
+  imports = defaultImport "${self}/modules";
   # keep-sorted start block=yes
   environment.systemPackages = with pkgs; [
     git
@@ -48,7 +49,6 @@ in
     interfaces.eth0.useDHCP = true;
     firewall.enable = false;
   };
-  nix.gc.automatic = false;
   programs.bash.completion.enable = true;
   programs.nh = {
     enable = true;

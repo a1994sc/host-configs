@@ -6,9 +6,7 @@
 }:
 let
   stable = with pkgs; [
-    # keep-sorted start
     yq-go
-    # keep-sorted end
     (writeShellScriptBin "ehistory" ''
       ${pkgs.atuin}/bin/atuin search --limit 50 --search-mode full-text --cmd-only $@
     '')

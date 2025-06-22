@@ -1,4 +1,7 @@
-_: {
-  imports = [ ../. ];
+{
+  self,
+}:
+{
+  imports = [ "${self}/users" ];
   home.username = "root";
 }

@@ -1,10 +1,12 @@
-_:
+{
+  self,
+}:
 let
   name = "custodian";
 in
 {
   home-manager.users."${name}" = {
-    imports = [ ../. ];
+    imports = [ "${self}/users" ];
     home.username = name;
   };
   users = {
