@@ -15,6 +15,7 @@
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
     settings/certs
+    (inputs.self.outPath + "/users/root")
   ];
 
   nixpkgs.overlays = [
@@ -110,7 +111,6 @@
   };
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
-  home-manager.users.root = import (inputs.self.outPath + "/users/root");
   services.comin = {
     hostname = config.networking.hostName;
     enable = true;
