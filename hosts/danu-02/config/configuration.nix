@@ -33,6 +33,7 @@
   environment.variables.HISTSIZE = "";
   environment.variables.HISTTIMEFORMAT = "[%F %T] ";
   environment.variables.PROMPT_COMMAND = "history -a; history -c; history -r; $PROMPT_COMMAND";
+  home-manager.backupFileExtension = ".backup";
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   programs.fish.enable = true;
