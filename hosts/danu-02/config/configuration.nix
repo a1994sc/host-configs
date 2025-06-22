@@ -44,38 +44,4 @@
   time.timeZone = "America/New_York";
   users.defaultUserShell = pkgs.fish;
   # keep-sorted end
-  programs.fish.interactiveShellInit = ''
-    set fish_greeting # Disable greeting
-
-    set -gx TMPDIR "/run/user/$(${pkgs.uutils-coreutils-noprefix}/bin/id -u)/tmp"
-
-    mkdir -p $TMPDIR
-
-    function prompt_pwd
-      if test "$PWD" != "$HOME"
-        printf "%s" (echo $PWD|sed -e 's|/private||' -e "s|^$HOME|~|")
-      else
-        echo '~'
-      end
-    end
-
-
-    function fish_prompt
-      set -l normal (set_color normal)
-
-      # Color the prompt differently when we're root
-      set -l color_cwd $fish_color_cwd
-      set -l suffix '>'
-      if functions -q fish_is_root_user; and fish_is_root_user
-        if set -q fish_color_cwd_root
-          set color_cwd $fish_color_cwd_root
-        end
-        set suffix '#'
-      end
-
-      set -l bold_flag --bold
-
-      echo -n -s (prompt_login)' ' (set_color $color_cwd) (prompt_pwd) $normal (fish_vcs_prompt) $normal " " $suffix " "
-    end
-  '';
 }
