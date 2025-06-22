@@ -21,24 +21,24 @@ nixpkgs.lib.nixosSystem {
       ;
   };
   modules = [
-    "${self}/hosts/danu-02/disk-configuration.nix"
+    (inputs.self.outPath + "/settings/certs")
+    (inputs.self.outPath + "/hosts/danu-02/disk-configuration.nix")
     inputs.agenix.nixosModules.default
     inputs.comin.nixosModules.comin
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
-    "${self}/settings/certs"
     (
       _:
       let
-        files = builtins.readDir "${self}/hosts/danu-02/config";
+        files = builtins.readDir (inputs.self.outPath + "/hosts/danu-02/config");
         nixFiles = builtins.filter (name: name != "default.nix" && builtins.match ".*\\.nix" name != null) (
           builtins.attrNames files
         );
-        configImport = map (name: "${self}/hosts/danu-02/config" + "/${name}") nixFiles;
+        configImport = map (name: inputs.self.outPath + "/hosts/danu-02/config/${name}") nixFiles;
       in
       {
         imports = [
-          "${self}/users/custodian"
+          (inputs.self.outPath + "/users/custodian")
         ] ++ configImport;
       }
     )

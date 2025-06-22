@@ -23,7 +23,7 @@ let
   defaultImport = dir: map (name: "${dir}/${name}") ((nixFilesNoDefault' dir) ++ (dirs dir));
 in
 {
-  imports = defaultImport "${self}/modules";
+  imports = defaultImport (inputs.self.outPath + "/modules");
   # keep-sorted start block=yes
   environment.systemPackages = with pkgs; [
     git

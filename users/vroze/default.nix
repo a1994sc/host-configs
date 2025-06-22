@@ -1,10 +1,10 @@
-{ config, self, ... }:
+{ config, inputs, ... }:
 let
   name = "vroze";
 in
 {
   home-manager.users."${name}" = {
-    imports = [ "${self}/users" ];
+    imports = [ (inputs.self.outPath + "/users") ];
     home.username = name;
   };
   users = {

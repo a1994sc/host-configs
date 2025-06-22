@@ -110,7 +110,7 @@
   };
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
-  home-manager.users.root = import "${self}/users/root";
+  home-manager.users.root = import (inputs.self.outPath + "/users/root");
   services.comin = {
     hostname = config.networking.hostName;
     enable = true;
