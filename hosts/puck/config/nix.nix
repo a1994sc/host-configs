@@ -1,7 +1,6 @@
 {
   system,
   outputs,
-  lib,
   ...
 }:
 let

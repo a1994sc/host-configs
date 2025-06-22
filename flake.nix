@@ -100,7 +100,7 @@
           inherit system;
           overlays = [ ];
         };
-        treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
+        treefmtEval = treefmt-nix.lib.evalModule pkgs (inputs.self.outPath + "/treefmt.nix");
         shellHook =
           self.checks.${system}.pre-commit-check.shellHook
           + ''
@@ -117,7 +117,7 @@
       {
         checks = {
           pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
-            src = ./.;
+            src = inputs.self.outPath;
             hooks = {
               nixfmt-rfc-style.enable = true;
               checkmake.enable = true;
@@ -128,12 +128,7 @@
         };
         formatter = treefmtEval.config.build.wrapper;
         devShells.default = nixpkgs.legacyPackages.${system}.mkShell { inherit shellHook buildInputs; };
-        packages =
-          nixpkgs.lib.filesystem.packagesFromDirectoryRecursive {
-            inherit (pkgs) callPackage;
-            directory = ./pkgs;
-          }
-          // inputs.ascii-pkgs.packages.${system};
+        packages = inputs.ascii-pkgs.packages.${system};
       }
     );
 }
