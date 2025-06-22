@@ -32,6 +32,7 @@
   environment.variables.PROMPT_COMMAND = "history -a; history -c; history -r; $PROMPT_COMMAND";
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
+  programs.fish.enable = true;
   programs.fish.useBabelfish = true;
   programs.fish.vendor.completions.enable = true;
   system.autoUpgrade.allowReboot = true;
