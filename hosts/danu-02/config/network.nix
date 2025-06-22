@@ -131,12 +131,16 @@ in
   };
 
   networking = {
+    hostName = "danu-02";
     domain = "adrp.xyz";
     search = [ "adrp.xyz" ];
-    hostName = "danu-02";
     useNetworkd = true;
     useDHCP = false;
-    firewall.enable = pkgs.lib.mkForce true;
+    wireless.enable = false;
+    nameservers = [
+      "1.1.1.2"
+      "1.0.0.2"
+    ];
     firewall.interfaces =
       let
         FIREWALL_PORTS = {

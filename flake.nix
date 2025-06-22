@@ -86,11 +86,11 @@
           inherit (self) outputs;
           inherit self;
         };
-        livedisk = builtins.import ./hosts/livedisk {
-          inherit nixpkgs inputs;
-          inherit (self) outputs;
-          inherit self;
-        };
+        # livedisk = builtins.import ./hosts/livedisk {
+        #   inherit nixpkgs inputs;
+        #   inherit (self) outputs;
+        #   inherit self;
+        # };
       };
     }
     // flake-utils.lib.eachSystem sys (

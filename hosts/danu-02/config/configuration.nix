@@ -2,7 +2,6 @@
   inputs,
   system,
   pkgs,
-  self,
   ...
 }:
 {
@@ -14,7 +13,11 @@
     inputs.agenix.packages.${system}.default
     inputs.disko.packages.${system}.default
     pkgs.duf
+    pkgs.fish
+    pkgs.fishPlugins.grc
+    pkgs.fishPlugins.tide
     pkgs.git
+    pkgs.grc
     pkgs.htop
     pkgs.micro
     pkgs.python3

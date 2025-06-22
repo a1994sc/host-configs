@@ -19,7 +19,7 @@ nixpkgs.lib.nixosSystem {
       ;
   };
   modules = [
-    ../../.
+    # ../../.
     "${nixpkgs}/nixos/modules/profiles/all-hardware.nix"
     "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix"
     {

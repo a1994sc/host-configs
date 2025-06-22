@@ -3,6 +3,7 @@
   lib,
   pkgs,
   outputs,
+  config,
   ...
 }:
 let
@@ -53,6 +54,27 @@ in
     useRoutingFeatures = "server";
   };
 
+  services.comin = {
+    hostname = config.networking.hostName;
+    enable = true;
+    remotes = [
+      {
+        name = "origin";
+        url = "https://github.com/a1994sc/host-configs.git";
+        branches.main.name = "main";
+      }
+    ];
+  };
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+      LoginGraceTime = 0;
+    };
+  };
+
   systemd.network = {
     enable = true;
     links = {
@@ -101,8 +123,11 @@ in
 
   networking = {
     hostName = "danu-01";
+    domain = "adrp.xyz";
+    search = [ "adrp.xyz" ];
     useNetworkd = true;
     useDHCP = false;
+    wireless.enable = false;
     nameservers = [
       "1.1.1.2"
       "1.0.0.2"
