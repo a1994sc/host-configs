@@ -1,6 +1,4 @@
-{
-  self,
-}:
+{ self, ... }:
 let
   name = "custodian";
 in
