@@ -22,6 +22,7 @@ nixpkgs.lib.nixosSystem {
   };
   modules = [
     (inputs.self.outPath + "/settings/certs")
+    (inputs.self.outPath + "/users/root")
     (inputs.self.outPath + "/hosts/danu-02/disk-configuration.nix")
     inputs.agenix.nixosModules.default
     inputs.comin.nixosModules.comin

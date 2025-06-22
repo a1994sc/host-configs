@@ -31,7 +31,6 @@
   environment.variables.HISTTIMEFORMAT = "[%F %T] ";
   environment.variables.PROMPT_COMMAND = "history -a; history -c; history -r; $PROMPT_COMMAND";
   home-manager.useGlobalPkgs = true;
-  home-manager.users.root = import (inputs.self.outPath + "/users/root");
   home-manager.useUserPackages = true;
   programs.fish.useBabelfish = true;
   programs.fish.vendor.completions.enable = true;
