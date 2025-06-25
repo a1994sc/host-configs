@@ -69,6 +69,7 @@ in
           "api.danu-01.adrp.xyz"
           "omni.danu-01.adrp.xyz"
           "kube.danu-01.adrp.xyz"
+          "binary.danu-01.adrp.xyz"
         ]
         ++ (lib.lists.unique (
           builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts)
