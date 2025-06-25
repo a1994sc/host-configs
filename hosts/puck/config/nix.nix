@@ -21,6 +21,11 @@ in
     "flakes"
   ];
   nix.settings.max-jobs = "auto";
+  nix.settings.trusted-public-keys = [
+    "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
+    "binary.danu-01.adrp.xyz:YsJLlRCoNlqCI0U3FZSOXBkjoxBSbn9e2/JKU5U+sG4="
+    "binary.danu-02.adrp.xyz:72+XyWbHlihra4BU5UKQmrV+Z8OBA+9BnD2Gq03GyVY="
+  ];
   nix.settings.trusted-users = [
     "root"
     "@wheel"
