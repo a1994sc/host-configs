@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
@@ -11,6 +12,12 @@ in
     enable = lib.mkEnableOption "nix";
     domain = lib.mkOption {
       type = lib.types.str;
+    };
+    binary = {
+      enable = lib.mkEnableOption "nix";
+      key = lib.mkOption {
+        type = lib.types.str;
+      };
     };
     priority = lib.mkOption {
       type = lib.types.str;
@@ -161,6 +168,13 @@ in
             ];
           };
         }
+        // (lib.mkIf cfg.binary.enable {
+          services.nix-serve = {
+            enable = true;
+            package = pkgs.nix-serve;
+            secretKeyFile = cfg.binary.key;
+          };
+        })
         // builtins.listToAttrs (
           builtins.map (san: {
             name = "cache-${san}";
