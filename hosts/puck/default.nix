@@ -33,7 +33,6 @@ nixpkgs.lib.nixosSystem {
           # keep-sorted start block=yes case=no
           (inputs.self.outPath + "/hosts/puck/disk-configuration.nix")
           (inputs.self.outPath + "/hosts/puck/hardware-configuration.nix")
-          (inputs.self.outPath + "/settings/certs")
           (inputs.self.outPath + "/users/ascii")
           (inputs.self.outPath + "/users/root")
           (inputs.self.outPath + "/users/vroze")
