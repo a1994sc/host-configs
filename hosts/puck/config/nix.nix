@@ -38,6 +38,8 @@ in
   '';
   nix.settings.substituters =
     [
+      "https://binary.${danu-01.domain}?priority=6"
+      "https://binary.${danu-02.domain}?priority=7"
       "https://${danu-01.domain}?priority=10"
       "https://${danu-02.domain}?priority=15"
     ]
