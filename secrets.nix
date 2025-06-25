@@ -20,6 +20,8 @@ let
   };
   secrets = {
     # keep-sorted start
+    "binary/danu-01.key" = machines.danu-01;
+    "binary/danu-02.key" = machines.danu-02;
     "keycloak/base.word" = machines.danu-01;
     "omni/bare-metal.env" = machines.danu-01;
     "omni/etcd.asc" = machines.danu-01;
