@@ -5,7 +5,7 @@
 }:
 {
   age.secrets.binary = {
-    file = (inputs.self.outPath + "/encrypt/binary/danu-02.key.age");
+    file = inputs.self.outPath + "/encrypt/binary/danu-02.key.age";
     mode = "0600";
   };
 
