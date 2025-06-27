@@ -23,8 +23,8 @@ in
   nix.settings.max-jobs = "auto";
   nix.settings.trusted-public-keys = [
     "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
-    "binary.danu-01.adrp.xyz:YsJLlRCoNlqCI0U3FZSOXBkjoxBSbn9e2/JKU5U+sG4="
-    "binary.danu-02.adrp.xyz:72+XyWbHlihra4BU5UKQmrV+Z8OBA+9BnD2Gq03GyVY="
+    "danu-01.barb-neon.ts.net:YsJLlRCoNlqCI0U3FZSOXBkjoxBSbn9e2/JKU5U+sG4="
+    "danu-02.barb-neon.ts.net:72+XyWbHlihra4BU5UKQmrV+Z8OBA+9BnD2Gq03GyVY="
   ];
   nix.settings.trusted-users = [
     "root"
@@ -38,8 +38,8 @@ in
   '';
   nix.settings.substituters =
     [
-      "https://binary.${danu-01.domain}?priority=6"
-      "https://binary.${danu-02.domain}?priority=7"
+      "https://danu-01.barb-neon.ts.net?priority=6"
+      "https://danu-02.barb-neon.ts.net?priority=7"
       "https://${danu-01.domain}?priority=10"
       "https://${danu-02.domain}?priority=15"
     ]
