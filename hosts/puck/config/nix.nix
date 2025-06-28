@@ -23,8 +23,8 @@ in
   nix.settings.max-jobs = "auto";
   nix.settings.trusted-public-keys = [
     "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
-    "danu-01.barb-neon.ts.net:YsJLlRCoNlqCI0U3FZSOXBkjoxBSbn9e2/JKU5U+sG4="
-    "danu-02.barb-neon.ts.net:72+XyWbHlihra4BU5UKQmrV+Z8OBA+9BnD2Gq03GyVY="
+    "danu-01.barb-neon.ts.net:wjXASA3VF+ryB3brRo8vPMuYwVGrjsIa+a3pe8zV86o="
+    "danu-02.barb-neon.ts.net:SqCBNF/wWsRQU5QGLhoV58KEcEZKRW39LQxxXYWLH/0="
   ];
   nix.settings.trusted-users = [
     "root"
