@@ -33,13 +33,13 @@
     staging.pcsclite
     unstable.nh
     vanilla-dmz
+    ventoy-full
     virtiofsd
     vlc
     wget
     yubikey-manager
     yubikey-personalization
     yubioath-flutter
-    ventoy-full
     # keep-sorted end
   ];
   programs.nix-ld.enable = true;
