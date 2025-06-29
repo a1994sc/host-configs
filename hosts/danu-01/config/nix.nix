@@ -9,9 +9,6 @@ let
 in
 {
   # keep-sorted start block=yes case=no
-  nix.gc.automatic = true;
-  nix.gc.dates = "Thu 02:00";
-  nix.gc.options = "--delete-older-than 30d";
   nix.optimise.automatic = true;
   nix.optimise.dates = [ "daily" ];
   nix.settings.auto-optimise-store = true;
