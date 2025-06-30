@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  outputs,
   ...
 }:
 
@@ -27,11 +28,22 @@
     "iso9660"
     "uas"
     "overlay"
+    "xhci_pci"
+    "nvme"
+    "usbhid"
+    "usb_storage"
+    "sd_mod"
+    "sdhci_pci"
   ];
 
   boot.initrd.kernelModules = [
     "loop"
     "overlay"
+    "amdgpu"
+  ];
+
+  boot.kernelModules = [
+    "kvm-amd"
   ];
 
   boot = {
@@ -69,26 +81,26 @@
     inputs.disko.packages.${system}.disko
   ];
 
-  # networking.hosts =
-  #   let
-  #     danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
-  #     danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
-  #   in
-  #   {
-  #     "10.3.10.5" = [
-  #       "danu-01.adrp.xyz"
-  #     ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
-  #     "10.3.10.6" = [
-  #       "danu-02.adrp.xyz"
-  #     ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
-  #   };
+  networking.hosts =
+    let
+      danu-01 = outputs.nixosConfigurations.danu-01.config.ascii.system.cache;
+      danu-02 = outputs.nixosConfigurations.danu-02.config.ascii.system.cache;
+    in
+    {
+      "10.3.10.5" = [
+        "danu-01.adrp.xyz"
+      ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
+      "10.3.10.6" = [
+        "danu-02.adrp.xyz"
+      ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
+    };
 
-  # nix.settings.substituters = [
-  #   "https://danu-01.adrp.xyz?priority=10"
-  #   "https://danu-02.adrp.xyz?priority=10"
-  #   "https://ascii.danu-01.adrp.xyz?priority=15"
-  #   "https://ascii.danu-02.adrp.xyz?priority=15"
-  # ];
+  nix.settings.substituters = [
+    "https://danu-01.adrp.xyz?priority=10"
+    "https://danu-02.adrp.xyz?priority=10"
+    "https://ascii.danu-01.adrp.xyz?priority=15"
+    "https://ascii.danu-02.adrp.xyz?priority=15"
+  ];
 
   nix.settings.trusted-public-keys = [
     "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
