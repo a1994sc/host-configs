@@ -40,7 +40,6 @@ nixpkgs.lib.nixosSystem {
           inputs.comin.nixosModules.comin
           inputs.disko.nixosModules.disko
           inputs.home-manager.nixosModules.home-manager
-          inputs.nixos-hardware.nixosModules.framework-13-7040-amd
           # keep-sorted end
         ] ++ configImport;
         system.stateVersion = version;
