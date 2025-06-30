@@ -30,7 +30,6 @@
   };
   system.autoUpgrade = {
     # keep-sorted start block=yes case=no
-    dates = "02:00";
     enable = true;
     flags = [
       "--update-input"
