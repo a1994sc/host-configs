@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   outputs,
@@ -79,17 +80,17 @@ in
         "barb-neon.ts.net"
       ];
     };
-    # tailscale = {
-    #   enable = true;
-    #   port = 0;
-    #   useRoutingFeatures = "client";
-    #   package = pkgs.unstable.tailscale;
-    #   permitCertUid = "1000";
-    #   extraUpFlags = [
-    #     "--operator=${config.users.users.ascii.name}"
-    #     "--accept-routes=true"
-    #   ];
-    # };
+    tailscale = {
+      enable = true;
+      port = 0;
+      useRoutingFeatures = "client";
+      package = pkgs.unstable.tailscale;
+      permitCertUid = "1000";
+      extraUpFlags = [
+        "--operator=${config.users.users.ascii.name}"
+        "--accept-routes=true"
+      ];
+    };
     # keep-sorted end
   };
   hardware.bluetooth.enable = true;
