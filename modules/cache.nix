@@ -109,6 +109,14 @@ in
         proxy_cache_path /run/nginx/cache/nix levels=1:2 keys_zone=nix_cache_zone:50m max_size=${cfg.maxCacheSize} inactive=${cfg.maxCacheAge};
       '';
 
+      resolver = {
+        addresses = [
+          "1.1.1.2"
+          "1.0.0.2"
+        ];
+        valid = "60s";
+      };
+
       virtualHosts =
         {
           "cache-${cfg.domain}" = {
