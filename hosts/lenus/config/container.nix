@@ -14,6 +14,7 @@
   };
   virtualisation.docker = {
     storageDriver = "btrfs";
+    rootless.enable = true;
     enable = true;
   };
   virtualisation.podman = {
