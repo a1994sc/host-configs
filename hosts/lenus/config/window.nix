@@ -47,4 +47,7 @@
   ];
   environment.sessionVariables.SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
   environment.sessionVariables.NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+  environment.plasma6.excludePackages = [
+    pkgs.kdePackages.kunifiedpush
+  ];
 }
