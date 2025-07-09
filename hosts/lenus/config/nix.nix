@@ -20,7 +20,7 @@ in
     "nix-command"
     "flakes"
   ];
-  nix.settings.max-jobs = "auto";
+  nix.settings.max-jobs = 8;
   nix.settings.trusted-public-keys = [
     "a1994sc.cachix.org-1:xZdr1tcv+XGctmkGsYw3nXjO1LOpluCv4RDWTqJRczI="
     "danu-01.barb-neon.ts.net:wjXASA3VF+ryB3brRo8vPMuYwVGrjsIa+a3pe8zV86o="
