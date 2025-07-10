@@ -50,4 +50,6 @@
   environment.plasma6.excludePackages = [
     pkgs.kdePackages.kunifiedpush
   ];
+  services.protonmail-bridge.enable = true;
+  programs.thunderbird.enable = true;
 }
