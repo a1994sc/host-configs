@@ -50,8 +50,5 @@
   environment.plasma6.excludePackages = [
     pkgs.kdePackages.kunifiedpush
   ];
-  services.protonmail-bridge.enable = true;
-  services.protonmail-bridge.package = pkgs.protonmail-bridge;
-  services.protonmail-bridge.logLevel = "info";
   programs.thunderbird.enable = true;
 }
