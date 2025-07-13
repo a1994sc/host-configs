@@ -34,7 +34,7 @@ in
     yubikey-personalization
     yubioath-flutter
     # keep-sorted end
-    (pkgs.buildFHSUserEnv {
+    (pkgs.buildFHSEnv {
       name = "proton-mail-export-cli";
       targetPkgs = _pkgs: [ proton-cli ];
       multiPkgs = _pkgs: [ ];
