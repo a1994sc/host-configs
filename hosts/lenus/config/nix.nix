@@ -32,10 +32,6 @@
     min-free = ${toString (1024 * 1024 * 1024)}
     max-free = ${toString (1024 * 1024 * 1024 * 4)}
   '';
-  nix.settings.substituters = [
-    "https://danu-01.barb-neon.ts.net?priority=6"
-    "https://danu-02.barb-neon.ts.net?priority=7"
-  ];
   nixpkgs.overlays = [
     outputs.overlays.packages
     (
