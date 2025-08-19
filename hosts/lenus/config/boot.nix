@@ -27,6 +27,5 @@
       pkgs.logitech-udev-rules
     ];
   };
-  system.autoUpgrade.enable = false;
   services.openssh.settings.PasswordAuthentication = lib.mkForce true;
 }
