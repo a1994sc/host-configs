@@ -68,10 +68,24 @@ in
 
     services.nginx = {
       enable = true;
-      virtualHosts =
-        {
-          "acme-${cfg.name}" = {
-            serverName = cfg.name;
+      virtualHosts = {
+        "acme-${cfg.name}" = {
+          serverName = cfg.name;
+          listen = [
+            {
+              port = 80;
+              addr = "0.0.0.0";
+              ssl = false;
+            }
+          ];
+          locations."/".proxyPass = "http://127.0.0.1:${builtins.toString cfg.port}/";
+        };
+      }
+      // builtins.listToAttrs (
+        builtins.map (san: {
+          name = "acme-${san}";
+          value = {
+            serverName = san;
             listen = [
               {
                 port = 80;
@@ -81,23 +95,8 @@ in
             ];
             locations."/".proxyPass = "http://127.0.0.1:${builtins.toString cfg.port}/";
           };
-        }
-        // builtins.listToAttrs (
-          builtins.map (san: {
-            name = "acme-${san}";
-            value = {
-              serverName = san;
-              listen = [
-                {
-                  port = 80;
-                  addr = "0.0.0.0";
-                  ssl = false;
-                }
-              ];
-              locations."/".proxyPass = "http://127.0.0.1:${builtins.toString cfg.port}/";
-            };
-          }) cfg.sans
-        );
+        }) cfg.sans
+      );
     };
 
     security.sudo.extraRules = [

@@ -28,12 +28,12 @@ in
     git
     inputs.disko.packages.${system}.default
     inputs.nix-alien.packages.${system}.nix-alien
+    pass
     solaar
     wget
     yubikey-manager
     yubikey-personalization
     yubioath-flutter
-    pass
     # keep-sorted end
     (pkgs.buildFHSEnv {
       name = "proton-mail-export-cli";

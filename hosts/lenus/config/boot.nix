@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   lib,
   ...
 }:
@@ -28,18 +27,6 @@
       pkgs.logitech-udev-rules
     ];
   };
-  system.autoUpgrade = {
-    # keep-sorted start block=yes case=no
-    enable = true;
-    flags = [
-      "--update-input"
-      "nixpkgs"
-      "--no-write-lock-file"
-      "-L"
-    ];
-    flake = inputs.self.outPath;
-    randomizedDelaySec = "45min";
-    # keep-sorted end
-  };
+  system.autoUpgrade.enable = false;
   services.openssh.settings.PasswordAuthentication = lib.mkForce true;
 }

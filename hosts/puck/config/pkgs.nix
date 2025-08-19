@@ -33,7 +33,6 @@
     staging.pcsclite
     unstable.nh
     vanilla-dmz
-    ventoy-full
     virtiofsd
     vlc
     wget
@@ -43,7 +42,4 @@
     # keep-sorted end
   ];
   programs.nix-ld.enable = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "ventoy-1.1.05"
-  ];
 }

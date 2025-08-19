@@ -17,7 +17,7 @@ in
     system = {
       dns.enable = true;
       cache = {
-        enable = true;
+        enable = false;
         domain = "danu-01.adrp.xyz";
         sans = [
           "10.3.10.5"
@@ -58,22 +58,21 @@ in
       };
     };
     security.certs = {
-      enable = true;
+      enable = false;
       name = "danu-01.adrp.xyz";
-      sans =
-        [
-          "10.3.10.5"
-          "10.3.20.5"
-          "100.89.86.119"
-          "keycloak.danu-01.adrp.xyz"
-          "api.danu-01.adrp.xyz"
-          "omni.danu-01.adrp.xyz"
-          "kube.danu-01.adrp.xyz"
-          "binary.danu-01.adrp.xyz"
-        ]
-        ++ (lib.lists.unique (
-          builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts)
-        ));
+      sans = [
+        "10.3.10.5"
+        "10.3.20.5"
+        "100.89.86.119"
+        "keycloak.danu-01.adrp.xyz"
+        "api.danu-01.adrp.xyz"
+        "omni.danu-01.adrp.xyz"
+        "kube.danu-01.adrp.xyz"
+        "binary.danu-01.adrp.xyz"
+      ]
+      ++ (lib.lists.unique (
+        builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts)
+      ));
     };
   };
 }

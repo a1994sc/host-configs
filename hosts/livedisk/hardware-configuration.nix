@@ -89,10 +89,12 @@
     {
       "10.3.10.5" = [
         "danu-01.adrp.xyz"
-      ] ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
+      ]
+      ++ (builtins.map (alt: "${alt}.${danu-01.domain}") (builtins.attrNames danu-01.alts));
       "10.3.10.6" = [
         "danu-02.adrp.xyz"
-      ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
+      ]
+      ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
     };
 
   nix.settings.substituters = [

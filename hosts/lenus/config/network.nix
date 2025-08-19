@@ -1,14 +1,8 @@
 {
   pkgs,
-  lib,
   config,
-  outputs,
   ...
 }:
-let
-  danu-01 = outputs.nixosConfigurations.danu-01.config.ascii;
-  danu-02 = outputs.nixosConfigurations.danu-02.config.ascii;
-in
 {
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
@@ -28,28 +22,6 @@ in
       "10.3.10.6"
       "9.9.9.9"
     ];
-    hosts = {
-      "100.89.86.119" =
-        [
-          "danu-01.adrp.xyz"
-        ]
-        ++ (lib.lists.unique (
-          (builtins.filter (name: builtins.match ".*\\.xyz" name != null) danu-01.security.certs.sans)
-          ++ (builtins.map (alt: "${alt}.${danu-01.system.cache.domain}") (
-            builtins.attrNames danu-01.system.cache.alts
-          ))
-        ));
-      "100.126.110.27" =
-        [
-          "danu-02.adrp.xyz"
-        ]
-        ++ (lib.lists.unique (
-          (builtins.filter (name: builtins.match ".*\\.xyz" name != null) danu-02.security.certs.sans)
-          ++ (builtins.map (alt: "${alt}.${danu-02.system.cache.domain}") (
-            builtins.attrNames danu-02.system.cache.alts
-          ))
-        ));
-    };
   };
 
   services = {

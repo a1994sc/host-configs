@@ -43,7 +43,8 @@ nixpkgs.lib.nixosSystem {
           inputs.disko.nixosModules.disko
           inputs.home-manager.nixosModules.home-manager
           # keep-sorted end
-        ] ++ configImport;
+        ]
+        ++ configImport;
         system.stateVersion = version;
       }
     )

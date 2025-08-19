@@ -16,7 +16,7 @@ in
     system = {
       dns.enable = true;
       cache = {
-        enable = true;
+        enable = false;
         domain = "danu-02.adrp.xyz";
         sans = [
           "10.3.10.6"
@@ -47,14 +47,15 @@ in
       };
     };
     security.certs = {
-      enable = true;
+      enable = false;
       name = "danu-02.adrp.xyz";
       sans = [
         "10.3.10.6"
         "10.3.20.6"
         "100.126.110.27"
         "binary.danu-02.adrp.xyz"
-      ] ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
+      ]
+      ++ (builtins.map (alt: "${alt}.${danu-02.domain}") (builtins.attrNames danu-02.alts));
     };
   };
 }

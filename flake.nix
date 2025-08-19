@@ -106,12 +106,10 @@
           overlays = [ ];
         };
         treefmtEval = treefmt-nix.lib.evalModule pkgs (inputs.self.outPath + "/treefmt.nix");
-        shellHook =
-          self.checks.${system}.pre-commit-check.shellHook
-          + ''
-            export TMPDIR="/run/user/$UID/age"
-            mkdir -p $TMPDIR
-          '';
+        shellHook = self.checks.${system}.pre-commit-check.shellHook + ''
+          export TMPDIR="/run/user/$UID/age"
+          mkdir -p $TMPDIR
+        '';
         buildInputs = self.checks.${system}.pre-commit-check.enabledPackages ++ [
           pkgs.git
           pkgs.gnumake

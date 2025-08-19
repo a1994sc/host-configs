@@ -58,7 +58,8 @@ stdenv.mkDerivation rec {
     openssl
     gnu-efi
     mtools
-  ] ++ lib.optional stdenv.hostPlatform.isx86 syslinux;
+  ]
+  ++ lib.optional stdenv.hostPlatform.isx86 syslinux;
 
   depsBuildBuild = [ buildPackages.stdenv.cc ];
 
@@ -75,19 +76,18 @@ stdenv.mkDerivation rec {
 
   NIX_CFLAGS_COMPILE = "-Wno-error";
 
-  makeFlags =
-    [
-      "ECHO_E_BIN_ECHO=echo"
-      "ECHO_E_BIN_ECHO_E=echo"
-      "CROSS=${stdenv.cc.targetPrefix}"
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isx86 [
-      "ISOLINUX_BIN_LIST=${syslinux}/share/syslinux/isolinux.bin"
-      "LDLINUX_C32=${syslinux}/share/syslinux/ldlinux.c32"
-    ]
-    ++ lib.optional (embedScript != null) "EMBED=${embedScript}"
-    ++ lib.optional (embedTrust != null) "TRUST=${embedTrust}"
-    ++ lib.optional (embedCert != null) "CERT=${embedCert}";
+  makeFlags = [
+    "ECHO_E_BIN_ECHO=echo"
+    "ECHO_E_BIN_ECHO_E=echo"
+    "CROSS=${stdenv.cc.targetPrefix}"
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isx86 [
+    "ISOLINUX_BIN_LIST=${syslinux}/share/syslinux/isolinux.bin"
+    "LDLINUX_C32=${syslinux}/share/syslinux/ldlinux.c32"
+  ]
+  ++ lib.optional (embedScript != null) "EMBED=${embedScript}"
+  ++ lib.optional (embedTrust != null) "TRUST=${embedTrust}"
+  ++ lib.optional (embedCert != null) "CERT=${embedCert}";
 
   consoleOptions = [
     "CONSOLE_FRAMEBUFFER"
