@@ -34,6 +34,7 @@ in
     yubikey-manager
     yubikey-personalization
     yubioath-flutter
+    pcmciaUtils
     # keep-sorted end
     (pkgs.buildFHSEnv {
       name = "proton-mail-export-cli";
