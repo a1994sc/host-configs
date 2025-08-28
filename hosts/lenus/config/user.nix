@@ -13,7 +13,6 @@
     login.u2fAuth = true;
     sudo.u2fAuth = true;
   };
-  services.pcscd.enable = true;
   users.users.ascii.shell = pkgs.fish;
   users.users.ascii.packages = with pkgs; [
     # keep-sorted start
