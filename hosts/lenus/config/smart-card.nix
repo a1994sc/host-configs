@@ -8,5 +8,6 @@
   environment.systemPackages = with pkgs; [
     pcmciaUtils
     pcsc-tools
+    opensc
   ];
 }
