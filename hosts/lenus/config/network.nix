@@ -53,10 +53,10 @@
       ];
     };
     tailscale = {
-      enable = true;
+      enable = false;
       port = 0;
       useRoutingFeatures = "client";
-      package = pkgs.unstable.tailscale;
+      # package = pkgs.unstable.tailscale;
       permitCertUid = "1000";
       extraUpFlags = [
         "--operator=${config.users.users.ascii.name}"

@@ -19,6 +19,7 @@ nixpkgs.lib.nixosSystem {
       ;
   };
   modules = [
+    # inputs.microvm.nixosModules.microvm
     (
       _:
       let
