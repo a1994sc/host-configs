@@ -26,6 +26,7 @@ in
     docker-compose
     duf
     git
+    devenv
     inputs.disko.packages.${system}.default
     inputs.nix-alien.packages.${system}.nix-alien
     pass
