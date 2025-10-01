@@ -20,5 +20,11 @@
     gnupg
     # keep-sorted end
   ];
+  users.users.vroze.packages = with pkgs; [
+    # keep-sorted start
+    firefox
+    google-chrome
+    # keep-sorted end
+  ];
   services.logind.extraConfig = "RuntimeDirectorySize=50%";
 }
