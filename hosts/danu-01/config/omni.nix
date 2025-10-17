@@ -94,7 +94,7 @@ _:
   # virtualisation.oci-containers.containers.omni-bare-metal = {
   #   autoStart = true;
   #   # renovate: datasource=docker
-  #   image = "ghcr.io/siderolabs/omni-infra-provider-bare-metal:v0.4.0";
+  #   image = "ghcr.io/siderolabs/omni-infra-provider-bare-metal:v0.5.0";
   #   hostname = "omni-bare-metal";
   #   cmd = [
   #     "--api-advertise-address=10.3.20.5"
