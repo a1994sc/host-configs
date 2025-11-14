@@ -58,7 +58,7 @@ _:
   # virtualisation.oci-containers.containers.omni-talos = {
   #   autoStart = true;
   #   # renovate: datasource=docker
-  #   image = "ghcr.io/siderolabs/omni:v1.3.1";
+  #   image = "ghcr.io/siderolabs/omni:v1.3.2";
   #   hostname = "omni-talos";
   #   cmd = [
   #     "--account-id=\"0ee79fa5-9387-4b31-aa53-d5e1a5f54384\""
