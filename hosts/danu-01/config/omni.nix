@@ -58,7 +58,7 @@ _:
   # virtualisation.oci-containers.containers.omni-talos = {
   #   autoStart = true;
   #   # renovate: datasource=docker
-  #   image = "ghcr.io/siderolabs/omni:v1.3.2";
+  #   image = "ghcr.io/siderolabs/omni:v1.4.0";
   #   hostname = "omni-talos";
   #   cmd = [
   #     "--account-id=\"0ee79fa5-9387-4b31-aa53-d5e1a5f54384\""
@@ -94,7 +94,7 @@ _:
   # virtualisation.oci-containers.containers.omni-bare-metal = {
   #   autoStart = true;
   #   # renovate: datasource=docker
-  #   image = "ghcr.io/siderolabs/omni-infra-provider-bare-metal:v0.6.0";
+  #   image = "ghcr.io/siderolabs/omni-infra-provider-bare-metal:v0.7.1";
   #   hostname = "omni-bare-metal";
   #   cmd = [
   #     "--api-advertise-address=10.3.20.5"
