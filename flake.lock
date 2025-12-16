@@ -99,11 +99,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1765688338,
-        "narHash": "sha256-MjrytR2kiHYUnzX11cXaD31tS7kKdhM1KFaac0+KAig=",
+        "lastModified": 1765794845,
+        "narHash": "sha256-YD5QWlGnusNbZCqR3pxG8tRxx9yUXayLZfAJRWspq2s=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "be1a6b8a05afdd5d5fa69fcaf3c4ead7014c9fd8",
+        "rev": "7194cfe5b7a3660726b0fe7296070eaef601cae9",
         "type": "github"
       },
       "original": {
@@ -406,11 +406,11 @@
     },
     "nixpkgs-staging": {
       "locked": {
-        "lastModified": 1765757992,
-        "narHash": "sha256-VTMU6h7U1wbp0PPpLloLuVGYH6SDbQyIzUUvZv2KRjw=",
+        "lastModified": 1765844326,
+        "narHash": "sha256-mavhTNDf7EuBFC7V97/FMwOqcrcN+VHs/L06xoRqrMw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8259b6c7fe4c903cb7542508e477d75e645bf1dd",
+        "rev": "55d99602cd7f7174f1a10fe83c8d021e1b546d77",
         "type": "github"
       },
       "original": {
@@ -422,11 +422,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1765733814,
-        "narHash": "sha256-1p6BNczH7MylxA7IhHyYIrg1ey7bW+4LtcBQOzSWsXU=",
+        "lastModified": 1765819925,
+        "narHash": "sha256-XhKPk66D3IfA4cy9AAn9Oqu9GzjZbFdYOFl1EpdeyW0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d54beea55e1f9a521b85cbb1c44bf616ac4d9011",
+        "rev": "eb493e4eaf370c183ad40cdd5c16cd2dc7a64fcd",
         "type": "github"
       },
       "original": {
@@ -454,11 +454,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1765608474,
-        "narHash": "sha256-9Wx53UK0z8Di5iesJID0tS1dRKwGxI4i7tsSanOHhF0=",
+        "lastModified": 1765762245,
+        "narHash": "sha256-3iXM/zTqEskWtmZs3gqNiVtRTsEjYAedIaLL0mSBsrk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "28bb483c11a1214a73f9fd2d9928a6e2ea86ec71",
+        "rev": "c8cfcd6ccd422e41cc631a0b73ed4d5a925c393d",
         "type": "github"
       },
       "original": {
