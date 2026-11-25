@@ -1,80 +1,33 @@
 {
-  disks ? [
-    "/dev/nvme0n1"
-    "/dev/sda"
-  ],
+  disks ? [ "/dev/sda" ],
   ...
 }:
 {
-  disko.devices = {
-    disk = {
-      main = {
-        type = "disk";
-        device = builtins.elemAt disks 0;
-        content = {
-          type = "gpt";
-          partitions = {
-            ESP = {
-              priority = 1;
-              name = "ESP";
-              start = "1M";
-              end = "2048M";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [
-                  "umask=0077"
-                ];
-              };
-            };
-            root = {
-              size = "100%";
-              content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ];
-                subvolumes = {
-                  "@rootfs" = {
-                    mountpoint = "/";
-                  };
-                  "@home" = {
-                    mountOptions = [
-                      "noatime"
-                      "compress-force=zstd:1"
-                      "space_cache=v2"
-                      "commit=15"
-                    ];
-                    mountpoint = "/home";
-                  };
-                  "@home/custodian" = { };
-                  "@nix" = {
-                    mountOptions = [
-                      "noatime"
-                      "compress-force=zstd:1"
-                      "space_cache=v2"
-                      "commit=15"
-                    ];
-                    mountpoint = "/nix";
-                  };
-                };
-              };
-            };
+  disko.devices.disk.main = {
+    type = "disk";
+    device = builtins.elemAt disks 0;
+    content = {
+      type = "gpt";
+      partitions = {
+        ESP = {
+          priority = 1;
+          name = "ESP";
+          start = "1M";
+          end = "512M";
+          type = "EF00";
+          content = {
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot";
+            mountOptions = [ "umask=0077" ];
           };
         };
-      };
-      cache = {
-        type = "disk";
-        device = builtins.elemAt disks 1;
-        content = {
-          type = "gpt";
-          partitions.cache = {
-            size = "100%";
-            content = {
-              type = "btrfs";
-              extraArgs = [ "-f" ];
-              subvolumes."@cache".mountpoint = "/var/cache";
-            };
+        root = {
+          size = "100%";
+          content = {
+            type = "filesystem";
+            format = "ext4";
+            mountpoint = "/";
           };
         };
       };

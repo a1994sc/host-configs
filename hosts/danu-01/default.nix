@@ -34,14 +34,10 @@ nixpkgs.lib.nixosSystem {
         imports = [
           # keep-sorted start block=yes case=no
           (inputs.self.outPath + "/hosts/danu-01/disk-configuration.nix")
-          (inputs.self.outPath + "/modules")
-          (inputs.self.outPath + "/settings/certs")
-          (inputs.self.outPath + "/users/custodian")
-          (inputs.self.outPath + "/users/root")
-          inputs.agenix.nixosModules.default
+          (inputs.self.outPath + "/modules/dns.nix")
+          (inputs.self.outPath + "/users/custodian/minimal.nix")
           inputs.comin.nixosModules.comin
           inputs.disko.nixosModules.disko
-          inputs.home-manager.nixosModules.home-manager
           # keep-sorted end
         ]
         ++ configImport;
