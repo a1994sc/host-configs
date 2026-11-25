@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "coal";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-91a8d453.js";
+            window.path_to_searchindex_js = "searchindex-9e239711.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-84bd289e.js"></script>
+        <script src="toc-302eb9fd.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -217,6 +217,71 @@
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="flake"><a class="header" href="#flake">Flake</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="minimal"><a class="header" href="#minimal">Minimal</a></h1>
+<p>How far a NixOS appliance can be stripped, measured on <code>danu-01</code> (a Dell 3070 thin
+client running nothing but blocky and comin). Numbers are NAR sizes from
+<code>nix path-info --json</code> on <code>system.build.toplevel</code>, nixpkgs 26.05.</p>
+<h2 id="what-is-left-running"><a class="header" href="#what-is-left-running">What is left running</a></h2>
+<p>Twelve units are wanted by <code>multi-user.target</code>:</p>
+<pre><code>blocky  comin  sshd + sshd-keygen  systemd-networkd  nsncd
+resolvconf  systemd-sysctl  systemd-modules-load
+linger-users  reload-systemd-vconsole-setup  post-boot
+</code></pre>
+<p>Plus the systemd core that is not worth fighting: udev, journald, timesyncd,
+dbus-broker, logind. <code>nsncd</code> backs NSS, <code>timesyncd</code> keeps the clock sane enough
+for blocky to validate its DNS-over-TLS upstreams, and journald is the only
+debugging surface on a box with no console.</p>
+<h2 id="the-knobs-that-paid"><a class="header" href="#the-knobs-that-paid">The knobs that paid</a></h2>
+<p>Applied in <code>hosts/danu-0*/config/configuration.nix</code> and
+<code>hardware-configuration.nix</code>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Knob</th><th>Effect</th></tr>
+</thead>
+<tbody>
+<tr><td><code>imports = [ (modulesPath + "/profiles/minimal.nix") ]</code></td><td>drops docs, <code>environment.defaultPackages</code> (perl, rsync, strace), logrotate, udisks2, command-not-found, stub-ld</td></tr>
+<tr><td><code>hardware.enableRedistributableFirmware = false</code></td><td>~400 MiB of blobs; a wired Intel/Realtek NIC needs none</td></tr>
+<tr><td><code>hardware.cpu.intel.updateMicrocode = true</code></td><td>set explicitly, because <code>not-detected.nix</code> ties it to the firmware flag above</td></tr>
+<tr><td><code>nixpkgs.flake.setFlakeRegistry = false</code><br><code>nixpkgs.flake.setNixPath = false</code></td><td>198 MiB — <code>/etc/nix/registry.json</code> otherwise pins a whole copy of nixpkgs into the closure</td></tr>
+<tr><td><code>services.userborn.enable = true</code><br><code>system.etc.overlay.enable = true</code><br><code>boot.initrd.systemd.enable = true</code></td><td>removes both perl activation scripts (<code>setup-etc.pl</code>, <code>update-users-groups.pl</code>). The overlay needs initrd systemd</td></tr>
+<tr><td><code>systemd.oomd.enable = false</code></td><td>nothing here to pressure-manage</td></tr>
+<tr><td><code>boot.enableContainers = false</code>, <code>nix.channel.enable = false</code>, <code>system.disableInstallerTools = true</code>, <code>system.tools.nixos-generate-config.enable = false</code></td><td>a unit here, a tool there</td></tr>
+</tbody>
+</table>
+</div>
+<p>Closure went 1.2 GiB → 1.0 GiB.</p>
+<h2 id="where-the-remaining-10-gib-sits"><a class="header" href="#where-the-remaining-10-gib-sits">Where the remaining 1.0 GiB sits</a></h2>
+<pre><code>144 MiB  linux-modules        128 MiB  python3     60 MiB  systemd
+ 55 MiB  perl                  55 MiB  git         42 MiB  initrd
+ 38 MiB  icu4c                 33 MiB  glibc       27 MiB  blocky
+ 22 MiB  comin                 22 MiB  kernel
+</code></pre>
+<p><strong>comin is the biggest remaining lever.</strong> It depends on the git CLI, which drags
+in python3 (git-p4) and perl (git-send-email): 238 MiB, a quarter of the system.
+Deploying with <code>nixos-rebuild --target-host</code> instead would take all three out.
+The flip side is that <code>pkgs.git</code> in <code>PATH</code> costs nothing while comin stays.</p>
+<h2 id="what-is-not-worth-doing"><a class="header" href="#what-is-not-worth-doing">What is not worth doing</a></h2>
+<ul>
+<li><strong>A trimmed kernel.</strong> There is no supported option to strip the module tree —
+only <code>boot.kernelPackages = linuxPackagesFor (linux.override { structuredExtraConfig = ...; })</code>,
+which means each host builds its own kernel on every bump. These boxes have no
+binary cache anymore, so 144 MiB is not worth a local kernel build.</li>
+<li><strong><code>profiles/perlless.nix</code>.</strong> Its <code>forbiddenDependenciesRegexes = [ "perl" ]</code>
+fails the build on comin’s git. Take its three mechanics (userborn, etc
+overlay, initrd systemd) and leave the assertion.</li>
+<li><strong><code>profiles/headless.nix</code>.</strong> It disables <code>getty@tty1</code> and sets <code>nomodeset</code>,
+which leaves no local console on a machine you may have to walk to.</li>
+</ul>
+<h2 id="measuring-it-yourself"><a class="header" href="#measuring-it-yourself">Measuring it yourself</a></h2>
+<pre><code class="language-sh">nix build --no-link --print-out-paths .#nixosConfigurations.danu-01.config.system.build.toplevel
+nix path-info -Sh /nix/store/...-nixos-system-danu-01-...            # closure size
+nix why-depends  /nix/store/...-nixos-system-danu-01-... nixpkgs#perl # who dragged it in
+</code></pre>
+<p><code>nix why-depends --derivation</code> answers a different question — build inputs, not
+the runtime closure — so it will show perl even on a system that ships without
+it. Build first, then ask.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="talos"><a class="header" href="#talos">Talos</a></h1>
 <p><img src="d2/talos-ztp.svg" alt="Talos" /></p>
