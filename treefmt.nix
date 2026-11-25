@@ -7,10 +7,7 @@
 
   programs.keep-sorted.enable = true;
 
-  programs.nixfmt = {
-    enable = true;
-    package = pkgs.nixfmt-rfc-style;
-  };
+  programs.nixfmt.enable = true;
 
   programs.statix.enable = true;
 
