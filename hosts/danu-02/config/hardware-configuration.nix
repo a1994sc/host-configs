@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   modulesPath,
   ...
 }:
@@ -20,5 +18,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   nixpkgs.hostPlatform = "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  # wired-only headless x86: nothing here needs firmware blobs, microcode excepted
+  hardware.enableRedistributableFirmware = false;
+  hardware.cpu.intel.updateMicrocode = true;
 }

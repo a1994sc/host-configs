@@ -12,7 +12,6 @@ in
       inherit name;
       uid = 1500;
       group = name;
-      linger = true;
       isNormalUser = true;
       extraGroups = [
         "wheel"
